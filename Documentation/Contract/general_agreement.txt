@@ -1,0 +1,8 @@
+Through the acceptance of this job, both the freelancer (Andrew Story) and the client (Kjetil Hansen) are subject to the following:
+- All code and assets created specifically for this job belong to both the freelancer and the client during production.
+- Once production has ceased, the code and assets continue to belong to both the parties involved as they existed once the job was completed. Further changes to the code or assets by a given party does not need to be shared with the other.
+- Either party may use and exploit the code and assets in any way they see fit, even for commercial purposes, so long as it is without the intent to be a detriment to the other party's ability to profit from the code and assets.
+- In the event that either the freelancer or the client chooses to sell the resulting product, or some derivative thereof, then the other member of the party is entitled to no less than 20% of the gross profit.
+- If either the client or freelancer is unable to fulfill this contract, either through death, severe illness, or some other similar circumstance, then a member of their immediate family may take their stead.
+- In the event that this contract is willfully broken, then legal action may be taken.
+- If both the client and the freelancer agree in writing, clauses may be added to, removed from, or modified in this contract.
