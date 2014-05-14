@@ -19,3 +19,7 @@
 *.exe
 *.out
 *.app
+
+# Codeblocks things
+MUD.depend
+MUD.layout
