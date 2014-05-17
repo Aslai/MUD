@@ -8,6 +8,6 @@
 int main(){
     Test<GlobalMUD::Ciphers::Cipher>();
     Test<GlobalMUD::Ciphers::XOR>();
-    Test<GlobalMUD::CommStream>();
+    Test<GlobalMUD::CommStreama>();
 
 }

@@ -14,7 +14,6 @@
 				<Compiler>
 					<Add option="-pedantic" />
 					<Add option="-std=c++11" />
-					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-g" />
 					<Add option="-DRunUnitTests" />
@@ -48,6 +47,9 @@
 		<Unit filename="Implementations/ExpressionParser/ExpressionParser.hpp" />
 		<Unit filename="Implementations/Global/Error.cpp" />
 		<Unit filename="Implementations/Global/Error.hpp" />
+		<Unit filename="Implementations/Global/Mutex.cpp" />
+		<Unit filename="Implementations/Global/Mutex.hpp" />
+		<Unit filename="Implementations/Global/RefCounter.hpp" />
 		<Unit filename="Implementations/Tester.cpp" />
 		<Unit filename="Implementations/Tester.hpp" />
 		<Unit filename="Tests/main.cpp" />

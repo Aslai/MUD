@@ -1,6 +1,6 @@
 #ifndef MUD_GLOBAL_ERROR_HPP
 #define MUD_GLOBAL_ERROR_HPP
-
+#undef ERROR
 #define ErrorRoot 0
 #define FAIL(msg) {GlobalMUD::ERROR::Fail( __LINE__, __FILE__, __func__, msg );}
 #define TEST(msg) {GlobalMUD::ERROR::Test(msg);}

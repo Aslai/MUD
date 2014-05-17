@@ -5,10 +5,27 @@
 #include <vector>
 #include <deque>
 #include <memory>
+#include "Global/RefCounter.hpp"
 #include <utility>
-#define SOCKET unsigned int
+#ifdef _WIN32
+    #include <windows.h>
+    #include <winsock2.h>
+    #include <ws2tcpip.h>
+#else
+    #include <sys/types.h>
+    #include <sys/socket.h>
+    #include <netinet/in.h>
+    #include <netdb.h>
+    #include <unistd.h>
+    #include <termios.h>
+    #include <pthread.h>
+    #include <errno.h>
+    #include <signal.h>
+    #define SOCKET unsigned int
+#endif
 
 #include "Global/Error.hpp"
+#include "Global/Mutex.hpp"
 #include "CommStream/Cipher.hpp"
 #define NETBUFFERSIZE 1000
 
@@ -30,8 +47,11 @@ namespace GlobalMUD{
         Error SocketFailure = ErrorRoot + 11;
 
     }
-    class CommStream{
-        public:
+    class CommStreamInternal;
+
+    class CommStreama{
+    friend CommStreamInternal;
+    public:
         enum Encryption{
             NONE = 0,
             XOR = 1
@@ -40,8 +60,35 @@ namespace GlobalMUD{
             BINARY = 0,
             LINES = 1
         };
-        private:
+    private:
+        void UseSocket(SOCKET sock);
+        void Terminate();
+        void PushData( char* data, size_t len );
+        bool CanSend();
+        CommStreamInternal* Get();
+        SOCKET GetConnection();
+        RefCounter<CommStreamInternal> Internal;
 
+    public:
+        CommStreama& operator=(CommStreama other);
+        CommStreama( ReceiveType rectype = LINES );
+        ~CommStreama();
+        Error Connect( std::string address, int port );
+        bool Connected( );
+        Error Disconnect( bool force = false );
+        Error Listen( int port, void(*func)(CommStreama stream, void* data), void* data = 0 );
+        Error Listen( std::string address, int port, void(*func)(CommStreama stream, void* data), void* data = 0 );
+        Error Send( std::string message, bool important = false );
+        Error Receive( std::string &message );
+        Error Encrypt( Encryption type );
+        #ifdef RunUnitTests
+        static bool RunTests();
+        #endif
+        static void ServiceSockets();
+
+    };
+    class CommStreamInternal{
+        friend CommStreama;
         struct Message{
             enum FLAGS{
                 NONE = 0,
@@ -54,8 +101,8 @@ namespace GlobalMUD{
             size_t length;
             int flags;
         };
-        ReceiveType MyReceiveType;
-        Encryption MyEncryption;
+        CommStreama::ReceiveType MyReceiveType;
+        CommStreama::Encryption MyEncryption;
         Ciphers::Cipher* MyCipher;
         SOCKET Connection;
         std::deque<Message> SendBuffer;
@@ -69,22 +116,24 @@ namespace GlobalMUD{
         Message GetSend();
 
         public:
-        CommStream( ReceiveType rectype = LINES );
-        ~CommStream();
+        CommStreamInternal( CommStreama::ReceiveType rectype = CommStreama::LINES );
+        ~CommStreamInternal();
         Error Connect( std::string address, int port );
         bool Connected( );
         Error Disconnect( bool force = false );
-        Error Listen( int port, void(*func)(CommStream stream, void* data), void* data = 0 );
-        Error Listen( std::string address, int port, void(*func)(CommStream stream, void* data), void* data = 0 );
+        Error Listen( int port, void(*func)(CommStreama stream, void* data), void* data = 0 );
+        Error Listen( std::string address, int port, void(*func)(CommStreama stream, void* data), void* data = 0 );
         Error Send( std::string message, bool important = false );
         Error Receive( std::string &message );
-        Error Encrypt( Encryption type );
-        #ifdef RunUnitTests
-        static bool RunTests();
-        #endif
+        Error Encrypt( CommStreama::Encryption type );
+
         static void ServiceSockets();
-        static std::vector<CommStream*> CommStreams;
+        static void PushStream( CommStreama topush );
+        static Mutex Lock;
+        static std::vector<CommStreama> CommStreams;
     };
+
+
 }
 #undef SOCKET
 
