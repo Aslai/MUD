@@ -20,12 +20,20 @@
 #undef ERROR
 
 namespace GlobalMUD{
-    CommStream::Message::Message(std::string message, int flagss ){
-        msg = message;
+    CommStream::Message::Message(std::string message, int flagss ) : msg((char*)malloc(message.length()+1), free) {
+        memcpy( msg.get(), message.c_str(), message.length() );
+        msg.get()[message.length()] = 0;
+        length = message.length();
+        flags = flagss;
+    }
+    CommStream::Message::Message(const char* message, size_t len, int flagss ) : msg((char*)malloc(len), free) {
+        memcpy( msg.get(), message, len );
+        msg.get()[len] = 0;
+        length = len;
         flags = flagss;
     }
 
-    CommStream::CommStream( ReceiveType rectype ){
+    CommStream::CommStream( CommStream::ReceiveType rectype ){
         #ifdef _WIN32
         WSADATA globalWSAData;
         WSAStartup( MAKEWORD(2, 2), &globalWSAData );
@@ -35,11 +43,48 @@ namespace GlobalMUD{
         MyCipher = new Ciphers::Cipher();
         isconnected = false;
         ImportantMessages = 0;
+        RecvLinesBuffer = "";
+        CommStreams.push_back(this);
     }
 
     CommStream::~CommStream(){
         if( MyCipher )
             delete MyCipher;
+    }
+
+    void CommStream::Terminate(){
+        Disconnect( true );
+    }
+
+    void CommStream::PushData( char* data, size_t len ){
+        if( MyReceiveType == BINARY ){
+            Message msg(data, len, NONE);
+            RecvBuffer.push_back( msg );
+        }
+        else{
+            while(len--){
+                RecvLinesBuffer += *(data++);
+
+                if( RecvLinesBuffer.back() == '\n' ){
+                    while( RecvLinesBuffer.back() == '\r' || RecvLinesBuffer.back() == '\n' ){
+                        RecvLinesBuffer.pop_back();
+                    }
+                    Message msg(RecvLinesBuffer, NONE);
+                    RecvBuffer.push_back( msg );
+                    RecvLinesBuffer = "";
+                }
+            }
+        }
+    }
+
+    bool CommStream::CanSend(){
+        return SendBuffer.size() > 0;
+    }
+
+    CommStream::Message CommStream::GetSend(){
+        Message toReturn = SendBuffer.front();
+        SendBuffer.pop_front();
+        return toReturn;
     }
 
     Error CommStream::Connect( std::string address, int port ){
@@ -49,9 +94,8 @@ namespace GlobalMUD{
 
         //Connect the socket
         SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-        static u_long iMode=1;
-        ioctlsocket(sock,FIONBIO,&iMode);
-        if( sock == (unsigned)SOCKET_ERROR ) return ERROR::ConnectionFailure;
+
+        if( sock == (unsigned)SOCKET_ERROR ) return ERROR::SocketFailure;
         sockaddr_in clientService;
         clientService.sin_family = AF_INET;
         clientService.sin_port = htons( port );
@@ -62,8 +106,11 @@ namespace GlobalMUD{
             result = connect( sock, (sockaddr*) &clientService, sizeof(clientService));
             if( result != SOCKET_ERROR ) break;
         }
-        if( result < 0 ) return ERROR::ConnectionFailure;
+        if( result == SOCKET_ERROR ) return ERROR::ConnectionFailure;
+        static u_long iMode=1;
+        ioctlsocket(sock,FIONBIO,&iMode);
         Connection = sock;
+        isconnected = true;
         return ERROR::None;
     }
 
@@ -89,6 +136,7 @@ namespace GlobalMUD{
         if( closesocket( Connection ) == SOCKET_ERROR ){
             return ERROR::NotConnected;
         }
+        isconnected = false;
         return ERROR::None;
     }
 
@@ -152,7 +200,7 @@ namespace GlobalMUD{
             return ERROR::NotConnected;
         if( RecvBuffer.size() == 0 )
             return ERROR::NoData;
-        message = RecvBuffer.front().msg;
+        message = (const char*) RecvBuffer.front().msg.get();
         RecvBuffer.pop_front();
         return ERROR::None;
     }
@@ -164,13 +212,127 @@ namespace GlobalMUD{
     #ifdef RunUnitTests
     bool CommStream::RunTests(){
         TEST("GlobalMUD::CommStream");
-        FAIL("GlobalMUD::CommStream not yet implemented.")
-        return false;
+        //FAIL("GlobalMUD::CommStream not yet implemented.")
+        TEST("GlobalMUD::CommStream::Connect()");
+        CommStream comm(CommStream::LINES);
+        if( comm.Connect( "irc.frogbox.es", 6667 ) != ERROR::None ){
+            FAIL("This could be a false positive - is irc.frogbox.es down?");
+            return false;
+        }
+        CommStream::ServiceSockets();
+        TEST("GlobalMUD::CommStream::Receive()");
+        TEST("GlobalMUD::CommStream::Send()");
+        comm.Send( "NICK TestA\r\nUSER Test Test Test :Test\r\n");
+        std::string buf;
+        while( true ){
+            int a = comm.Receive(buf);
+            if( a == ERROR::None ){
+                //printf("%s\n", buf.c_str());
+
+
+                if( buf.substr(0, 29) == "ERROR :Closing link: (unknown" ){
+                    FAIL("Send() is not working as expected.");
+                    return false;
+                }
+                if( buf.substr(0, 39) == ":irc.frogbox.es NOTICE Auth :Welcome to" ||
+                    buf == ":irc.frogbox.es 462 TestA :You may not reregister" ){
+                    comm.Send( "QUIT :BYE\r\n" );
+                    CommStream::ServiceSockets();
+                    comm.Disconnect( true );
+                    break;
+                }
+                if( buf != ":irc.frogbox.es NOTICE Auth :*** Looking up your hostname..." &&
+                    buf != ":irc.frogbox.es NOTICE Auth :*** Found your hostname (c-67-160-91-142.hsd1.wa.comcast.net) -- cached" &&
+                    buf.substr(0, 39) != ":irc.frogbox.es NOTICE Auth :Welcome to" )
+                    {
+                        FAIL("This could be a false positive - is irc.frogbox.es down?");
+                        return false;
+                    }
+            }
+            if( a == ERROR::NotConnected )
+                break;
+            if( a == ERROR::NoData ){
+                Sleep(1000);
+                CommStream::ServiceSockets();
+            }
+        }
+
+        return true;
     }
     #endif
 
     void CommStream::ServiceSockets(){
+        char recvbuf[NETBUFFERSIZE];
 
+
+        for( unsigned int i = 0; i < CommStreams.size(); ++i ){
+            bool doRepeat;
+            bool die = false;;
+            do {
+                doRepeat = false;
+                int result = recv( CommStreams[i]->Connection, recvbuf, NETBUFFERSIZE, 0 );
+                //printf( "%d\t%s\n\n", result, recvbuf );
+                if( result == 0 ){
+                    CommStreams[i]->Terminate();
+                    CommStreams.erase( CommStreams.begin() + i-- );
+                    die = true;
+                    break;
+                }
+                else if( result == SOCKET_ERROR ){
+                        //printf("\n%d\n", WSAGetLastError() );
+                    switch(WSAGetLastError()){
+                    case WSAEMSGSIZE: doRepeat = true;
+                    case WSAEWOULDBLOCK:
+                    case WSAEINPROGRESS:
+                    case WSAEINTR: break;
+                    default:
+
+                        CommStreams[i]->Terminate();
+                        CommStreams.erase( CommStreams.begin() + i-- );
+                        die = true;
+                        break;
+                    }
+                }
+                else {
+                    CommStreams[i]->PushData( recvbuf, result );
+                }
+            } while( doRepeat );
+
+            if( die )
+                continue;
+
+            while( CommStreams[i]->CanSend() ){
+                Message msg = CommStreams[i]->GetSend();
+                int size = msg.length;
+                while( size > 0 ){
+                    int result = send( CommStreams[i]->Connection, msg.msg.get() + msg.length - size, size, 0 );
+                    if( result == 0 ){
+                        CommStreams[i]->Terminate();
+                        CommStreams.erase( CommStreams.begin() + i-- );
+                        die = true;
+                        break;
+                    }
+                    else if( result == SOCKET_ERROR ){
+                        switch(WSAGetLastError()){
+                        case WSAENOBUFS: doRepeat = true;
+                        case WSAEWOULDBLOCK:
+                        case WSAEINPROGRESS:
+                        case WSAEINTR: break;
+                        default: CommStreams[i]->Terminate();
+                            CommStreams.erase( CommStreams.begin() + i-- );
+                            die = true;
+                            size = 0;
+                            break;
+                        }
+                    }
+                    else {
+                        size -= result;
+                    }
+                }
+                if( die )
+                    break;
+            }
+        }
     }
 
     std::vector<CommStream*> CommStream::CommStreams;

@@ -4,25 +4,31 @@
 #include <string>
 #include <vector>
 #include <deque>
+#include <memory>
+#include <utility>
 #define SOCKET unsigned int
 
 #include "Global/Error.hpp"
 #include "CommStream/Cipher.hpp"
+#define NETBUFFERSIZE 1000
+
 #undef ErrorRoot
 #define ErrorRoot 100
 namespace GlobalMUD{
     namespace ERROR{
-        DEF_ERROR(ConnectionFailure,0);
-        DEF_ERROR(NegotiationFailure,1);
-        DEF_ERROR(InvalidScheme,2);
-        DEF_ERROR(InvalidHost,3);
-        DEF_ERROR(ConnectionRefused,4);
-        DEF_ERROR(ImportantOperation,5);
-        DEF_ERROR(BindFailure,6);
-        DEF_ERROR(PartialMessage,7);
-        DEF_ERROR(NotConnected,8);
-        DEF_ERROR(ListenFailure,9);
-        DEF_ERROR(NoData,10);
+        Error ConnectionFailure = ErrorRoot + 0;
+        Error NegotiationFailure = ErrorRoot + 1;
+        Error InvalidScheme = ErrorRoot + 2;
+        Error InvalidHost = ErrorRoot + 3;
+        Error ConnectionRefused = ErrorRoot + 4;
+        Error ImportantOperation = ErrorRoot + 5;
+        Error BindFailure = ErrorRoot + 6;
+        Error PartialMessage = ErrorRoot + 7;
+        Error NotConnected = ErrorRoot + 8;
+        Error ListenFailure = ErrorRoot + 9;
+        Error NoData = ErrorRoot + 10;
+        Error SocketFailure = ErrorRoot + 11;
+
     }
     class CommStream{
         public:
@@ -42,7 +48,10 @@ namespace GlobalMUD{
                 IMPORTANT = 1
             };
             Message(std::string message, int flagss );
-            std::string msg;
+            Message(const char* message, size_t len, int flagss );
+
+            std::shared_ptr<char> msg;
+            size_t length;
             int flags;
         };
         ReceiveType MyReceiveType;
@@ -52,7 +61,12 @@ namespace GlobalMUD{
         std::deque<Message> SendBuffer;
         int ImportantMessages;
         std::deque<Message> RecvBuffer;
+        std::string RecvLinesBuffer;
         bool isconnected;
+        void Terminate();
+        void PushData( char* data, size_t len );
+        bool CanSend();
+        Message GetSend();
 
         public:
         CommStream( ReceiveType rectype = LINES );
