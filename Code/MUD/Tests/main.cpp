@@ -9,6 +9,10 @@
 
 
 int main(){
+            #ifdef _WIN32
+        WSADATA globalWSAData;
+        WSAStartup( MAKEWORD(2, 2), &globalWSAData );
+        #endif
     Test<GlobalMUD::Thread>();
     Test<GlobalMUD::Ciphers::Cipher>();
     Test<GlobalMUD::Ciphers::XOR>();

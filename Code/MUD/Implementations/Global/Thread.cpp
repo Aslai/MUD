@@ -142,10 +142,10 @@ namespace GlobalMUD{
 
         functions testFf;
         testFf.accumulator2 = 0;
-        Thread testF(&functions::testF, &testEf, 99, 101 );
+        ThreadMember testF(&functions::testF, &testFf, 100, 101 );
         testF.Run();
         testF.Join();
-        ASSERT( testEf.accumulator2 == 200 );
+        ASSERT( testFf.accumulator2 == 201 );
 
 
 

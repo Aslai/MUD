@@ -98,9 +98,9 @@ namespace GlobalMUD{
             //ThreadHandle = NULL;
             //GlobalMUD::Thread::ThreadFunc<Function, Argument...>(store);
         }
-        template<class T, class C, class... Argument>
-        Thread(T(C::*f)(Argument...), C* object, Argument... arg) : Thread(Functor<T, C, Argument...>(f, object), arg...){
-        }
+        //template<class T, class C, class... Argument>
+        //Thread(T(C::*f)(Argument...), C* object, Argument... arg) : Thread(Functor<T, C, Argument...>(f, object), arg...){
+        //}
         ~Thread();
         void Run();
         void Join();
@@ -111,5 +111,11 @@ namespace GlobalMUD{
         static bool RunTests();
         #endif
 
+    };
+    class ThreadMember : public Thread{
+        public:
+        template<class T, class C, class... Argument>
+        ThreadMember(T(C::*f)(Argument...), C* object, Argument... arg) : Thread(Functor<T, C, Argument...>(f, object), arg...){
+        }
     };
 }

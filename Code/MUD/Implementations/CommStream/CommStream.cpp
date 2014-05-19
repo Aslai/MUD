@@ -76,8 +76,8 @@ namespace GlobalMUD{
             return Internal->Listen( port, func, data );
         }
 
-        Error CommStream::Listen( std::string address, int port, void(*func)(CommStream stream, void* data), void* data ){
-            return Internal->Listen( address, port, func, data );
+        Error CommStream::ListenOn( std::string address, int port, void(*func)(CommStream stream, void* data), void* data ){
+            return Internal->ListenOn( address, port, func, data );
         }
 
         Error CommStream::Send( std::string message, bool important ){
@@ -104,16 +104,20 @@ namespace GlobalMUD{
 
         #ifdef RunUnitTests
         static void Testcode( CommStream cs, void* data ){
-            /*while( cs.Connected() ){
+            while( cs.Connected() ){
                 std::string test;
-                if( cs.Receive( test ) == ERROR::None ){
-                    printf("%s\n", test.c_str() );
-                    cs.Send("\r\nYou said: "+test+"\r\n");
+                if( cs.Receive( test ) == ERROR::NotConnected ){
+                    *((int*)data) = 2;
+                    break;
                 }
+
                 Sleep(100);
                 CommStreamInternal::ServiceSockets();
-
-            }*/
+                if( test == "The test was successful" ){
+                    *((int*)data) = 1;
+                    break;
+                }
+            }
         }
 
         bool CommStream::RunTests(){
@@ -133,7 +137,7 @@ namespace GlobalMUD{
             while( true ){
                 Error a = comm.Receive(buf);
                 if( a == ERROR::None ){
-                    printf("%s\n", buf.c_str());
+                    //printf("%s\n", buf.c_str());
 
 
                     if( buf.substr(0, 29) == "ERROR :Closing link: (unknown" ){
@@ -163,7 +167,26 @@ namespace GlobalMUD{
                 }
             }
             TEST("GlobalMUD::CommStream::Listen()");
-            comm.Listen(80, Testcode, 0);
+            int data = 0;
+            ThreadMember TestListen( &CommStream::Listen, &comm, 5555, Testcode, (void*)&data );
+            TestListen.Run();
+            //TestListen.Join();
+            //comm.Listen(80, Testcode, 0);
+            Thread::Sleep(100);
+            CommStream comm2(CommStream::LINES);
+
+            ASSERT( comm2.Connect( "localhost", 5555 ) == ERROR::None );
+            ASSERT( comm2.Send("The test was successful\n", true ) == ERROR::None );
+            CommStream::ServiceSockets();
+            int iterations = 0;
+            while( data == 0 && iterations++ < 10 ){
+                Thread::Sleep(100);
+                CommStream::ServiceSockets();
+            }
+            comm.Disconnect();
+            Sleep(100);
+            TestListen.Kill();
+            ASSERT(data == 1);
 
             return true;
         }
@@ -183,10 +206,7 @@ namespace GlobalMUD{
     }
 
     CommStreamInternal::CommStreamInternal( CommStream::ReceiveType rectype ){
-        #ifdef _WIN32
-        WSADATA globalWSAData;
-        WSAStartup( MAKEWORD(2, 2), &globalWSAData );
-        #endif
+
         MyReceiveType = rectype;
         MyEncryption = CommStream::NONE;
         MyCipher = new Ciphers::Cipher();
@@ -201,7 +221,6 @@ namespace GlobalMUD{
     }
 
     void CommStreamInternal::Terminate(){
-        printf("TERMINATED");
         Disconnect( true );
     }
 
@@ -253,7 +272,7 @@ namespace GlobalMUD{
         for( int i = 0; host->h_addr_list[i] != NULL && i < 10; ++i ){
             clientService.sin_addr.s_addr = *((unsigned long long*) host->h_addr_list[i]);
             result = connect( sock, (sockaddr*) &clientService, sizeof(clientService));
-            if( result != SOCKET_ERROR ) break;
+            if( result == 0 ) break;
         }
         if( result == SOCKET_ERROR ) return ERROR::ConnectionFailure;
         static u_long iMode=1;
@@ -286,6 +305,7 @@ namespace GlobalMUD{
             return ERROR::NotConnected;
         }
         isconnected = false;
+        aborted = true;
         Lock.Lock();
 
         Lock.Unlock();
@@ -293,10 +313,10 @@ namespace GlobalMUD{
     }
 
     Error CommStreamInternal::Listen( int port, void(*func)(CommStream stream, void* data), void* data ){
-        return Listen( "localhost", port, func, data );
+        return ListenOn( "localhost", port, func, data );
     }
 
-    Error CommStreamInternal::Listen( std::string address, int port, void(*func)(CommStream stream, void* data), void* data ){
+    Error CommStreamInternal::ListenOn( std::string address, int port, void(*func)(CommStream stream, void* data), void* data ){
         //Look up the host / resolve IP
         unsigned long long myhost;
         if( address == "any" ){
@@ -323,7 +343,8 @@ namespace GlobalMUD{
         if( sock == (unsigned)SOCKET_ERROR ) return ERROR::ListenFailure;
 
         SOCKET asock;
-        while(true){
+        aborted = false;
+        while(!aborted){
             asock = accept( sock, 0, 0 );
             if( asock == (unsigned)INVALID_SOCKET ){
                 break;

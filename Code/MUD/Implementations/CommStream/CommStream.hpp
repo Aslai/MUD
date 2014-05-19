@@ -77,7 +77,7 @@ namespace GlobalMUD{
         bool Connected( );
         Error Disconnect( bool force = false );
         Error Listen( int port, void(*func)(CommStream stream, void* data), void* data = 0 );
-        Error Listen( std::string address, int port, void(*func)(CommStream stream, void* data), void* data = 0 );
+        Error ListenOn( std::string address, int port, void(*func)(CommStream stream, void* data), void* data = 0 );
         Error Send( std::string message, bool important = false );
         Error Receive( std::string &message );
         Error Encrypt( Encryption type );
@@ -109,6 +109,7 @@ namespace GlobalMUD{
         int ImportantMessages;
         std::deque<Message> RecvBuffer;
         std::string RecvLinesBuffer;
+        bool aborted;
         bool isconnected;
         void Terminate();
         void PushData( char* data, size_t len );
@@ -122,7 +123,7 @@ namespace GlobalMUD{
         bool Connected( );
         Error Disconnect( bool force = false );
         Error Listen( int port, void(*func)(CommStream stream, void* data), void* data = 0 );
-        Error Listen( std::string address, int port, void(*func)(CommStream stream, void* data), void* data = 0 );
+        Error ListenOn( std::string address, int port, void(*func)(CommStream stream, void* data), void* data = 0 );
         Error Send( std::string message, bool important = false );
         Error Receive( std::string &message );
         Error Encrypt( CommStream::Encryption type );
