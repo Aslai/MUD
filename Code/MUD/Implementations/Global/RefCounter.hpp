@@ -1,3 +1,5 @@
+#pragma once
+
 namespace GlobalMUD{
     template<class type>
     class RefCounter{
@@ -60,6 +62,9 @@ namespace GlobalMUD{
             count = t.count;
             countup();
             return *this;
+        }
+        int References(){
+            return *count;
         }
 
 

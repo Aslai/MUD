@@ -4,29 +4,30 @@
 
 namespace GlobalMUD{
 
-		Mutex::Mutex()
+		Mutex::Mutex() : mutex( new HANDLE )
 		{
-			mutex = CreateMutex( NULL, FALSE, NULL);
+			*mutex = CreateMutex( NULL, FALSE, NULL);
 		}
 
 		Mutex::~Mutex()
 		{
-			CloseHandle( mutex );
+		    if( mutex.References() <= 1 )
+                CloseHandle( *mutex );
 		}
 
 		void Mutex::Lock()
 		{
-			WaitForSingleObject( mutex, INFINITE);
+			WaitForSingleObject( *mutex, INFINITE);
 		}
 
 		void Mutex::Unlock()
 		{
-			ReleaseMutex(mutex);
+			ReleaseMutex(*mutex);
 		}
 
 		void Mutex::Wait()
 		{
-			WaitForSingleObject( mutex, INFINITE);
-			ReleaseMutex(mutex);
+			WaitForSingleObject( *mutex, INFINITE);
+			ReleaseMutex(*mutex);
 		}
 }

@@ -4,7 +4,7 @@
 #define ErrorRoot 0
 #define FAIL(msg) {GlobalMUD::ERROR::Fail( __LINE__, __FILE__, __func__, msg );}
 #define TEST(msg) {GlobalMUD::ERROR::Test(msg);}
-#define ASSERT(expr) {if(!expr){GlobalMUD::ERROR::Fail( __LINE__, __FILE__, __func__, msg );};}
+#define ASSERT(expr) {if(!(expr)){GlobalMUD::ERROR::Fail( __LINE__, __FILE__, __func__, "Assertion Failure" ); return false;};}
 
 namespace GlobalMUD{
     typedef const unsigned int Error;
