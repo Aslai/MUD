@@ -47,9 +47,13 @@
 		<Unit filename="Implementations/ExpressionParser/ExpressionParser.hpp" />
 		<Unit filename="Implementations/Global/Error.cpp" />
 		<Unit filename="Implementations/Global/Error.hpp" />
+		<Unit filename="Implementations/Global/Function.hpp" />
 		<Unit filename="Implementations/Global/Mutex.cpp" />
 		<Unit filename="Implementations/Global/Mutex.hpp" />
 		<Unit filename="Implementations/Global/RefCounter.hpp" />
+		<Unit filename="Implementations/Global/Thread.cpp" />
+		<Unit filename="Implementations/Global/Thread.hpp" />
+		<Unit filename="Implementations/HTTPd/HTTPd.hpp" />
 		<Unit filename="Implementations/Tester.cpp" />
 		<Unit filename="Implementations/Tester.hpp" />
 		<Unit filename="Tests/main.cpp" />

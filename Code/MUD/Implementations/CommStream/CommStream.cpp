@@ -313,7 +313,7 @@ namespace GlobalMUD{
     }
 
     Error CommStreamInternal::Listen( int port, void(*func)(CommStream stream, void* data), void* data ){
-        return ListenOn( "localhost", port, func, data );
+        return ListenOn( "any", port, func, data );
     }
 
     Error CommStreamInternal::ListenOn( std::string address, int port, void(*func)(CommStream stream, void* data), void* data ){

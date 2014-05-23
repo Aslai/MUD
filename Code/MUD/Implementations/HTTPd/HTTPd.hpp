@@ -1,0 +1,6 @@
+
+namespace GlobalMUD{
+    class HTTPd{
+
+    };
+}
