@@ -19,6 +19,7 @@
     #include <errno.h>
     #include <signal.h>
     #include <fcntl.h>
+    #include <sys/ioctl.h>
     #define closesocket(a) close(a)
     #define SOCKET unsigned int
     #define SOCKET_ERROR -1
@@ -28,11 +29,13 @@
 
 namespace GlobalMUD{
         static void MakeNonblocking(SOCKET sock){
-            static u_long iMode=1;
+
             #ifdef _WIN32
+            static u_long iMode=1;
             ioctlsocket(sock,FIONBIO,&iMode);
             #else
-            fcntl( sock, O_NONBLOCK, &iMode );
+            int flags = fcntl(sock, F_GETFL, 0);
+            fcntl(sock, F_SETFL, flags | O_NONBLOCK);
             #endif
         }
         void CommStream::UseSocket(SOCKET sock){
@@ -165,7 +168,7 @@ namespace GlobalMUD{
                         break;
                     }
                     if( buf != ":irc.frogbox.es NOTICE Auth :*** Looking up your hostname..." &&
-                        buf != ":irc.frogbox.es NOTICE Auth :*** Found your hostname (c-67-160-91-142.hsd1.wa.comcast.net) -- cached" &&
+                        buf.substr(0, 52) != ":irc.frogbox.es NOTICE Auth :*** Found your hostname" &&
                         buf.substr(0, 39) != ":irc.frogbox.es NOTICE Auth :Welcome to" )
                         {
                             FAIL("This could be a false positive - is irc.frogbox.es down?");
@@ -175,22 +178,25 @@ namespace GlobalMUD{
                 if( a == ERROR::NotConnected )
                     break;
                 if( a == ERROR::NoData ){
-                    Thread::Sleep(1000);
-                    CommStream::ServiceSockets();
+                Thread::Sleep(1);
+                CommStream::ServiceSockets();
+
                 }
             }
             TEST("GlobalMUD::CommStream::Listen()");
             int data = 0;
-            ThreadMember TestListen( &CommStream::Listen, &comm, 5555, Testcode, (void*)&data );
+            int port = time(0) % 1000 + 1000;
+            ThreadMember TestListen( &CommStream::ListenOn, &comm, (std::string)"localhost", port, Testcode, (void*)&data );
             TestListen.Run();
             //TestListen.Join();
             //comm.Listen(80, Testcode, 0);
             Thread::Sleep(100);
             CommStream comm2(CommStream::LINES);
 
-            ASSERT( comm2.Connect( "localhost", 5555 ) == ERROR::None );
+            ASSERT( comm2.Connect( "localhost", port ) == ERROR::None );
             ASSERT( comm2.Send("The test was successful\n", true ) == ERROR::None );
             CommStream::ServiceSockets();
+
             int iterations = 0;
             while( data == 0 && iterations++ < 10 ){
                 Thread::Sleep(100);
@@ -226,6 +232,7 @@ namespace GlobalMUD{
         isconnected = false;
         ImportantMessages = 0;
         RecvLinesBuffer = "";
+        connecting = 0;
     }
 
     CommStreamInternal::~CommStreamInternal(){
@@ -291,6 +298,7 @@ namespace GlobalMUD{
         MakeNonblocking(sock);
         Connection = sock;
         isconnected = true;
+        connecting = 0;
         return ERROR::None;
     }
 
@@ -299,9 +307,13 @@ namespace GlobalMUD{
             return false;
         if( Connection == (unsigned)SOCKET_ERROR )
             return false;
-        sockaddr dummysockaddr;
-        unsigned int dummyint = sizeof( sockaddr );
-        if( getsockname( Connection, &dummysockaddr, &dummyint ) != SOCKET_ERROR ){
+        //sockaddr dummysockaddr;
+        //unsigned int dummyint = sizeof( sockaddr );
+
+        //if( getsockname( Connection, &dummysockaddr, &dummyint ) != SOCKET_ERROR ){
+        //    return true;
+        //}
+        if( isconnected ){
             return true;
         }
         else{
@@ -318,9 +330,6 @@ namespace GlobalMUD{
         }
         isconnected = false;
         aborted = true;
-        Lock.Lock();
-
-        Lock.Unlock();
         return ERROR::None;
     }
 
@@ -404,6 +413,7 @@ namespace GlobalMUD{
                 CommStreams.erase( CommStreams.begin() + i-- );
                 continue;
             }
+
             bool doRepeat;
             bool die = false;;
             do {
@@ -437,7 +447,6 @@ namespace GlobalMUD{
                     //case EAGAIN:
                     case EWOULDBLOCK: break;
                     default:
-
                         CommStreams[i].Terminate();
                         CommStreams.erase( CommStreams.begin() + i-- );
                         die = true;
@@ -458,6 +467,7 @@ namespace GlobalMUD{
                 Message msg = CommStreams[i].Get()->GetSend();
                 int size = msg.length;
                 while( size > 0 ){
+                //printf("%s\n", msg.msg.get());
                     int result = send( CommStreams[i].GetConnection(), msg.msg.get() + msg.length - size, size, 0 );
                     if( result == 0 ){
                         CommStreams[i].Terminate();

@@ -111,6 +111,7 @@ namespace GlobalMUD{
         std::string RecvLinesBuffer;
         bool aborted;
         bool isconnected;
+        unsigned int connecting;
         void Terminate();
         void PushData( char* data, size_t len );
         bool CanSend();

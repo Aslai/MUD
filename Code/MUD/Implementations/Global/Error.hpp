@@ -5,6 +5,7 @@
 #define FAIL(msg) {GlobalMUD::ERROR::Fail( __LINE__, __FILE__, __func__, msg );}
 #define TEST(msg) {GlobalMUD::ERROR::Test(msg);}
 #define ASSERT(expr) {if(!(expr)){GlobalMUD::ERROR::Fail( __LINE__, __FILE__, __func__, "Assertion Failure" ); return false;};}
+#define TRACE printf("TRACE: %d %s\n", __LINE__, __FILE__ )
 
 namespace GlobalMUD{
     typedef const unsigned int Error;

@@ -1,5 +1,10 @@
 #include "Global/Thread.hpp"
-#include <windows.h>
+#ifdef _WIN32
+    #include <windows.h>
+#else
+    #include <pthread.h>
+    #include <unistd.h>
+#endif
 #include "Global/Mutex.hpp"
 #include "Global/Error.hpp"
 #include <cstdio>
@@ -9,13 +14,40 @@ namespace GlobalMUD{
         Run();
         Join();
     }
+    #ifdef _WIN32
+    Thread::~Thread(){
+        Run();
+        Join();
+    }
 
+    void Thread::Run(){
+        ResumeThread( ThreadHandle );
+    }
+
+    void Thread::Join(){
+        WaitForSingleObject( ThreadHandle, INFINITE );
+    }
+
+    void Thread::Suspend(){
+        SuspendThread( ThreadHandle );
+    }
+
+    void Thread::Kill(){
+        TerminateThread( ThreadHandle, 0 );
+    }
+
+    void Thread::Sleep(unsigned long msec){
+        ::Sleep(msec);
+    }
+    #else
     void Thread::Run(){
         Lock.Unlock();
     }
 
     void Thread::Join(){
-        pthread_join( ThreadHandle, NULL );
+        if( valid )
+            pthread_join( ThreadHandle, NULL );
+        valid = !valid;
     }
 
     void Thread::Suspend(){
@@ -23,12 +55,14 @@ namespace GlobalMUD{
     }
 
     void Thread::Kill(){
-        pthread_cancel( ThreadHandle );
+        if( valid )
+            pthread_cancel( ThreadHandle );
     }
 
     void Thread::Sleep(unsigned long msec){
         ::usleep(msec*1000);
     }
+    #endif
 
     #ifdef RunUnitTests
     struct functions{
@@ -113,7 +147,9 @@ namespace GlobalMUD{
         Thread testC_1(functions::testC_1, testCm);
         Thread testC_2(functions::testC_2, testCm);
         testC_1.Run();
-        Sleep(100);
+        testCm.Unlock();
+        Thread::Sleep(100);
+        testCm.Lock();
         testC_2.Run();
         testCm.Unlock();
         testC_1.Join();

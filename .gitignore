@@ -23,3 +23,6 @@
 # Codeblocks things
 MUD.depend
 MUD.layout
+
+bin/*
+obj/*

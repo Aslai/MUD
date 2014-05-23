@@ -1,9 +1,11 @@
 #ifdef _WIN32
     #include <windows.h>
     #define THREADCALL __attribute__((__stdcall__))
+    #define THREADRETURN long unsigned int
 #else
     #include <pthread.h>
     #define THREADCALL
+    #define THREADRETURN void*
 #endif
 #include <vector>
 #include <map>
@@ -13,6 +15,8 @@ namespace GlobalMUD{
 
 
     class Thread{
+        Mutex Lock;
+        bool valid;
         template<class T, class C, class... Argument>
         class Functor{
             C* obj;
@@ -48,89 +52,71 @@ namespace GlobalMUD{
             }
         };
         template<class Function>
-        static long unsigned int THREADCALL ThreadFunc(void*d){
+        static THREADRETURN THREADCALL ThreadFunc(void*d){
             storage<Function, int, int, int, int, int> *store = (storage<Function, int, int, int, int, int> *)d;
             #ifndef _WIN32
             store->Lock.Wait();
             #endif
             store->f();
             delete store;
-            #ifndef _WIN32
-            pthread_detach(pthread_self());
-            #endif
             return 0;
         }
         template<class Function, class Argument0>
-        static long unsigned int THREADCALL ThreadFunc(void*d){
+        static THREADRETURN THREADCALL ThreadFunc(void*d){
             storage<Function, Argument0, int, int, int, int> *store = (storage<Function, Argument0, int, int, int, int> *)d;
             #ifndef _WIN32
             store->Lock.Wait();
             #endif
             store->f(store->a0);
             delete store;
-            #ifndef _WIN32
-            pthread_detach(pthread_self());
-            #endif
             return 0;
         }
         template<class Function, class Argument0, class Argument1>
-        static long unsigned int THREADCALL ThreadFunc(void*d){
+        static THREADRETURN THREADCALL ThreadFunc(void*d){
             storage<Function, Argument0, Argument1, int, int, int> *store = (storage<Function, Argument0, Argument1, int, int, int> *)d;
             #ifndef _WIN32
             store->Lock.Wait();
             #endif
             store->f(store->a0, store->a1);
             delete store;
-            #ifndef _WIN32
-            pthread_detach(pthread_self());
-            #endif
             return 0;
         }
         template<class Function, class Argument0, class Argument1, class Argument2>
-        static long unsigned int THREADCALL ThreadFunc(void*d){
+        static THREADRETURN THREADCALL ThreadFunc(void*d){
             storage<Function, Argument0, Argument1, Argument2, int, int> *store = (storage<Function, Argument0, Argument1, Argument2, int, int> *)d;
             #ifndef _WIN32
             store->Lock.Wait();
             #endif
             store->f(store->a0, store->a1, store->a2);
             delete store;
-            #ifndef _WIN32
-            pthread_detach(pthread_self());
-            #endif
             return 0;
         }
         template<class Function, class Argument0, class Argument1, class Argument2, class Argument3>
-        static long unsigned int THREADCALL ThreadFunc(void*d){
+        static THREADRETURN THREADCALL ThreadFunc(void*d){
             storage<Function, Argument0, Argument1, Argument2, Argument3, int> *store = (storage<Function, Argument0, Argument1, Argument2, Argument3, int> *)d;
             #ifndef _WIN32
             store->Lock.Wait();
             #endif
             store->f(store->a0, store->a1, store->a2, store->a3);
             delete store;
-            #ifndef _WIN32
-            pthread_detach(pthread_self());
-            #endif
             return 0;
         }
         template<class Function, class Argument0, class Argument1, class Argument2, class Argument3, class Argument4>
-        static long unsigned int THREADCALL ThreadFunc(void*d){
+        static THREADRETURN THREADCALL ThreadFunc(void*d){
             storage<Function, Argument0, Argument1, Argument2, Argument3, Argument4> *store = (storage<Function, Argument0, Argument1, Argument2, Argument3, Argument4> *)d;
             #ifndef _WIN32
             store->Lock.Wait();
             #endif
             store->f(store->a0, store->a1, store->a2, store->a3, store->a4);
             delete store;
-            #ifndef _WIN32
-            pthread_detach(pthread_self());
-            #endif
             return 0;
         }
         #ifdef _WIN32
         HANDLE ThreadHandle;
         DWORD ThreadID;
         #else
-        int ThreadHandle;
-        pthread_t ThreadID;
+        pthread_t ThreadHandle;
+        int ThreadID;
         #endif
 
         struct mem{
@@ -144,12 +130,15 @@ namespace GlobalMUD{
             //!If you see an error here, that means you probably passed in too many parameters. Implement ThreadFunc for your number of parameters.
             storage<Function, Argument...> *store = new storage<Function, Argument...>(f, arg...);
             store->Lock.Lock();
+            Lock = store->Lock;
             #ifdef _WIN32
             ThreadHandle = CreateThread( NULL, 2048, GlobalMUD::Thread::ThreadFunc<Function, Argument...>, store, CREATE_SUSPENDED, &ThreadID );
+            valid = ThreadHandle != NULL;
             #else
             pthread_attr_t attr;
             pthread_attr_init( &attr );
-            ThreadHandle = pthread_create(&ThreadID, &attr, (void*(*)(void*))GlobalMUD::Thread::ThreadFunc<Function, Argument...>, store);
+            valid = 0 == pthread_create(&ThreadHandle, NULL, GlobalMUD::Thread::ThreadFunc<Function, Argument...>, store);
+
             pthread_attr_destroy( &attr );
             #endif
             //ThreadHandle = NULL;
