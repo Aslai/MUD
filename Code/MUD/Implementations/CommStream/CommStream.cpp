@@ -2,6 +2,8 @@
 #include "Global/Error.hpp"
 #include "Global/Thread.hpp"
 
+#include <cstring>
+
 #ifdef _WIN32
     #include <windows.h>
     #include <winsock2.h>
@@ -16,12 +18,23 @@
     #include <pthread.h>
     #include <errno.h>
     #include <signal.h>
+    #include <fcntl.h>
+    #define closesocket(a) close(a)
     #define SOCKET unsigned int
+    #define SOCKET_ERROR -1
+    #define INVALID_SOCKET -1
 #endif
 #undef ERROR
 
 namespace GlobalMUD{
-
+        static void MakeNonblocking(SOCKET sock){
+            static u_long iMode=1;
+            #ifdef _WIN32
+            ioctlsocket(sock,FIONBIO,&iMode);
+            #else
+            fcntl( sock, O_NONBLOCK, &iMode );
+            #endif
+        }
         void CommStream::UseSocket(SOCKET sock){
             Internal = RefCounter<CommStreamInternal>(new CommStreamInternal(Internal->MyReceiveType));
             Internal->Connection = sock;
@@ -111,7 +124,7 @@ namespace GlobalMUD{
                     break;
                 }
 
-                Sleep(100);
+                Thread::Sleep(100);
                 CommStreamInternal::ServiceSockets();
                 if( test == "The test was successful" ){
                     *((int*)data) = 1;
@@ -162,7 +175,7 @@ namespace GlobalMUD{
                 if( a == ERROR::NotConnected )
                     break;
                 if( a == ERROR::NoData ){
-                    Sleep(1000);
+                    Thread::Sleep(1000);
                     CommStream::ServiceSockets();
                 }
             }
@@ -184,7 +197,7 @@ namespace GlobalMUD{
                 CommStream::ServiceSockets();
             }
             comm.Disconnect();
-            Sleep(100);
+            Thread::Sleep(100);
             TestListen.Kill();
             ASSERT(data == 1);
 
@@ -275,8 +288,7 @@ namespace GlobalMUD{
             if( result == 0 ) break;
         }
         if( result == SOCKET_ERROR ) return ERROR::ConnectionFailure;
-        static u_long iMode=1;
-        ioctlsocket(sock,FIONBIO,&iMode);
+        MakeNonblocking(sock);
         Connection = sock;
         isconnected = true;
         return ERROR::None;
@@ -288,7 +300,7 @@ namespace GlobalMUD{
         if( Connection == (unsigned)SOCKET_ERROR )
             return false;
         sockaddr dummysockaddr;
-        int dummyint = sizeof( sockaddr );
+        unsigned int dummyint = sizeof( sockaddr );
         if( getsockname( Connection, &dummysockaddr, &dummyint ) != SOCKET_ERROR ){
             return true;
         }
@@ -349,8 +361,7 @@ namespace GlobalMUD{
             if( asock == (unsigned)INVALID_SOCKET ){
                 break;
             }
-            static u_long iMode=1;
-            ioctlsocket(asock,FIONBIO,&iMode);
+            MakeNonblocking(asock);
 
             CommStream toPass(MyReceiveType);
             toPass.UseSocket(asock);
@@ -407,6 +418,7 @@ namespace GlobalMUD{
                 }
                 else if( result == SOCKET_ERROR ){
                         //printf("\n%d\n", WSAGetLastError() );
+                    #ifdef _WIN32
                     switch(WSAGetLastError()){
                     case WSAEMSGSIZE: doRepeat = true;
                     case WSAEWOULDBLOCK:
@@ -419,6 +431,20 @@ namespace GlobalMUD{
                         die = true;
                         break;
                     }
+                    #else
+                    switch(errno){
+                    case EMSGSIZE: doRepeat = true;
+                    //case EAGAIN:
+                    case EWOULDBLOCK: break;
+                    default:
+
+                        CommStreams[i].Terminate();
+                        CommStreams.erase( CommStreams.begin() + i-- );
+                        die = true;
+                        break;
+                    }
+                    #endif
+
                 }
                 else {
                     CommStreams[i].PushData( recvbuf, result );
@@ -440,6 +466,7 @@ namespace GlobalMUD{
                         break;
                     }
                     else if( result == SOCKET_ERROR ){
+                        #ifdef _WIN32
                         switch(WSAGetLastError()){
                         case WSAENOBUFS: doRepeat = true;
                         case WSAEWOULDBLOCK:
@@ -451,6 +478,18 @@ namespace GlobalMUD{
                             size = 0;
                             break;
                         }
+                    #else
+                    switch(errno){
+                    case EMSGSIZE: doRepeat = true;
+                    //case EAGAIN:
+                    case EWOULDBLOCK: break;
+                    default:CommStreams[i].Terminate();
+                            CommStreams.erase( CommStreams.begin() + i-- );
+                            die = true;
+                            size = 0;
+                            break;
+                    }
+                    #endif
                     }
                     else {
                         size -= result;

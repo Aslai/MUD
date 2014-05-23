@@ -35,6 +35,34 @@
 					<Add option="-s" />
 				</Linker>
 			</Target>
+			<Target title="Debug Linux">
+				<Option output="bin/DebugLinux/MUD" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/DebugLinux/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-pedantic" />
+					<Add option="-std=c++11" />
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-DRunUnitTests" />
+				</Compiler>
+				<Linker>
+					<Add library="pthread" />
+				</Linker>
+			</Target>
+			<Target title="Release Linux">
+				<Option output="bin/ReleaseLinux/MUD" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/ReleaseLinux/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />

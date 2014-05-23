@@ -4,8 +4,9 @@
 
 namespace GlobalMUD{
 
-		Mutex::Mutex() : mutex( new HANDLE )
+		Mutex::Mutex() : mutex( new pthread_mutex_t )
 		{
+
 			*mutex = CreateMutex( NULL, FALSE, NULL);
 		}
 

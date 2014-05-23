@@ -1,9 +1,19 @@
-#include <windows.h>
+#pragma once
+#ifdef _WIN32
+    #include <windows.h>
+#else
+    #include <pthread.h>
+#endif
 #include "Global/RefCounter.hpp"
 
 namespace GlobalMUD{
     class Mutex{
-		RefCounter<HANDLE> mutex;
+    #ifdef _WIN32
+        RefCounter<HANDLE> mutex;
+    #else
+        RefCounter<pthread_mutex_t> mutex;
+    #endif
+
 	public:
 		Mutex();
 		~Mutex();

@@ -11,23 +11,23 @@ namespace GlobalMUD{
     }
 
     void Thread::Run(){
-        ResumeThread( ThreadHandle );
+        Lock.Unlock();
     }
 
     void Thread::Join(){
-        WaitForSingleObject( ThreadHandle, INFINITE );
+        pthread_join( ThreadHandle, NULL );
     }
 
     void Thread::Suspend(){
-        SuspendThread( ThreadHandle );
+    //No-op with pthreads
     }
 
     void Thread::Kill(){
-        TerminateThread( ThreadHandle, 0 );
+        pthread_cancel( ThreadHandle );
     }
 
     void Thread::Sleep(unsigned long msec){
-        ::Sleep(msec);
+        ::usleep(msec*1000);
     }
 
     #ifdef RunUnitTests
