@@ -15,11 +15,6 @@ namespace GlobalMUD{
         Join();
     }
     #ifdef _WIN32
-    Thread::~Thread(){
-        Run();
-        Join();
-    }
-
     void Thread::Run(){
         ResumeThread( ThreadHandle );
     }
