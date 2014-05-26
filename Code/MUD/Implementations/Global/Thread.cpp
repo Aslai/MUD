@@ -16,6 +16,7 @@ namespace GlobalMUD{
     }
     #ifdef _WIN32
     void Thread::Run(){
+        Lock.Unlock();
         ResumeThread( ThreadHandle );
     }
 
@@ -117,6 +118,9 @@ namespace GlobalMUD{
         void testF(int a, int b){
             accumulator2 = a + b;
         }
+        static void testG(int m, int n, int b, int v, int c, int x, int z, int l, int k, int j, int h, int g, int f, int d, int s, int a, int p, int o, int i, int u, int y, int t, int r, int e, int w, int q ){
+            accumulator = q+w+e+r+t+y+u+i+o+p+a+s+d+f+g+h+j+k+l+z+x+c+v+b+n+m;
+        }
 
     };
     int functions::accumulator;
@@ -177,6 +181,12 @@ namespace GlobalMUD{
         testF.Run();
         testF.Join();
         ASSERT( testFf.accumulator2 == 201 );
+
+        Thread testG(functions::testG,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26);
+        testG.Run();
+        testG.Join();
+        ASSERT( functions::accumulator == 1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19+20+21+22+23+24+25+26 );
+
 
 
 

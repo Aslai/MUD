@@ -16,7 +16,7 @@ namespace GlobalMUD{
 
 	public:
 		Mutex();
-		Mutex( Mutex& other );
+		//Mutex( Mutex& other );
 		Mutex& operator=( Mutex& other );
 		~Mutex();
 		void Lock();

@@ -9,9 +9,9 @@ namespace GlobalMUD{
             *mutex = CreateMutex( NULL, FALSE, NULL);
         }
 
-        Mutex::Mutex( Mutex& other ) : mutex( other.mutex ) {
+        /*Mutex::Mutex( Mutex& other ) : mutex( other.mutex ) {
 
-		}
+		}*/
 
 		Mutex& Mutex::operator=( Mutex& other ){
             if( mutex.References() <= 1 )
