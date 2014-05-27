@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MUD_GLOBAL_REFCOUNTER_HPP
+#define MUD_GLOBAL_REFCOUNTER_HPP
 
 namespace GlobalMUD{
     template<class type>
@@ -70,3 +71,5 @@ namespace GlobalMUD{
 
     };
 }
+
+#endif

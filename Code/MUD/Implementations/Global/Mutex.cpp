@@ -9,10 +9,6 @@ namespace GlobalMUD{
             *mutex = CreateMutex( NULL, FALSE, NULL);
         }
 
-        /*Mutex::Mutex( Mutex& other ) : mutex( other.mutex ) {
-
-		}*/
-
 		Mutex& Mutex::operator=( Mutex& other ){
             if( mutex.References() <= 1 )
                 CloseHandle( *mutex );
@@ -39,10 +35,6 @@ namespace GlobalMUD{
 		Mutex::Mutex() : mutex( new pthread_mutex_t )
 		{
             pthread_mutex_init(mutex.get(),0);
-		}
-
-		Mutex::Mutex( Mutex& other ) : mutex( other.mutex ) {
-
 		}
 
 		Mutex& Mutex::operator=( Mutex& other ){

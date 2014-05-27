@@ -1,4 +1,7 @@
-#pragma once
+#ifndef MUD_GLOBAL_MUTEX_HPP
+#define MUD_GLOBAL_MUTEX_HPP
+
+
 #ifdef _WIN32
     #include <windows.h>
 #else
@@ -24,3 +27,5 @@ namespace GlobalMUD{
 		void Wait();
 	};
 }
+
+#endif

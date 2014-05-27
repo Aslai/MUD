@@ -1,3 +1,7 @@
+#ifndef MUD_GLOBAL_THREAD_HPP
+#define MUD_GLOBAL_THREAD_HPP
+
+
 #ifdef _WIN32
     #include <windows.h>
     #define THREADCallFunction __attribute__((__stdcall__))
@@ -133,8 +137,6 @@ namespace GlobalMUD{
     public:
         template<class Function, class... Argument>
         Thread(Function f, Argument... arg){
-            //!If you see an error here, that means you probably passed in too many parameters. Implement ThreadFunc for your number of parameters.
-            //storage<Function, Argument...> *store = new storage<Function, Argument...>(f, arg...);
             Private::Storage<Function, Argument...> *store = new Private::Storage<Function, Argument...>(f, arg...);
 
             store->Lock.Lock();
@@ -168,3 +170,5 @@ namespace GlobalMUD{
         }
     };
 }
+
+#endif

@@ -30,9 +30,13 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-std=c++11" />
+					<Add option="-DRunUnitTests" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="ws2_32" />
+					<Add library="wsock32" />
 				</Linker>
 			</Target>
 			<Target title="Debug Linux">
@@ -75,13 +79,20 @@
 		<Unit filename="Implementations/ExpressionParser/ExpressionParser.hpp" />
 		<Unit filename="Implementations/Global/Error.cpp" />
 		<Unit filename="Implementations/Global/Error.hpp" />
+		<Unit filename="Implementations/Global/Filesystem.cpp" />
+		<Unit filename="Implementations/Global/Filesystem.hpp" />
 		<Unit filename="Implementations/Global/Function.hpp" />
 		<Unit filename="Implementations/Global/Mutex.cpp" />
 		<Unit filename="Implementations/Global/Mutex.hpp" />
 		<Unit filename="Implementations/Global/RefCounter.hpp" />
 		<Unit filename="Implementations/Global/Thread.cpp" />
 		<Unit filename="Implementations/Global/Thread.hpp" />
+		<Unit filename="Implementations/HTTPd/HTTPStatus.cpp" />
+		<Unit filename="Implementations/HTTPd/HTTPStatus.hpp" />
+		<Unit filename="Implementations/HTTPd/HTTPd.cpp" />
 		<Unit filename="Implementations/HTTPd/HTTPd.hpp" />
+		<Unit filename="Implementations/HTTPd/MIME.cpp" />
+		<Unit filename="Implementations/HTTPd/MIME.hpp" />
 		<Unit filename="Implementations/Tester.cpp" />
 		<Unit filename="Implementations/Tester.hpp" />
 		<Unit filename="Tests/main.cpp" />

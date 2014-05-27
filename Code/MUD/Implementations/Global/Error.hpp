@@ -1,6 +1,9 @@
+#ifdef ERROR
+#undef ERROR
+#endif
 #ifndef MUD_GLOBAL_ERROR_HPP
 #define MUD_GLOBAL_ERROR_HPP
-#undef ERROR
+
 #define ErrorRoot 0
 #define FAIL(msg) {GlobalMUD::ERROR::Fail( __LINE__, __FILE__, __func__, msg );}
 #define TEST(msg) {GlobalMUD::ERROR::Test(msg);}
@@ -11,6 +14,10 @@ namespace GlobalMUD{
     typedef const unsigned int Error;
     namespace ERROR{
         Error None = ErrorRoot + 0;
+        Error OutOfMemory = ErrorRoot + 1;
+        Error ParseFailure = ErrorRoot + 2;
+
+
         void Fail( int line, const char *file, const char *func, const char *msg );
         void Test( const char *msg );
     }

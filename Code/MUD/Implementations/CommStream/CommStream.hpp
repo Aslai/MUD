@@ -27,6 +27,7 @@
 #include "Global/Error.hpp"
 #include "Global/Mutex.hpp"
 #include "CommStream/Cipher.hpp"
+#include "Global/Thread.hpp"
 #define NETBUFFERSIZE 1000
 
 #undef ErrorRoot
@@ -45,6 +46,7 @@ namespace GlobalMUD{
         Error ListenFailure = ErrorRoot + 9;
         Error NoData = ErrorRoot + 10;
         Error SocketFailure = ErrorRoot + 11;
+        Error FileNotFound = ErrorRoot + 12;
 
     }
     class CommStreamInternal;
@@ -68,6 +70,8 @@ namespace GlobalMUD{
         CommStreamInternal* Get();
         SOCKET GetConnection();
         RefCounter<CommStreamInternal> Internal;
+        bool transmitting;
+
 
     public:
         CommStream& operator=(CommStream other);
@@ -79,12 +83,17 @@ namespace GlobalMUD{
         Error Listen( int port, void(*func)(CommStream stream, void* data), void* data = 0 );
         Error ListenOn( std::string address, int port, void(*func)(CommStream stream, void* data), void* data = 0 );
         Error Send( std::string message, bool important = false );
+        Error Send( void* message, size_t len, bool important = false );
+        Error SendFile( std::string path, bool important = false );
         Error Receive( std::string &message );
+        Error Receive( char* message, size_t& len );
         Error Encrypt( Encryption type );
+        int SendBufferSize();
         #ifdef RunUnitTests
         static bool RunTests();
         #endif
-        static void ServiceSockets();
+        static int ServiceSockets();
+
 
     };
     class CommStreamInternal{
@@ -109,6 +118,8 @@ namespace GlobalMUD{
         int ImportantMessages;
         std::deque<Message> RecvBuffer;
         std::string RecvLinesBuffer;
+        static Thread* MyThread;
+        static void ServiceSocketsLoop();
         bool aborted;
         bool isconnected;
         unsigned int connecting;
@@ -116,6 +127,8 @@ namespace GlobalMUD{
         void PushData( char* data, size_t len );
         bool CanSend();
         Message GetSend();
+        Mutex MyLock;
+        bool disconnecting;
 
         public:
         CommStreamInternal( CommStream::ReceiveType rectype = CommStream::LINES );
@@ -126,10 +139,13 @@ namespace GlobalMUD{
         Error Listen( int port, void(*func)(CommStream stream, void* data), void* data = 0 );
         Error ListenOn( std::string address, int port, void(*func)(CommStream stream, void* data), void* data = 0 );
         Error Send( std::string message, bool important = false );
+        Error Send( void* message, size_t len, bool important = false );
         Error Receive( std::string &message );
+        Error Receive( char* message, size_t& len );
         Error Encrypt( CommStream::Encryption type );
+        int SendBufferSize();
 
-        static void ServiceSockets();
+        static int ServiceSockets();
         static void PushStream( CommStream topush );
         static Mutex Lock;
         static std::vector<CommStream> CommStreams;

@@ -121,6 +121,10 @@ namespace GlobalMUD{
         static void testG(int m, int n, int b, int v, int c, int x, int z, int l, int k, int j, int h, int g, int f, int d, int s, int a, int p, int o, int i, int u, int y, int t, int r, int e, int w, int q ){
             accumulator = q+w+e+r+t+y+u+i+o+p+a+s+d+f+g+h+j+k+l+z+x+c+v+b+n+m;
         }
+        static void testG2(int m, int n, int b, int v, int c, int x, int z, int l, int k, int j, int h, int g, int f, int d, int s, int a, int p, int o, int i, int u, int y, int t, int r, int e, int w, int q, int m1, int n1, int b1, int v1, int c1, int x1, int z1, int l1, int k1, int j1, int h1, int g1, int f1, int d1, int s1, int a1, int p1, int o1, int i1, int u1, int y1, int t1, int r1, int e1, int w1, int q1 ){
+            accumulator = q+w+e+r+t+y+u+i+o+p+a+s+d+f+g+h+j+k+l+z+x+c+v+b+n+m+q1+w1+e1+r1+t1+y1+u1+i1+o1+p1+a1+s1+d1+f1+g1+h1+j1+k1+l1+z1+x1+c1+v1+b1+n1+m1;
+        }
+
 
     };
     int functions::accumulator;
@@ -170,6 +174,7 @@ namespace GlobalMUD{
         ASSERT( functions::accumulator == (1+2+3+4+5+6+7+8+9+10+11+12+13+14+15) );
 
         functions testEf;
+        testEf.accumulator2 = 0;
         Thread testE(testEf,1337);
         testE.Run();
         testE.Join();
@@ -186,6 +191,12 @@ namespace GlobalMUD{
         testG.Run();
         testG.Join();
         ASSERT( functions::accumulator == 1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19+20+21+22+23+24+25+26 );
+
+        Thread testG2(functions::testG2,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26);
+        testG2.Run();
+        testG2.Join();
+        ASSERT( functions::accumulator == 1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19+20+21+22+23+24+25+26+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19+20+21+22+23+24+25+26 );
+
 
 
 
