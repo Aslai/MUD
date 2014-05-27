@@ -43,13 +43,17 @@ namespace GlobalMUD{
         }
         #else
         bool FileExists(std::string path){
-            return access(path.c_str(), F_OK);
+            struct stat buffer;
+            int result = stat(path.c_str(), &buffer);
+            if( result == -1 )
+                return false;
+            return true;
         }
 
         size_t FileSize(std::string path){
             struct stat buffer;
             buffer.st_size = 0;
-            int result = int stat(path.c_str(), &buffer);
+            int result = stat(path.c_str(), &buffer);
             if( result == -1 )
                 return 0;
             return buffer.st_size;

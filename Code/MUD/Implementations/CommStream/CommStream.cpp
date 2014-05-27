@@ -433,7 +433,7 @@ namespace GlobalMUD{
         aborted = false;
         while(!aborted){
             struct sockaddr addr;
-            int addrlen = sizeof( addr );
+            socklen_t addrlen = sizeof( addr );
             asock = accept( sock, &addr, &addrlen );
             if( asock == (unsigned)INVALID_SOCKET ){
                 break;

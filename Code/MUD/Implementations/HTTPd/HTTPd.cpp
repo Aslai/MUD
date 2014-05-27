@@ -1,5 +1,6 @@
 #include<map>
 #include<string>
+#include<cstring>
 #include "Global/Error.hpp"
 #include "Global/Thread.hpp"
 #include "HTTPd/HTTPd.hpp"
