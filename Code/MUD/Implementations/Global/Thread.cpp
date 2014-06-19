@@ -12,6 +12,7 @@
 namespace GlobalMUD{
     Thread::~Thread(){
         Run();
+        if( !detached );
         Join();
     }
     #ifdef _WIN32
@@ -21,6 +22,7 @@ namespace GlobalMUD{
     }
 
     void Thread::Join(){
+        if( !detached );
         WaitForSingleObject( ThreadHandle, INFINITE );
     }
 
@@ -32,9 +34,14 @@ namespace GlobalMUD{
         TerminateThread( ThreadHandle, 0 );
     }
 
+    void Thread::Detach(){
+        detached = true;
+    }
+
     void Thread::Sleep(unsigned long msec){
         ::Sleep(msec);
     }
+
     #else
     void Thread::Run(){
         Lock.Unlock();
@@ -58,6 +65,7 @@ namespace GlobalMUD{
     void Thread::Sleep(unsigned long msec){
         ::usleep(msec*1000);
     }
+
     #endif
 
     #ifdef RunUnitTests

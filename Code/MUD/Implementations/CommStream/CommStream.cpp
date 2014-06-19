@@ -76,7 +76,7 @@ namespace GlobalMUD{
 
         Error CommStream::Connect( std::string address, int port ){
             Error ret = Internal->Connect( address, port );
-            if( ret == ERROR::None )
+            if( ret == Error::None )
                 CommStreamInternal::PushStream(*this);
             return ret;
         }
@@ -108,9 +108,9 @@ namespace GlobalMUD{
             char buffer[1000];
             FILE* f = fopen( path.c_str(), "rb" );
             if( f == NULL )
-                return ERROR::FileNotFound;
+                return Error::FileNotFound;
             transmitting = true;
-            unsigned int err = ERROR::None;
+            Error err = Error::None;
             do{
                 if( Internal->SendBufferSize() < 32 ){
                     int amt = fread( buffer, 1, 1000, f );
@@ -119,7 +119,7 @@ namespace GlobalMUD{
                 else{
                     Thread::Sleep(100);
                 }
-                if( err != ERROR::None )
+                if( err != Error::None )
                     break;
             } while( !feof(f) );
             fclose(f);
@@ -157,7 +157,7 @@ namespace GlobalMUD{
         static void Testcode( CommStream cs, void* data ){
             while( cs.Connected() ){
                 std::string test;
-                if( cs.Receive( test ) == ERROR::NotConnected ){
+                if( cs.Receive( test ) == Error::NotConnected ){
                     *((int*)data) = 2;
                     break;
                 }
@@ -176,7 +176,7 @@ namespace GlobalMUD{
             //FAIL("GlobalMUD::CommStream not yet implemented.")
             TEST("GlobalMUD::CommStream::Connect()");
             CommStream comm(CommStream::LINES);
-            if( comm.Connect( "irc.frogbox.es", 6667 ) != ERROR::None ){
+            if( comm.Connect( "irc.frogbox.es", 6667 ) != Error::None ){
                 FAIL("This could be a false positive - is irc.frogbox.es down?");
                 return false;
             }
@@ -187,7 +187,7 @@ namespace GlobalMUD{
             std::string buf;
             while( true ){
                 Error a = comm.Receive(buf);
-                if( a == ERROR::None ){
+                if( a == Error::None ){
                     //printf("%s\n", buf.c_str());
 
 
@@ -210,9 +210,9 @@ namespace GlobalMUD{
                             return false;
                         }
                 }
-                if( a == ERROR::NotConnected )
+                if( a == Error::NotConnected )
                     break;
-                if( a == ERROR::NoData ){
+                if( a == Error::NoData ){
                 Thread::Sleep(1);
                 //CommStream::ServiceSockets();
 
@@ -228,8 +228,8 @@ namespace GlobalMUD{
             Thread::Sleep(100);
             CommStream comm2(CommStream::LINES);
 
-            ASSERT( comm2.Connect( "localhost", port ) == ERROR::None );
-            ASSERT( comm2.Send("The test was successful\n", true ) == ERROR::None );
+            ASSERT( comm2.Connect( "localhost", port ) == Error::None );
+            ASSERT( comm2.Send("The test was successful\n", true ) == Error::None );
             //CommStream::ServiceSockets();
 
             int iterations = 0;
@@ -347,12 +347,12 @@ namespace GlobalMUD{
     Error CommStreamInternal::Connect( std::string address, int port ){
         //Look up the host / resolve IP
         hostent* host = gethostbyname( address.c_str() );
-        if( host == 0 ) return ERROR::InvalidHost;
+        if( host == 0 ) return Error::InvalidHost;
 
         //Connect the socket
         SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
-        if( sock == (unsigned)SOCKET_ERROR ) return ERROR::SocketFailure;
+        if( sock == (unsigned)SOCKET_ERROR ) return Error::SocketFailure;
         sockaddr_in clientService;
         clientService.sin_family = AF_INET;
         clientService.sin_port = htons( port );
@@ -363,13 +363,13 @@ namespace GlobalMUD{
             result = connect( sock, (sockaddr*) &clientService, sizeof(clientService));
             if( result == 0 ) break;
         }
-        if( result == SOCKET_ERROR ) return ERROR::ConnectionFailure;
+        if( result == SOCKET_ERROR ) return Error::ConnectionFailure;
         MakeNonblocking(sock);
         Connection = sock;
         isconnected = true;
         connecting = 0;
         disconnecting = false;
-        return ERROR::None;
+        return Error::None;
     }
 
     bool CommStreamInternal::Connected( ){
@@ -394,9 +394,9 @@ namespace GlobalMUD{
 
     Error CommStreamInternal::Disconnect( bool force ){
         if( !force && ImportantMessages > 0 )
-            return ERROR::ImportantOperation;
+            return Error::ImportantOperation;
         disconnecting = true;
-        return ERROR::None;
+        return Error::None;
     }
 
     Error CommStreamInternal::Listen( int port, void(*func)(CommStream stream, void* data), void* data ){
@@ -411,23 +411,23 @@ namespace GlobalMUD{
         }
         else {
             hostent* host = gethostbyname( address.c_str() );
-            if( host == 0 ) return ERROR::InvalidHost;
+            if( host == 0 ) return Error::InvalidHost;
             myhost = *((unsigned long long*) host->h_addr_list[0]);
         }
 
         //Establish the listening socket
         SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-        if (sock == (unsigned)SOCKET_ERROR) {return ERROR::BindFailure;}
+        if (sock == (unsigned)SOCKET_ERROR) {return Error::BindFailure;}
         sockaddr_in service;
 
         service.sin_family = AF_INET;
         service.sin_addr.s_addr = myhost;
         service.sin_port = htons( port );
         if (bind(sock,(sockaddr*) (&service), sizeof(service)) < 0) {
-            return ERROR::BindFailure;
+            return Error::BindFailure;
         }
         listen( sock, 10 );
-        if( sock == (unsigned)SOCKET_ERROR ) return ERROR::ListenFailure;
+        if( sock == (unsigned)SOCKET_ERROR ) return Error::ListenFailure;
 
         SOCKET asock;
         aborted = false;
@@ -444,50 +444,50 @@ namespace GlobalMUD{
             toPass.UseSocket(asock);
             func( toPass, data );
         }
-        return ERROR::ConnectionFailure;
+        return Error::ConnectionFailure;
     }
 
     Error CommStreamInternal::Send( std::string message, bool important ){
         if( !isconnected )
-            return ERROR::NotConnected;
+            return Error::NotConnected;
         if( important )
             ImportantMessages ++;
         MyLock.Lock();
         SendBuffer.push_back( Message(message, important?CommStreamInternal::Message::IMPORTANT:CommStreamInternal::Message::NONE) );
         MyLock.Unlock();
-        return ERROR::None;
+        return Error::None;
     }
 
     Error CommStreamInternal::Send( void* message, size_t len, bool important ){
         if( !isconnected )
-            return ERROR::NotConnected;
+            return Error::NotConnected;
         if( important )
             ImportantMessages ++;
         MyLock.Lock();
         SendBuffer.push_back( Message((const char*)message, len, important?CommStreamInternal::Message::IMPORTANT:CommStreamInternal::Message::NONE) );
         MyLock.Unlock();
-        return ERROR::None;
+        return Error::None;
     }
 
     Error CommStreamInternal::Receive( std::string &message ){
         if( !isconnected )
-            return ERROR::NotConnected;
+            return Error::NotConnected;
         if( RecvBuffer.size() == 0 )
-            return ERROR::NoData;
+            return Error::NoData;
         MyLock.Lock();
         message = (const char*) RecvBuffer.front().msg.get();
         RecvBuffer.pop_front();
         MyLock.Unlock();
-        return ERROR::None;
+        return Error::None;
     }
 
     Error CommStreamInternal::Receive( char* message, size_t& len ){
         size_t len2 = len;
         len = 0;
         if( !isconnected )
-            return ERROR::NotConnected;
+            return Error::NotConnected;
         if( RecvBuffer.size() == 0 )
-            return ERROR::NoData;
+            return Error::NoData;
         MyLock.Lock();
         while( len2 > 0 && RecvBuffer.size() > 0 ){
             //std::shared_ptr<char> temp;
@@ -511,11 +511,11 @@ namespace GlobalMUD{
                 RecvBuffer.pop_front();
         }
         MyLock.Unlock();
-        return ERROR::None;
+        return Error::None;
     }
 
     Error CommStreamInternal::Encrypt( CommStream::Encryption type ){
-        return ERROR::InvalidScheme;
+        return Error::InvalidScheme;
     }
 
 

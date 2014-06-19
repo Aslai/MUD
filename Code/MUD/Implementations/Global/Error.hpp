@@ -4,22 +4,46 @@
 #ifndef MUD_GLOBAL_ERROR_HPP
 #define MUD_GLOBAL_ERROR_HPP
 
-#define ErrorRoot 0
+#include <string>
+#include <map>
+
 #define FAIL(msg) {GlobalMUD::ERROR::Fail( __LINE__, __FILE__, __func__, msg );}
 #define TEST(msg) {GlobalMUD::ERROR::Test(msg);}
 #define ASSERT(expr) {if(!(expr)){GlobalMUD::ERROR::Fail( __LINE__, __FILE__, __func__, "Assertion Failure" ); return false;};}
 #define TRACE printf("TRACE: %d %s\n", __LINE__, __FILE__ )
 
 namespace GlobalMUD{
-    typedef const unsigned int Error;
+    //typedef const unsigned int Error;
+    enum class Error {
+        None = 0,
+        OutOfMemory,
+        ParseFailure,
+        CryptoFailure,
+        ConnectionFailure,
+        NegotiationFailure,
+        InvalidScheme,
+        InvalidHost,
+        ConnectionRefused,
+        ImportantOperation,
+        BindFailure,
+        PartialMessage,
+        NotConnected,
+        ListenFailure,
+        NoData,
+        SocketFailure,
+        FileNotFound,
+        MountFailure,
+        MountExists,
+        Timeout,
+        NotAnError
+    };
+
     namespace ERROR{
-        Error None = ErrorRoot + 0;
-        Error OutOfMemory = ErrorRoot + 1;
-        Error ParseFailure = ErrorRoot + 2;
-
-
+        extern std::string ErrorStrings[];
+        std::string ToString(Error e);
         void Fail( int line, const char *file, const char *func, const char *msg );
         void Test( const char *msg );
+
     }
 }
 

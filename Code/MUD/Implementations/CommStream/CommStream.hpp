@@ -30,25 +30,8 @@
 #include "Global/Thread.hpp"
 #define NETBUFFERSIZE 1000
 
-#undef ErrorRoot
-#define ErrorRoot 100
-namespace GlobalMUD{
-    namespace ERROR{
-        Error ConnectionFailure = ErrorRoot + 0;
-        Error NegotiationFailure = ErrorRoot + 1;
-        Error InvalidScheme = ErrorRoot + 2;
-        Error InvalidHost = ErrorRoot + 3;
-        Error ConnectionRefused = ErrorRoot + 4;
-        Error ImportantOperation = ErrorRoot + 5;
-        Error BindFailure = ErrorRoot + 6;
-        Error PartialMessage = ErrorRoot + 7;
-        Error NotConnected = ErrorRoot + 8;
-        Error ListenFailure = ErrorRoot + 9;
-        Error NoData = ErrorRoot + 10;
-        Error SocketFailure = ErrorRoot + 11;
-        Error FileNotFound = ErrorRoot + 12;
 
-    }
+namespace GlobalMUD{
     class CommStreamInternal;
 
     class CommStream{

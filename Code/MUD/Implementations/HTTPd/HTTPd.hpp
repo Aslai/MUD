@@ -8,15 +8,7 @@
 #include "CommStream/CommStream.hpp"
 #include "Global/Thread.hpp"
 
-#undef ErrorRoot
-#define ErrorRoot 300
 namespace GlobalMUD{
-    namespace ERROR{
-        Error MountFailure = ErrorRoot + 0;
-        Error MountExists = ErrorRoot + 1;
-        Error Timeout = ErrorRoot + 2;
-
-    }
     class HTTPd{
     public:
         struct HTTPResponse{
@@ -46,10 +38,6 @@ namespace GlobalMUD{
         CommStream *stream;
         ThreadMember *MyThread;
         static void ConnectionHandler(CommStream stream, void* argument );
-        static HTTPResponse Do400(HTTPResponse response, HTTPd& parent);
-        static HTTPResponse Do403(HTTPResponse response, HTTPd& parent);
-        static HTTPResponse Do404(HTTPResponse response, HTTPd& parent);
-        static HTTPResponse Do408(HTTPResponse response, HTTPd& parent);
 
 
     public:
@@ -66,6 +54,12 @@ namespace GlobalMUD{
         static int HasWord(char*pointer, size_t len);
         static int HasLine(char*pointer, size_t len);
         static std::string URLDecode(std::string url);
+
+        static HTTPResponse Do400(HTTPResponse response, HTTPd& parent);
+        static HTTPResponse Do403(HTTPResponse response, HTTPd& parent);
+        static HTTPResponse Do404(HTTPResponse response, HTTPd& parent);
+        static HTTPResponse Do408(HTTPResponse response, HTTPd& parent);
+
         #ifdef RunUnitTests
         static bool RunTests();
         #endif

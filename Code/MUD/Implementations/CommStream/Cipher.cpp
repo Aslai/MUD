@@ -11,11 +11,11 @@ namespace GlobalMUD{
     }
 
     Error Ciphers::Cipher::Encrypt( uint8_t *buffer, size_t size ){
-        return ERROR::None;
+        return Error::None;
     }
 
     Error Ciphers::Cipher::Decrypt( uint8_t *buffer, size_t size ){
-        return ERROR::None;
+        return Error::None;
     }
 
     Ciphers::XOR::XOR(){
@@ -30,20 +30,20 @@ namespace GlobalMUD{
         for( unsigned int i = 0; i < size; ++i ){
             buffer[i] ^= ( TwisterOut() >> 8 ) & 0xFF;
         }
-        return ERROR::None;
+        return Error::None;
     }
 
     Error Ciphers::XOR::Decrypt( uint8_t *buffer, size_t size ){
         for( unsigned int i = 0; i < size; ++i ){
             buffer[i] ^= ( TwisterIn() >> 8 ) & 0xFF;
         }
-        return ERROR::None;
+        return Error::None;
     }
 
     Error Ciphers::XOR::Seed( uint32_t seed1, uint32_t seed2 ){
         TwisterIn.seed(seed1);
         TwisterOut.seed(seed2);
-        return ERROR::None;
+        return Error::None;
     }
 
     #ifdef RunUnitTests

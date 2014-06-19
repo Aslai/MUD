@@ -134,7 +134,8 @@ namespace GlobalMUD{
             TEST("GlobalMUD::HTTPd");
             HTTPd server("any", 45141);
             server.MountFunction("/api/test", funfunc );
-            server.MountFolder("/", "testsite/");
+             server.MountFolder("/", "C:\\Users\\Kaslai\\Downloads\\timcook\\");
+            //server.MountFolder("/", "testsite/");
             //server.MountFile("/music.mp3", "E:\\Music\\CRISCY TUNEZ\\xc3.ogg");
             //server.MountFile("/stuff/index.html", "C:\\Users\\Kaslai\\Documents\\Documents\\Random text clips\\pasta\\mountaindew2018.txt");
 
@@ -142,8 +143,7 @@ namespace GlobalMUD{
             return true;
         }
         #endif
-
-        void HTTPd::ConnectionHandler(CommStream stream, void* parent ){
+        static void ConnectionHandlerThread(CommStream stream, void* parent){
             HTTPd::HTTPResponse r;
             size_t size = 1000;
             size_t myend = 0;
@@ -154,7 +154,7 @@ namespace GlobalMUD{
             const time_t timeout = 45;
             std::string verb;
 
-            unsigned int myerror = ERROR::None;
+            Error myerror = Error::None;
 
 
             int state = 0;
@@ -162,12 +162,12 @@ namespace GlobalMUD{
 
             while(state != -1){
                 if( time(0) - starttime > timeout ){
-                    //myerror = ERROR::Timeout;
+                    //myerror = Error::Timeout;
                 }
                 while( true ){
                     size_t mysize = size-myend;
                     Error e = stream.Receive( bufferwrite, mysize );
-                    if( e == ERROR::NoData || e == ERROR::NotConnected )
+                    if( e == Error::NoData || e == Error::NotConnected )
                         break;
                     myend += mysize;
                     bufferwrite += mysize;
@@ -184,20 +184,20 @@ namespace GlobalMUD{
                 readremaining = myend-(bufferread-buffer);
                 switch(state){
                     case 0:
-                        if( HasWord (bufferread, readremaining) ){
-                            verb = ReadWord(bufferread, readremaining);
+                        if( HTTPd::HasWord (bufferread, readremaining) ){
+                            verb = HTTPd::ReadWord(bufferread, readremaining);
                         }
                         else break;
                     case 1: state = 1;
-                        if( HasWord (bufferread, readremaining) ){
-                            r.request = ReadWord(bufferread, readremaining);
+                        if( HTTPd::HasWord (bufferread, readremaining) ){
+                            r.request = HTTPd::ReadWord(bufferread, readremaining);
                             size_t pos = r.request.find_first_of('?');
                             if( pos == std::string::npos ){
-                                r.request = URLDecode( r.request );
+                                r.request = HTTPd::URLDecode( r.request );
                             }
                             else{
                                 std::string params = r.request.substr(pos+1);
-                                r.request = URLDecode( r.request.substr(0,pos) );
+                                r.request = HTTPd::URLDecode( r.request.substr(0,pos) );
                                 pos = 0;
                                 while( true ){
                                     size_t oldpos = pos;
@@ -207,11 +207,11 @@ namespace GlobalMUD{
                                     oldpos = entry.find_first_of('=');
                                     std::string id = "";
                                     if( oldpos != std::string::npos ){
-                                        id = URLDecode(entry.substr(0, oldpos));
+                                        id = HTTPd::URLDecode(entry.substr(0, oldpos));
                                         for( size_t i = 0; i < id.size(); ++i ){
                                             id[i] = tolower(id[i]);
                                         }
-                                        entry = URLDecode(entry.substr(oldpos+1));
+                                        entry = HTTPd::URLDecode(entry.substr(oldpos+1));
                                         r.gets[id] = entry;
                                     }
 
@@ -263,20 +263,20 @@ namespace GlobalMUD{
                         else break;
 
                     case 2: state = 2;
-                        if( HasWord (bufferread, readremaining) ){
-                             std::string tmp = ReadWord(bufferread, readremaining);
+                        if( HTTPd::HasWord (bufferread, readremaining) ){
+                             std::string tmp = HTTPd::ReadWord(bufferread, readremaining);
 
                              if( StringToLower(tmp.substr(0,5)) != "http/" ){
-                                myerror = ERROR::ParseFailure;
+                                myerror = Error::ParseFailure;
                                 state = -1;
                                 break;
                              }
                         }
                         else break;
-                        ReadLine(bufferread, readremaining);
+                        HTTPd::ReadLine(bufferread, readremaining);
                     case 3: state = 3;
-                        while( HasLine(bufferread, readremaining) ){
-                            std::string tmp = ReadLine(bufferread, readremaining);
+                        while( HTTPd::HasLine(bufferread, readremaining) ){
+                            std::string tmp = HTTPd::ReadLine(bufferread, readremaining);
                             if( tmp == "" ){
                                 break;
                             }
@@ -302,14 +302,14 @@ namespace GlobalMUD{
 
                 }
             }
-            HTTPResponse tosend;
-            if( myerror == ERROR::ParseFailure ){
-                tosend = Do400(r, *(HTTPd*)parent);
+            HTTPd::HTTPResponse tosend;
+            if( myerror == Error::ParseFailure ){
+                tosend = HTTPd::Do400(r, *(HTTPd*)parent);
             }
-            else if( myerror == ERROR::Timeout ){
-                tosend = Do408(r, *(HTTPd*)parent);
+            else if( myerror == Error::Timeout ){
+                tosend = HTTPd::Do408(r, *(HTTPd*)parent);
             }
-            else if( myerror == ERROR::None ){
+            else if( myerror == Error::None ){
                 tosend = ((HTTPd*)parent)->PushPage(r);
             }
 
@@ -335,8 +335,13 @@ namespace GlobalMUD{
             stream.Disconnect();
 
 
-
             return;
+        }
+        void HTTPd::ConnectionHandler(CommStream stream, void* parent ){
+            Thread T( ConnectionHandlerThread, stream, parent );
+
+            T.Detach();
+            T.Run();
         }
 
 
@@ -448,8 +453,10 @@ namespace GlobalMUD{
 
                 ret.headers["Content-Length"] = StringFromUInt(Filesystem::FileSize( path ));
                 size_t pos = path.find_last_of('.');
-
-                ret.headers["Content-Type"] = GetMimeFromExt(path.substr(pos==std::string::npos?pos:pos+1));
+                printf("%s\n", path.c_str());
+                if( path.find_first_of('.') != std::string::npos ){
+                    ret.headers["Content-Type"] = GetMimeFromExt(path.substr(pos==std::string::npos?pos:pos+1));
+                }
                 ret.filepath = path;
                 return ret;
             }
@@ -473,7 +480,7 @@ namespace GlobalMUD{
             m.Path = folderpath;
             m.MountPath = StringToLower(mountpath);
             MountPoints[StringToLower(mountpath)] = m;
-            return ERROR::None;
+            return Error::None;
         }
 
         Error HTTPd::MountFile(std::string mountpath, std::string filepath){
@@ -482,7 +489,7 @@ namespace GlobalMUD{
             m.Path = filepath;
             m.MountPath = StringToLower(mountpath);
             MountPoints[StringToLower(mountpath)] = m;
-            return ERROR::None;
+            return Error::None;
         }
 
         Error HTTPd::MountFunction(std::string mountpath, HTTPResponse(*func)(HTTPResponse response, HTTPd& parent)){
@@ -491,7 +498,7 @@ namespace GlobalMUD{
             m.Func = func;
             m.MountPath = StringToLower(mountpath);
             MountPoints[StringToLower(mountpath)] = m;
-            return ERROR::None;
+            return Error::None;
         }
 
         HTTPd::HTTPd(std::string address, int port){
@@ -502,6 +509,7 @@ namespace GlobalMUD{
         }
 
         HTTPd::~HTTPd(){
+            MyThread->Join();
             if( MyThread != 0 ){
                 delete MyThread;
             }
@@ -515,7 +523,7 @@ namespace GlobalMUD{
             MyThread = new ThreadMember( &CommStream::ListenOn, stream, Address, Port, ConnectionHandler, (void*)this );
             MyThread->Run();
             //stream->ListenOn( Address, Port, ConnectionHandler, (void*)this );
-            return ERROR::None;
+            return Error::None;
         }
 
 }

@@ -87,7 +87,6 @@ const char* mimes[] = {
     "crt",          "application/x-x509-user-cert",
     "csh",          "application/x-csh",
     "csh",          "text/x-script.csh",
-    "css",          "application/x-pointplus",
     "css",          "text/css",
     "cxx",          "text/plain",
     "dcr",          "application/x-director",

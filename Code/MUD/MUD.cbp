@@ -93,6 +93,7 @@
 		<Unit filename="Implementations/HTTPd/HTTPd.hpp" />
 		<Unit filename="Implementations/HTTPd/MIME.cpp" />
 		<Unit filename="Implementations/HTTPd/MIME.hpp" />
+		<Unit filename="Implementations/Telnet/Telnet.hpp" />
 		<Unit filename="Implementations/Tester.cpp" />
 		<Unit filename="Implementations/Tester.hpp" />
 		<Unit filename="Tests/main.cpp" />

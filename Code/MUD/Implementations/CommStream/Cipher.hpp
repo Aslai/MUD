@@ -4,12 +4,9 @@
 #include <string>
 #include <random>
 #include "Global/Error.hpp"
-#undef ErrorRoot
-#define ErrorRoot 200
+
+
 namespace GlobalMUD{
-    namespace ERROR{
-        Error CryptoFailure = ErrorRoot + 0;
-    }
     namespace Ciphers{
         class Cipher{
         public:

@@ -134,9 +134,11 @@ namespace GlobalMUD{
             void* ptr;
         };
         std::map<void*, mem> allocations;
+        bool detached;
     public:
         template<class Function, class... Argument>
         Thread(Function f, Argument... arg){
+            detached = false;
             Private::Storage<Function, Argument...> *store = new Private::Storage<Function, Argument...>(f, arg...);
 
             store->Lock.Lock();
@@ -157,6 +159,7 @@ namespace GlobalMUD{
         void Join();
         void Suspend();
         void Kill();
+        void Detach();
         static void Sleep(unsigned long msec);
         #ifdef RunUnitTests
         static bool RunTests();
