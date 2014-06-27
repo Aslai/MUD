@@ -11,29 +11,55 @@
 namespace GlobalMUD{
 
     Telnet::TelnetSession::Screen::Cursor::Cursor( Screen& screen ) : myScreen(screen) {
-
+        X = Y = 0;
+        wraps = false;
+        BGColor = Telnet::Color::Black;
+        FGColor = Telnet::Color::White;
     }
 
-    void Telnet::TelnetSession::Screen::Cursor::ShouldWrap( bool shouldWrap ){
-
+    Error Telnet::TelnetSession::Screen::Cursor::ShouldWrap( bool shouldWrap ){
+        wraps = shouldWrap;
+        return Error::None;
     }
 
     Error Telnet::TelnetSession::Screen::Cursor::Advance( int amount ){
-
+        if( X < myScreen.Width() - 1 ){
+            X++;
+        }
+        else {
+            if( wraps ){
+                CarriageReturn();
+                LineFeed();
+            }
+        }
+        return Error::None;
     }
 
     Error Telnet::TelnetSession::Screen::Cursor::LineFeed( int amount ){
-
+        if( Y < myScreen.Height() - 1 )
+            Y++;
+        return Error::None;
     }
 
     Error Telnet::TelnetSession::Screen::Cursor::CarriageReturn(){
-
+        X = 0;
+        return Error::None;
     }
 
-    void Telnet::TelnetSession::Screen::Cursor::SetColor( Color foreground, Color background ){
-
+    Error Telnet::TelnetSession::Screen::Cursor::SetColor( Color foreground, Color background ){
+        BGColor = background;
+        FGColor = foreground;
+        return Error::None;
     }
 
+    Error Telnet::TelnetSession::Screen::Cursor::MoveTo( int x, int y ){
+        if( X < 0 || X >= myScreen.Width() || Y < 0 || Y >= myScreen.Height() ){
+            return Error::OutOfBounds;
+        }
+        X = x;
+        Y = y;
+        return Error::None;
+    }
 
 
 

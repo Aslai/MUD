@@ -37,6 +37,7 @@ namespace GlobalMUD{
         Timeout,
         EndOfLine,
         EndOfFile,
+        OutOfBounds,
 
 
         NotAnError

@@ -77,11 +77,12 @@ namespace GlobalMUD{
 
                 public:
                     Cursor( Screen& screen );
-                    void ShouldWrap( bool shouldWrap = true );
+                    Error ShouldWrap( bool shouldWrap = true );
                     Error Advance( int amount = 1 );
                     Error LineFeed( int amount = 1 );
                     Error CarriageReturn();
-                    void SetColor( Color foreground, Color background );
+                    Error SetColor( Color foreground, Color background );
+                    Error MoveTo( int x, int y );
                 };
             private:
                 int width, height;
