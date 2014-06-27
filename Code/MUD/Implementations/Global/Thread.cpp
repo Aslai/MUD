@@ -12,8 +12,8 @@
 namespace GlobalMUD{
     Thread::~Thread(){
         Run();
-        if( !detached );
-        Join();
+        if( !detached )
+            Join();
     }
     #ifdef _WIN32
     void Thread::Run(){
@@ -22,7 +22,7 @@ namespace GlobalMUD{
     }
 
     void Thread::Join(){
-        if( !detached );
+        if( !detached )
         WaitForSingleObject( ThreadHandle, INFINITE );
     }
 

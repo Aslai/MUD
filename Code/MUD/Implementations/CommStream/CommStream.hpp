@@ -63,8 +63,8 @@ namespace GlobalMUD{
         Error Connect( std::string address, int port );
         bool Connected( );
         Error Disconnect( bool force = false );
-        Error Listen( int port, void(*func)(CommStream stream, void* data), void* data = 0 );
-        Error ListenOn( std::string address, int port, void(*func)(CommStream stream, void* data), void* data = 0 );
+        Error Listen( int port, std::function<void(CommStream)> );
+        Error ListenOn( std::string address, int port, std::function<void(CommStream)> );
         Error Send( std::string message, bool important = false );
         Error Send( void* message, size_t len, bool important = false );
         Error SendFile( std::string path, bool important = false );
@@ -111,7 +111,7 @@ namespace GlobalMUD{
         bool CanSend();
         Message GetSend();
         Mutex MyLock;
-        bool disconnecting;
+        int disconnecting;
 
         public:
         CommStreamInternal( CommStream::ReceiveType rectype = CommStream::LINES );
@@ -119,8 +119,8 @@ namespace GlobalMUD{
         Error Connect( std::string address, int port );
         bool Connected( );
         Error Disconnect( bool force = false );
-        Error Listen( int port, void(*func)(CommStream stream, void* data), void* data = 0 );
-        Error ListenOn( std::string address, int port, void(*func)(CommStream stream, void* data), void* data = 0 );
+        Error Listen( int port, std::function<void(CommStream)> );
+        Error ListenOn( std::string address, int port, std::function<void(CommStream)> );
         Error Send( std::string message, bool important = false );
         Error Send( void* message, size_t len, bool important = false );
         Error Receive( std::string &message );

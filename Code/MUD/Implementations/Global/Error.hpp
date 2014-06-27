@@ -35,6 +35,10 @@ namespace GlobalMUD{
         MountFailure,
         MountExists,
         Timeout,
+        EndOfLine,
+        EndOfFile,
+
+
         NotAnError
     };
 

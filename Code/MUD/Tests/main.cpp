@@ -5,13 +5,20 @@
 #include "Global/Thread.hpp"
 #include "HTTPd/HTTPd.hpp"
 #include "Global/Error.hpp"
+
 #include <random>
 #include <cstdio>
+#include<functional>
 
-using namespace GlobalMUD;
+int testfunc(int a, std::string b){
+    printf("%s\t%d\n", b.c_str(), a);
+}
+int test( std::function<int(int)> f ){
+    return f( 6 );
+}
+
 int main(){
-    printf("%s\n\n",ERROR::ToString(Error::ListenFailure).c_str());
-
+    test( std::bind(testfunc, std::placeholders::_1, "Test" ) );
     #ifdef _WIN32
     WSADATA globalWSAData;
     WSAStartup( MAKEWORD(2, 2), &globalWSAData );
@@ -21,5 +28,4 @@ int main(){
     Test<GlobalMUD::Ciphers::XOR>();
     Test<GlobalMUD::CommStream>();
     Test<GlobalMUD::HTTPd>();
-
 }

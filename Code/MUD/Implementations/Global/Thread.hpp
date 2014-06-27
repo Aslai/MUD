@@ -62,7 +62,7 @@ namespace GlobalMUD{
         struct ELSE
         {
             template<class Function, class... Arguments, class... Args2>
-            static void func(Function f, StorageInternal<Arguments...> s, Args2... args)
+            static void func(Function f, StorageInternal<Arguments...>, Args2... args)
             {
                 //If you are seeing an error here, you are probably passing in an incorrect number of arguments to the function.
                 f(args...);
@@ -116,7 +116,7 @@ namespace GlobalMUD{
             #endif
             Private::CallFunction<Function, Arguments...>a(*store);
 
-            delete store;
+            //delete store;
             return 0;
         }
 

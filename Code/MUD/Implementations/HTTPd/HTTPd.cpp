@@ -144,6 +144,7 @@ namespace GlobalMUD{
         }
         #endif
         static void ConnectionHandlerThread(CommStream stream, void* parent){
+            printf("In tread");
             HTTPd::HTTPResponse r;
             size_t size = 1000;
             size_t myend = 0;
@@ -164,9 +165,10 @@ namespace GlobalMUD{
                 if( time(0) - starttime > timeout ){
                     //myerror = Error::Timeout;
                 }
+                Error e = Error::None;
                 while( true ){
                     size_t mysize = size-myend;
-                    Error e = stream.Receive( bufferwrite, mysize );
+                    e = stream.Receive( bufferwrite, mysize );
                     if( e == Error::NoData || e == Error::NotConnected )
                         break;
                     myend += mysize;
@@ -181,6 +183,8 @@ namespace GlobalMUD{
                         bufferread = buffer + bufferreadoffset;
                     }
                 }
+                if( e == Error::NotConnected )
+                    break;
                 readremaining = myend-(bufferread-buffer);
                 switch(state){
                     case 0:
@@ -302,6 +306,7 @@ namespace GlobalMUD{
 
                 }
             }
+
             HTTPd::HTTPResponse tosend;
             if( myerror == Error::ParseFailure ){
                 tosend = HTTPd::Do400(r, *(HTTPd*)parent);
@@ -333,15 +338,18 @@ namespace GlobalMUD{
             }
             //Thread::Sleep(1000);
             stream.Disconnect();
+            free(buffer);
 
 
             return;
         }
         void HTTPd::ConnectionHandler(CommStream stream, void* parent ){
+            printf("A");
             Thread T( ConnectionHandlerThread, stream, parent );
 
             T.Detach();
             T.Run();
+            printf("B");
         }
 
 
@@ -520,8 +528,10 @@ namespace GlobalMUD{
 
         Error HTTPd::Run(){
             stream = new CommStream(CommStream::BINARY);
-            MyThread = new ThreadMember( &CommStream::ListenOn, stream, Address, Port, ConnectionHandler, (void*)this );
+            MyThread = new ThreadMember( &CommStream::ListenOn, stream, Address, Port,
+                                        (std::function<void(CommStream)>)(std::bind(ConnectionHandler, std::placeholders::_1, (void*)this )) );
             MyThread->Run();
+            printf("Thread dead");
             //stream->ListenOn( Address, Port, ConnectionHandler, (void*)this );
             return Error::None;
         }

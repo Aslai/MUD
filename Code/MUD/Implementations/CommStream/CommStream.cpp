@@ -89,12 +89,12 @@ namespace GlobalMUD{
             return Internal->Disconnect( force );
         }
 
-        Error CommStream::Listen( int port, void(*func)(CommStream stream, void* data), void* data ){
-            return Internal->Listen( port, func, data );
+        Error CommStream::Listen( int port, std::function<void(CommStream)> func ){
+            return Internal->Listen( port, func );
         }
 
-        Error CommStream::ListenOn( std::string address, int port, void(*func)(CommStream stream, void* data), void* data ){
-            return Internal->ListenOn( address, port, func, data );
+        Error CommStream::ListenOn( std::string address, int port, std::function<void(CommStream)> func ){
+            return Internal->ListenOn( address, port, func );
         }
 
         Error CommStream::Send( std::string message, bool important ){
@@ -111,12 +111,16 @@ namespace GlobalMUD{
                 return Error::FileNotFound;
             transmitting = true;
             Error err = Error::None;
+            int counter = 0;
             do{
                 if( Internal->SendBufferSize() < 32 ){
                     int amt = fread( buffer, 1, 1000, f );
                     err = Internal->Send(buffer, amt, false );
+                    counter = 0;
                 }
                 else{
+                    counter++;
+                    if( counter > 100 ) break;
                     Thread::Sleep(100);
                 }
                 if( err != Error::None )
@@ -221,7 +225,8 @@ namespace GlobalMUD{
             TEST("GlobalMUD::CommStream::Listen()");
             int data = 0;
             int port = time(0) % 1000 + 1000;
-            ThreadMember TestListen( &CommStream::ListenOn, &comm, (std::string)"localhost", port, Testcode, (void*)&data );
+            ThreadMember TestListen( &CommStream::ListenOn, &comm, (std::string)"localhost", port,
+                                    (std::function<void(CommStream)>)(std::bind(Testcode, std::placeholders::_1, (void*)&data) ));
             TestListen.Run();
             //TestListen.Join();
             //comm.Listen(80, Testcode, 0);
@@ -310,6 +315,7 @@ namespace GlobalMUD{
     }
 
     void CommStreamInternal::Terminate(){
+
         Disconnect( true );
     }
 
@@ -395,15 +401,15 @@ namespace GlobalMUD{
     Error CommStreamInternal::Disconnect( bool force ){
         if( !force && ImportantMessages > 0 )
             return Error::ImportantOperation;
-        disconnecting = true;
+        disconnecting = force?2:1;
         return Error::None;
     }
 
-    Error CommStreamInternal::Listen( int port, void(*func)(CommStream stream, void* data), void* data ){
-        return ListenOn( "any", port, func, data );
+    Error CommStreamInternal::Listen( int port, std::function<void(CommStream)> func ){
+        return ListenOn( "any", port, func);
     }
 
-    Error CommStreamInternal::ListenOn( std::string address, int port, void(*func)(CommStream stream, void* data), void* data ){
+    Error CommStreamInternal::ListenOn( std::string address, int port, std::function<void(CommStream)> func ){
         //Look up the host / resolve IP
         unsigned long long myhost;
         if( address == "any" ){
@@ -442,7 +448,8 @@ namespace GlobalMUD{
 
             CommStream toPass(MyReceiveType);
             toPass.UseSocket(asock);
-            func( toPass, data );
+            func( toPass );
+            printf("FUDGE");
         }
         return Error::ConnectionFailure;
     }
@@ -580,64 +587,61 @@ namespace GlobalMUD{
                 }
             } while( doRepeat );
 
-            if( die )
-                continue;
-
-            while( CommStreams[i].CanSend() ){
-                CommStreams[i].Get()->MyLock.Lock();
-                Message msg = CommStreams[i].Get()->GetSend();
-                CommStreams[i].Get()->MyLock.Unlock();
-                int size = msg.length;
-                while( size > 0 ){
-                //printf("%s\n", msg.msg.get());
-                    int result = send( CommStreams[i].GetConnection(), msg.msg.get() + msg.length - size, size, 0 );
-                    if( result > 0 )
-                        ret++;
-                    if( result == 0 ){
-                        CommStreams[i].Terminate();
-                        CommStreams.erase( CommStreams.begin() + i-- );
-                        die = true;
-                        break;
-                    }
-                    else if( result == SOCKET_ERROR ){
-                        #ifdef _WIN32
-                        switch(WSAGetLastError()){
-                        case WSAENOBUFS: doRepeat = true;
-                        case WSAEWOULDBLOCK:
-                        case WSAEINPROGRESS:
-                        case WSAEINTR: break;
-                        default: CommStreams[i].Terminate();
+            if( !die ){
+                while( CommStreams[i].CanSend() ){
+                    CommStreams[i].Get()->MyLock.Lock();
+                    Message msg = CommStreams[i].Get()->GetSend();
+                    CommStreams[i].Get()->MyLock.Unlock();
+                    int size = msg.length;
+                    while( size > 0 ){
+                    //printf("%s\n", msg.msg.get());
+                        int result = send( CommStreams[i].GetConnection(), msg.msg.get() + msg.length - size, size, 0 );
+                        if( result > 0 )
+                            ret++;
+                        if( result == 0 ){
+                            CommStreams[i].Terminate();
                             CommStreams.erase( CommStreams.begin() + i-- );
                             die = true;
-                            size = 0;
                             break;
                         }
-                    #else
-                    switch(errno){
-                    case EMSGSIZE: doRepeat = true;
-                    //case EAGAIN:
-                    case EWOULDBLOCK: break;
-                    default:CommStreams[i].Terminate();
-                            CommStreams.erase( CommStreams.begin() + i-- );
-                            die = true;
-                            size = 0;
-                            break;
+                        else if( result == SOCKET_ERROR ){
+                            #ifdef _WIN32
+                            switch(WSAGetLastError()){
+                            case WSAENOBUFS: doRepeat = true;
+                            case WSAEWOULDBLOCK:
+                            case WSAEINPROGRESS:
+                            case WSAEINTR: break;
+                            default: CommStreams[i].Terminate();
+                                CommStreams.erase( CommStreams.begin() + i-- );
+                                die = true;
+                                size = 0;
+                                break;
+                            }
+                        #else
+                        switch(errno){
+                        case EMSGSIZE: doRepeat = true;
+                        //case EAGAIN:
+                        case EWOULDBLOCK: break;
+                        default:CommStreams[i].Terminate();
+                                CommStreams.erase( CommStreams.begin() + i-- );
+                                die = true;
+                                size = 0;
+                                break;
+                        }
+                        #endif
+                        }
+                        else {
+                            size -= result;
+                        }
                     }
-                    #endif
-                    }
-                    else {
-                        size -= result;
-                    }
+                    if( die )
+                        break;
                 }
-                if( die )
-                    break;
             }
-            if( !die ){
-                if(CommStreams[i].Internal->disconnecting && !CommStreams[i].CanSend() && !CommStreams[i].transmitting ){
-                    closesocket( CommStreams[i].Internal->Connection );
-                    CommStreams[i].Internal->isconnected = false;
-                    CommStreams[i].Internal->aborted = true;
-                }
+            if( CommStreams[i].Internal->disconnecting == 2 || (!die && CommStreams[i].Internal->disconnecting == 1 && !CommStreams[i].CanSend() && !CommStreams[i].transmitting) ){
+                closesocket( CommStreams[i].Internal->Connection );
+                CommStreams[i].Internal->isconnected = false;
+                CommStreams[i].Internal->aborted = true;
             }
         }
         Lock.Unlock();

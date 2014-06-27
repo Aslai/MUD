@@ -22,7 +22,11 @@ namespace GlobalMUD{
                                 "File not found (Error::FileNotFound)",
                                 "Failed to mount (Error::MountFailure)",
                                 "Mount already exists (Error::MountExists)",
-                                "Timeout period exceeded (Error::Timeout)"
+                                "Timeout period exceeded (Error::Timeout)",
+                                "End of line (Error::EndOfLine)",
+                                "End of file (Error::EndOfFile)",
+
+                                "Not an Error (Error::NotAnError)"
                             };
 
 
@@ -33,7 +37,7 @@ namespace GlobalMUD{
             printf( "Testing %s...\n", msg );
         }
         std::string ToString(Error e){
-            static_assert( ((int)Error::NotAnError) == sizeof(ErrorStrings)/sizeof(ErrorStrings[0]), "Error list size mismatch" );
+            static_assert( ((int)Error::NotAnError)+1 == sizeof(ErrorStrings)/sizeof(ErrorStrings[0]), "Error list size mismatch" );
             return ErrorStrings[(int)e];
         }
     }
