@@ -126,7 +126,7 @@ namespace GlobalMUD{
             std::string t = "Testing";
             ret.content.resize( t.size() );
             memcpy( &(ret.content[0]), t.c_str(), t.length() );
-            printf("value1: %s\nvalue2: %s\nvalue3: %s\n", r.gets["value1"].c_str(), r.gets["value2"].c_str(), r.gets["value3"].c_str() );
+
             return ret;
         }
 
@@ -144,7 +144,7 @@ namespace GlobalMUD{
         }
         #endif
         static void ConnectionHandlerThread(CommStream stream, void* parent){
-            printf("In tread");
+
             HTTPd::HTTPResponse r;
             size_t size = 1000;
             size_t myend = 0;
@@ -344,12 +344,12 @@ namespace GlobalMUD{
             return;
         }
         void HTTPd::ConnectionHandler(CommStream stream, void* parent ){
-            printf("A");
+
             Thread T( std::bind( ConnectionHandlerThread, stream, parent ) );
 
             T.Detach();
             T.Run();
-            printf("B");
+
         }
 
 
@@ -461,7 +461,7 @@ namespace GlobalMUD{
 
                 ret.headers["Content-Length"] = StringFromUInt(Filesystem::FileSize( path ));
                 size_t pos = path.find_last_of('.');
-                printf("%s\n", path.c_str());
+
                 if( path.find_first_of('.') != std::string::npos ){
                     ret.headers["Content-Type"] = GetMimeFromExt(path.substr(pos==std::string::npos?pos:pos+1));
                 }
@@ -531,7 +531,7 @@ namespace GlobalMUD{
             MyThread = new Thread(  std::bind( &CommStream::ListenOn, stream, Address, Port,
                                         (std::function<void(CommStream)>)(std::bind(ConnectionHandler, std::placeholders::_1, (void*)this )) ) );
             MyThread->Run();
-            printf("Thread dead");
+
             //stream->ListenOn( Address, Port, ConnectionHandler, (void*)this );
             return Error::None;
         }

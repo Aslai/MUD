@@ -10,35 +10,43 @@
 #include <cstdio>
 #include<functional>
 #include "Telnet/Telnet.hpp"
+#include "Global/Strings.hpp"
 
-int testfunc(int a, std::string b){
-    printf("%s\t%d\n", b.c_str(), a);
-}
-int test( std::function<int(int)> f ){
-    return f( 6 );
-}
+using namespace GlobalMUD;
 
 void TNet(GlobalMUD::Telnet::TelnetSession* t){
-    t->SendLine("Howdy");
-    printf("Screen:\tW: %d\tH: %d\n", t->myScreen.Width(), t->myScreen.Height() );
-    while( true ){
-        if( t->HasLine() ){
-            printf("%s\n", t->ReadLine().c_str());
-            printf("\nScreen:\tW: %d\tH: %d\n", t->myScreen.Width(), t->myScreen.Height() );
-        }
-    }
+    t->SendANSICode( Telnet::ANSICodes::CursorHide );
+    while( t->Connected() ){
+        Thread::Sleep(100);
+        t->SendANSICode( Telnet::ANSICodes::EraseDisplay, 2 );
+        t->SendANSICode( Telnet::ANSICodes::CursorPosition, t->Screen.Height(), 1 );
 
+        t->Screen.SetColor( Telnet::Color::Bright_White, Telnet::Color::Green );
+        t->SendANSICode( Telnet::ANSICodes::CursorPosition, t->Screen.Height(), 1 );
+        std::string block = "          ";
+        for( ; block.length() < (unsigned)t->Screen.Width(); block = block + block ){}
+        block = block.substr( 0, t->Screen.Width() );
+        t->SendLine( block );
+
+        t->SendANSICode( Telnet::ANSICodes::CursorPosition, t->Screen.Height(), 1 );
+        t->SendLine( StringFormat("Terminal Size: %d\t%d", t->Screen.Width(), t->Screen.Height() ) );
+
+        std::string title = "Telnet Test";
+        t->SendANSICode( Telnet::ANSICodes::CursorPosition, 3, ( t->Screen.Width() - title.length() ) / 2 );
+        t->Screen.SetColor( Telnet::Color::Default, Telnet::Color::Default );
+        t->SendLine( title );
+
+    }
 }
 
 int main(){
-    test( std::bind(testfunc, std::placeholders::_1, "Test" ) );
     #ifdef _WIN32
     WSADATA globalWSAData;
     WSAStartup( MAKEWORD(2, 2), &globalWSAData );
     #endif
 
     GlobalMUD::Telnet t;
-    t.Listen( 23, TNet );
+    t.Listen( 45141, TNet );
 
     Test<GlobalMUD::Thread>();
     Test<GlobalMUD::Ciphers::Cipher>();

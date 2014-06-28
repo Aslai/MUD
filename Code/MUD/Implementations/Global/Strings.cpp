@@ -14,7 +14,7 @@ namespace GlobalMUD{
     std::string BufferToString( const char* buffer, size_t len ){
         std::string ret;
         ret.resize( len );
-        printf("LEN: %d\n", len);
+
         memcpy( &ret[0], buffer, len);
         return ret;
     }
@@ -23,5 +23,6 @@ namespace GlobalMUD{
         for( unsigned int i = 0; i < str.length(); ++i ){
             str[i] = toupper(str[i]);
         }
+        return str;
     }
 }

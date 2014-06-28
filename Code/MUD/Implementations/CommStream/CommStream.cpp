@@ -1,7 +1,7 @@
 #include "CommStream.hpp"
 #include "Global/Error.hpp"
 #include "Global/Thread.hpp"
-
+#include <climits>
 #include <cstring>
 
 #ifdef _WIN32
@@ -181,14 +181,14 @@ namespace GlobalMUD{
 
         bool CommStream::RunTests(){
             TEST("GlobalMUD::CommStream");
-            //FAIL("GlobalMUD::CommStream not yet implemented.")
+
             TEST("GlobalMUD::CommStream::Connect()");
             CommStream comm(CommStream::LINES);
             if( comm.Connect( "irc.frogbox.es", 6667 ) != Error::None ){
                 FAIL("This could be a false positive - is irc.frogbox.es down?");
                 return false;
             }
-            //CommStream::ServiceSockets();
+
             TEST("GlobalMUD::CommStream::Receive()");
             TEST("GlobalMUD::CommStream::Send()");
             comm.Send( "NICK TestA\r\nUSER Test Test Test :Test\r\n");
@@ -196,7 +196,7 @@ namespace GlobalMUD{
             while( true ){
                 Error a = comm.Receive(buf);
                 if( a == Error::None ){
-                    //printf("%s\n", buf.c_str());
+
 
 
                     if( buf.substr(0, 29) == "ERROR :Closing link: (unknown" ){
@@ -206,7 +206,7 @@ namespace GlobalMUD{
                     if( buf.substr(0, 39) == ":irc.frogbox.es NOTICE Auth :Welcome to" ||
                         buf == ":irc.frogbox.es 462 TestA :You may not reregister" ){
                         comm.Send( "QUIT :BYE\r\n" );
-                        //CommStream::ServiceSockets();
+
                         comm.Disconnect( true );
                         break;
                     }
@@ -453,7 +453,7 @@ namespace GlobalMUD{
             CommStream toPass(MyReceiveType);
             toPass.UseSocket(asock);
             func( toPass );
-            printf("FUDGE");
+
         }
         return Error::ConnectionFailure;
     }
@@ -539,10 +539,10 @@ namespace GlobalMUD{
         char recvbuf[NETBUFFERSIZE];
         Lock.Lock();
         int ret = 0;
-        for( unsigned int i = 0; i < CommStreams.size(); ++i ){
+        for( unsigned int i = 0; i < CommStreams.size() || i > INT_MAX - 2; ++i ){
             if( !CommStreams[i].Connected() ){
                 CommStreams[i].Terminate();
-                CommStreams.erase( CommStreams.begin() + i-- );
+                CommStreams.erase( CommStreams.begin() + i );
                 continue;
             }
 
@@ -553,15 +553,14 @@ namespace GlobalMUD{
                 int result = recv( CommStreams[i].GetConnection(), recvbuf, NETBUFFERSIZE, 0 );
                 if( result > 0 )
                     ret++;
-                //printf( "%d\t%s\n\n", result, recvbuf );
+
                 if( result == 0 ){
                     CommStreams[i].Terminate();
-                    CommStreams.erase( CommStreams.begin() + i-- );
                     die = true;
                     break;
                 }
                 else if( result == SOCKET_ERROR ){
-                        //printf("\n%d\n", WSAGetLastError() );
+
                     #ifdef _WIN32
                     switch(WSAGetLastError()){
                     case WSAEMSGSIZE: doRepeat = true;
@@ -571,7 +570,6 @@ namespace GlobalMUD{
                     default:
 
                         CommStreams[i].Terminate();
-                        CommStreams.erase( CommStreams.begin() + i-- );
                         die = true;
                         break;
                     }
@@ -582,7 +580,6 @@ namespace GlobalMUD{
                     case EWOULDBLOCK: break;
                     default:
                         CommStreams[i].Terminate();
-                        CommStreams.erase( CommStreams.begin() + i-- );
                         die = true;
                         break;
                     }
@@ -609,13 +606,12 @@ namespace GlobalMUD{
                     CommStreams[i].Get()->MyLock.Unlock();
                     int size = msg.length;
                     while( size > 0 ){
-                    //printf("%s\n", msg.msg.get());
+
                         int result = send( CommStreams[i].GetConnection(), msg.msg.get() + msg.length - size, size, 0 );
                         if( result > 0 )
                             ret++;
                         if( result == 0 ){
                             CommStreams[i].Terminate();
-                            CommStreams.erase( CommStreams.begin() + i-- );
                             die = true;
                             break;
                         }
@@ -627,7 +623,6 @@ namespace GlobalMUD{
                             case WSAEINPROGRESS:
                             case WSAEINTR: break;
                             default: CommStreams[i].Terminate();
-                                CommStreams.erase( CommStreams.begin() + i-- );
                                 die = true;
                                 size = 0;
                                 break;
@@ -638,7 +633,6 @@ namespace GlobalMUD{
                         //case EAGAIN:
                         case EWOULDBLOCK: break;
                         default:CommStreams[i].Terminate();
-                                CommStreams.erase( CommStreams.begin() + i-- );
                                 die = true;
                                 size = 0;
                                 break;
@@ -657,6 +651,9 @@ namespace GlobalMUD{
                 closesocket( CommStreams[i].Internal->Connection );
                 CommStreams[i].Internal->isconnected = false;
                 CommStreams[i].Internal->aborted = true;
+            }
+            if( die ){
+                CommStreams.erase( CommStreams.begin() + i-- );
             }
         }
         Lock.Unlock();

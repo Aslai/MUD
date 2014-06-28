@@ -40,6 +40,7 @@ namespace GlobalMUD{
         OutOfBounds,
         InvalidSize,
         PartialData,
+        Unsupported,
 
         NotAnError
     };

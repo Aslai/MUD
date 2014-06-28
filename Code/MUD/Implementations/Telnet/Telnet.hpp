@@ -48,7 +48,7 @@ namespace GlobalMUD{
             SUPPRESS_GO_AHEAD = 3,
 
             //Begin RFC 1091 commands//
-            TERMINAL_TYPE = 24 //
+            TERMINAL_TYPE = 24 //18
 
         };
         enum class Color{
@@ -67,8 +67,63 @@ namespace GlobalMUD{
             Bright_Blue,
             Bright_Magenta,
             Bright_Cyan,
-            Bright_White
+            Bright_White,
+            Default = 9
         };
+        enum class ANSICodes{
+            CursorUp,
+            CursorDown,
+            CursorForward,
+            CursorBack,
+            CursorNextLine,
+            CursorPreviousLine,
+            CursorHorizontalAbsolute,
+            CursorPosition,
+            EraseDisplay,
+            EraseInLine,
+            ScrollUp,
+            ScrollDown,
+            HorizontalAndVerticalPosition,
+            SelectGraphicRendition,
+            DeviceStatusReport,
+            CursorSavePosition,
+            CursorRestorePosition,
+            CursorHide,
+            CursorShow
+        };
+        enum class SGRCodes{
+            Reset = 0,
+            Bold,
+            Underline = 4,
+            Blinking,
+            Negative = 7,
+            DefaultFont = 10,
+            Font1,
+            Font2,
+            Font3,
+            Font4,
+            Font5,
+            Font6,
+            Font7,
+            Font8,
+            Font9,
+            NormalColor = 22,
+            NotUnderlined = 24,
+            NotBlinking,
+            Positive = 27,
+            ForegroundColor = 30, //ForegroundColor + Color
+            DefaultForegroundColor = 39,
+            BackgroundColor = 40, //BackgroundColor + Color
+            DefaultBackgroundColor = 49,
+            Framed = 51,
+            Encircled,
+            Overlined,
+            NotEncircled,
+            NotOverlined,
+            ForegroundColorBright = 90,
+            BackgroundColorBright = 100
+        };
+
         struct Terminal{
             public:
             std::string Name;
@@ -79,45 +134,47 @@ namespace GlobalMUD{
         };
         class TelnetSession{
             friend Telnet;
-            class Screen{
+            class TheScreen{
+            friend TelnetSession;
             public:
                 class Cursor{
-				friend Screen;
-                    Screen& myScreen;
+				friend TheScreen;
+                    TheScreen& myScreen;
                     int X, Y;
                     bool wraps;
-                    Color BGColor;
-                    Color FGColor;
-
                 public:
-                    Cursor( Screen& screen );
+                    Cursor( TheScreen& screen );
                     Error ShouldWrap( bool shouldWrap = true );
                     Error Advance( int amount = 1 );
                     Error LineFeed( int amount = 1 );
                     Error CarriageReturn();
-                    Error SetColor( Color foreground, Color background );
                     Error MoveTo( int x, int y );
                 };
 				friend Cursor;
             private:
                 int width, height;
-                Cursor myCursor;
                 bool supportsColor;
-                bool supportsMovement;
+                bool supportsEscapeCodes;
 				TelnetSession &parent;
+                Color BGColor;
+                Color FGColor;
+
             public:
-                Screen( int Width, int Height, TelnetSession &Parent );
+                Cursor myCursor;
+                TheScreen( int Width, int Height, TelnetSession &Parent );
                 int Width();
                 int Height();
                 Error SetTerminal( std::string TerminalType );
 				Error Resize( int w, int h );
+                Error SetColor( Color foreground, Color background );
             };
+            friend TheScreen;
 		private:
 			Telnet &parent;
 			bool echos;
 			CommStream stream;
 			void ReadStream();
-			Error ParseCommand( char*& cmd, size_t len );
+			Error ParseCommand( unsigned char*& cmd, size_t len );
 			std::string buffer;
 			std::string bufferbacklog;
 			int requestingTerminal;
@@ -128,7 +185,7 @@ namespace GlobalMUD{
 
 
         public:
-			Screen myScreen;
+			TheScreen Screen;
 
             TelnetSession( CommStream s, Telnet &Parent);
 
@@ -145,6 +202,64 @@ namespace GlobalMUD{
             std::string PeekLine();
             char PeekChar();
 			Error Disconnect( bool remoteFailure = false );
+			bool Connected();
+
+            template<class... Args>
+            Error SendANSICode( ANSICodes code, Args... args ){
+                if( !Screen.supportsColor && code == Telnet::ANSICodes::SelectGraphicRendition ){
+                    //return Error::Unsupported;
+                }
+                if( !Screen.supportsEscapeCodes ){
+                    //return Error::Unsupported;
+                }
+
+                struct{
+                    std::string v;
+                    int operator()(int i){
+                        if( v != "" )
+                            v = ";" + v;
+                        char buffer[20];
+                        snprintf(buffer, 20, "%d", i );
+                        v = buffer + v;
+                        return 0;
+                    }
+                    int operator()(SGRCodes i){
+                        return operator()((int)i);
+                    }
+                    int operator()(ANSICodes i){
+                        return operator()((int)i);
+                    }
+                }combine;
+                struct{void operator()(...){}}f;
+
+                f(combine(args)...);
+                std::string CSI = "\x1B[";
+                combine.v = CSI + combine.v;
+                switch( code ){
+                    case Telnet::ANSICodes::CursorUp:                       combine.v += "A";           break;
+                    case Telnet::ANSICodes::CursorDown:                     combine.v += "B";           break;
+                    case Telnet::ANSICodes::CursorForward:                  combine.v += "C";           break;
+                    case Telnet::ANSICodes::CursorBack:                     combine.v += "D";           break;
+                    case Telnet::ANSICodes::CursorNextLine:                 combine.v += "E";           break;
+                    case Telnet::ANSICodes::CursorPreviousLine:             combine.v += "F";           break;
+                    case Telnet::ANSICodes::CursorHorizontalAbsolute:       combine.v += "G";           break;
+                    case Telnet::ANSICodes::CursorPosition:                 combine.v += "H";           break;
+                    case Telnet::ANSICodes::EraseDisplay:                   combine.v += "J";           break;
+                    case Telnet::ANSICodes::EraseInLine:                    combine.v += "K";           break;
+                    case Telnet::ANSICodes::ScrollUp:                       combine.v += "S";           break;
+                    case Telnet::ANSICodes::ScrollDown:                     combine.v += "T";           break;
+                    case Telnet::ANSICodes::HorizontalAndVerticalPosition:  combine.v += "f";           break;
+                    case Telnet::ANSICodes::SelectGraphicRendition:         combine.v += "m";           break;
+                    case Telnet::ANSICodes::DeviceStatusReport:             combine.v = CSI + "6n";     break;
+                    case Telnet::ANSICodes::CursorSavePosition:             combine.v = CSI + "s";      break;
+                    case Telnet::ANSICodes::CursorRestorePosition:          combine.v = CSI + "u";      break;
+                    case Telnet::ANSICodes::CursorHide:                     combine.v = CSI + "?25l";   break;
+                    case Telnet::ANSICodes::CursorShow:                     combine.v = CSI + "?25h";   break;
+                    default: break;
+
+                }
+                return SendLine( combine.v );
+            }
 
 
         };

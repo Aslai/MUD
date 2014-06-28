@@ -36,6 +36,8 @@ namespace GlobalMUD{
                 case Error::PartialMessage:     return "Partial message received (Error::PartialMessage)";
                 case Error::SocketFailure:      return "Unspecified socket failure (Error::SocketFailure)";
                 case Error::Timeout:            return "Timeout period exceeded (Error::Timeout)";
+                case Error::Unsupported:        return "Unsupported operation (Error::Unsupported)";
+
             }
             return "Unknown Error";
         }
