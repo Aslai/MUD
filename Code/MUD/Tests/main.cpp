@@ -19,9 +19,14 @@ int test( std::function<int(int)> f ){
 }
 
 void TNet(GlobalMUD::Telnet::TelnetSession* t){
-    GlobalMUD::Thread::Sleep( 1000 );
     t->SendLine("Howdy");
     printf("Screen:\tW: %d\tH: %d\n", t->myScreen.Width(), t->myScreen.Height() );
+    while( true ){
+        if( t->HasLine() ){
+            printf("%s\n", t->ReadLine().c_str());
+            printf("\nScreen:\tW: %d\tH: %d\n", t->myScreen.Width(), t->myScreen.Height() );
+        }
+    }
 
 }
 

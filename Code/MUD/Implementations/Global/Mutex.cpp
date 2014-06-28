@@ -72,4 +72,25 @@ namespace GlobalMUD{
 			Lock();
 			Unlock();
 		}
+
+
+        ScopedMutex::ScopedMutex(Mutex M){
+            m = M;
+		}
+
+		ScopedMutex::~ScopedMutex(){
+            m.Unlock();
+		}
+
+		void ScopedMutex::Lock(){
+            m.Lock();
+		}
+
+		void ScopedMutex::Unlock(){
+            m.Unlock();
+		}
+
+		void ScopedMutex::Wait(){
+            m.Wait();
+		}
 }

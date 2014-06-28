@@ -116,18 +116,26 @@ namespace GlobalMUD{
 
         size_t len = 1000;
         char* writeto = buff;
-        if( bufferbacklog.length() != 0 ){
+        /*if( bufferbacklog.length() != 0 ){
             memcpy( buff, &bufferbacklog[0], bufferbacklog.length() );
             len -= bufferbacklog.length();
             writeto += bufferbacklog.length();
             bufferbacklog = "";
-        }
+        }*/
 
         while( len > 0 ){
             switch( stream.Receive( writeto, len ) ){
                 case Error::NoData: len = 0; break;
                 case Error::NotConnected: Disconnect( true ); len = 0; break;
                 default: break;
+            }
+            //printf("%*s\n", 100, writeto );
+            for( int i = 0; i < len; i += 16 ){
+                for( int j = 0; j < 16 && i + j < len; ++j ){
+                    printf("%02X ", (unsigned char)buff[i+j]);
+                }
+
+                //printf("%*s\n", len - i > 16 ? 16 : len - i, buff+i);
             }
             if( len == 0 )
                 break;
@@ -156,7 +164,7 @@ namespace GlobalMUD{
                     i++;
                 }
             }
-            if( i == len ){
+            if( i >= len ){
                 buffer += BufferToString( start, buff+i-start );
             }
         }
@@ -369,12 +377,14 @@ namespace GlobalMUD{
         return Error::None;
     }
 
-    Telnet::TelnetSession::TelnetSession( CommStream s, Telnet &Parent ) : parent(Parent), stream(s), myScreen(80, 25, *this) {
+    Telnet::TelnetSession::TelnetSession( CommStream s, Telnet &Parent ) : parent(Parent), stream(s), lock(), myScreen(80, 25, *this) {
         echos = false;
-        s.RegisterCallback( std::bind(&Telnet::TelnetSession::ReadStream, this) );
         requestingTerminal = 0;
         bestTerminal = "DEFAULT";
         lastTerminal = "";
+        buffer = "";
+        bufferbacklog = "";
+        s.RegisterCallback( std::bind(&Telnet::TelnetSession::ReadStream, this) );
     }
 
     Error Telnet::TelnetSession::SendLine( std::string line ){
@@ -388,10 +398,15 @@ namespace GlobalMUD{
     }
 
     bool Telnet::TelnetSession::HasLine(){
+        //return false;
+        ScopedMutex m( lock );
+        m.Lock();
         return buffer.find_first_of( "\n" ) != std::string::npos;
     }
 
     bool Telnet::TelnetSession::HasChar(){
+        ScopedMutex m( lock );
+        m.Lock();
         return buffer.length() > 0;
     }
 
@@ -488,8 +503,9 @@ namespace GlobalMUD{
 
     void Telnet::ConnectionHandler( CommStream cs, std::function<void(TelnetSession*)> callback ){
         TelnetSession* ts = new TelnetSession( cs, *this );
-        Thread thread( std::bind(callback, ts) );
-        thread.Detach();
+        //Thread thread( std::bind(callback, ts) );
+        //thread.Detach();
+        std::bind(callback, ts)();
     }
 
     Telnet::Telnet(){
@@ -497,7 +513,7 @@ namespace GlobalMUD{
     }
 
     void Telnet::Listen( int port, std::function<void(TelnetSession*)> callback ){
-        CommStream stream;
+        CommStream stream( CommStream::BINARY );
         stream.Listen( port, std::bind( &Telnet::ConnectionHandler, this, std::placeholders::_1, callback ) );
     }
 

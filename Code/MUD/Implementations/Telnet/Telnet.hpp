@@ -17,29 +17,29 @@ namespace GlobalMUD{
         enum class Commands {
             NONE,
             //Begin RFC 854 commands//
-            SE = 240,   //Subnegotiation end
-            NOP,        //No Op
-            DataMark,   //Data mark
-            BRK,        //Break
-            IP,         //Interrupt process
-            AO,         //Abort output
-            AYT,        //Are you there?
-            EC,         //Erase character
-            EL,         //Erase line
-            GA,         //Go ahead
-            SB,         //Subnegotiation begin
-            WILL,
-            WONT,
-            DO,
-            DONT,
-            IAC,        //Command code / escape code
+            SE = 240,   //Subnegotiation end				//0xF0
+            NOP,        //No Op				//0xF1
+            DataMark,   //Data mark				//0xF2
+            BRK,        //Break				//0xF3
+            IP,         //Interrupt process				//0xF4
+            AO,         //Abort output				//0xF5
+            AYT,        //Are you there?				//0xF6
+            EC,         //Erase character				//0xF7
+            EL,         //Erase line				//0xF8
+            GA,         //Go ahead				//0xF9
+            SB,         //Subnegotiation begin //0xFA
+            WILL,		//0xFB
+            WONT,		//0xFC
+            DO,			//0xFD
+            DONT,		//0xFE
+            IAC,        //Command code / escape code 0xFF
             IS = 0,
             SEND = 1,
 
             //Begin RFC 1073 commands//
             NAWS = 31,  //Negotiate about window size
                         //(IAC SB NAWS [16 bit value] [16 bit value] IAC SE)
-                        //Values in network order. Default is undefined.
+                        //Values in network order. Default is undefined.      //1F
 
             //Begin RFC 857 commands//
             ECHO = 1,   //Start/stop echoing. Default is no echo.

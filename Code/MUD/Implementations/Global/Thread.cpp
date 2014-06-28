@@ -33,7 +33,7 @@ namespace GlobalMUD{
             args->Lock.Lock();
             Lock = args->Lock;
             #ifdef _WIN32
-            ThreadHandle = CreateThread( NULL, 2048, GlobalMUD::Thread::ThreadFunc, args, CREATE_SUSPENDED, &ThreadID );
+            ThreadHandle = CreateThread( NULL, 8048, GlobalMUD::Thread::ThreadFunc, args, CREATE_SUSPENDED, &ThreadID );
             valid = ThreadHandle != NULL;
             #else
             pthread_attr_t attr;

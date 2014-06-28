@@ -1,6 +1,7 @@
 #include "Global/Strings.hpp"
 #include <cstring>
 #include <cctype>
+#include<cstdio>
 
 namespace GlobalMUD{
     void strupr( char* str ){
@@ -13,6 +14,7 @@ namespace GlobalMUD{
     std::string BufferToString( const char* buffer, size_t len ){
         std::string ret;
         ret.resize( len );
+        printf("LEN: %d\n", len);
         memcpy( &ret[0], buffer, len);
         return ret;
     }

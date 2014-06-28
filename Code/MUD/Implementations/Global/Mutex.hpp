@@ -26,6 +26,15 @@ namespace GlobalMUD{
 		void Unlock();
 		void Wait();
 	};
+    class ScopedMutex{
+        Mutex m;
+    public:
+        ScopedMutex(Mutex M);
+		~ScopedMutex();
+		void Lock();
+		void Unlock();
+		void Wait();
+    };
 }
 
 #endif
