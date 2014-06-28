@@ -5,6 +5,8 @@
 
 namespace GlobalMUD{
     std::string BufferToString( const char* buffer, size_t len );
+    std::string StringToUpper( std::string str );
+
     void strupr( char *str );
 }
 

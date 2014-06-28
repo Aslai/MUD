@@ -110,6 +110,7 @@ namespace GlobalMUD{
 
 
     void Telnet::TelnetSession::ReadStream(){
+        lock.Lock();
         char buff[1002];
         buff[1000] = buff[1001] = '\0';
 
@@ -159,6 +160,7 @@ namespace GlobalMUD{
                 buffer += BufferToString( start, buff+i-start );
             }
         }
+        lock.Unlock();
     }
 
     Error Telnet::TelnetSession::ParseCommand( char*& cmd, size_t len ){
@@ -266,50 +268,179 @@ namespace GlobalMUD{
                         break;
                 }
             } break;
-                break;
+            case Telnet::Commands::SB:{
+                if( --len == 0 ) {cmd = start; return Error::PartialData;}
+                cmd++;
+                Telnet::Commands thisCmd = (Telnet::Commands)*cmd;
+                switch( thisCmd ){
+                    case Telnet::Commands::NAWS:{
+                        if( len < 6 ) {cmd = start; return Error::PartialData;}
+                        cmd++;
+                        int w, h;
+                        w = h = 0;
+                        if( *cmd == (char)Telnet::Commands::IAC ){
+                            len--; if( len < 6 ) {cmd = start; return Error::PartialData;} cmd++;
+                            if( *cmd != (char)Telnet::Commands::IAC ) break;
+                        }
+                        w += *cmd << 8;
+                        cmd++;
+                        if( *cmd == (char)Telnet::Commands::IAC ){
+                            len--; if( len < 6 ) {cmd = start; return Error::PartialData;} cmd++;
+                            if( *cmd != (char)Telnet::Commands::IAC ) break;
+                        }
+                        w += *cmd;
+                        cmd++;
+                        if( *cmd == (char)Telnet::Commands::IAC ){
+                            len--; if( len < 6 ) {cmd = start; return Error::PartialData;} cmd++;
+                            if( *cmd != (char)Telnet::Commands::IAC ) break;
+                        }
+                        h += *cmd << 8;
+                        cmd++;
+                        if( *cmd == (char)Telnet::Commands::IAC ){
+                            len--; if( len < 6 ) {cmd = start; return Error::PartialData;} cmd++;
+                            if( *cmd != (char)Telnet::Commands::IAC ) break;
+                        }
+                        h += *cmd;
+                        myScreen.Resize( w, h );
+                        cmd++;
+                        do{
+                            len--; if( len < 5 ) {cmd = start; return Error::PartialData;}
+                            if( *cmd == (char)Telnet::Commands::IAC ){
+                                len--; if( len < 5 ) {cmd = start; return Error::PartialData;}
+                                cmd++;
+                                if( *cmd == (char)Telnet::Commands::SE ){
+                                    break;
+                                }
+                            }
+                            cmd++;
+                        }while( true );
+
+
+                    } break;
+                    case Telnet::Commands::TERMINAL_TYPE:{
+                        if( --len == 0 ) {cmd = start; return Error::PartialData;}
+                        cmd++;
+                        if( *cmd == (char)Telnet::Commands::IS ){
+                            if( --len == 0 ) {cmd = start; return Error::PartialData;}
+                            cmd++;
+                        }
+                        std::string term = "";
+                        while( true ){
+                            while( *cmd != (char)Telnet::Commands::IAC ){
+                                term += *cmd;
+                                if( --len == 0 ) {cmd = start; return Error::PartialData;}
+                                cmd++;
+                            }
+                            if( --len == 0 ) {cmd = start; return Error::PartialData;}
+                            cmd++;
+                            if( *cmd != (char)Telnet::Commands::IAC )
+                            break;
+                        }
+                        switch(requestingTerminal){
+                        case 0:{
+                            if( term == lastTerminal ){
+                                requestingTerminal = 1;
+                            }
+                            lastTerminal = term;
+                            if( parent.SupportedTerms[StringToUpper(bestTerminal)].Preference <=
+                                    parent.SupportedTerms[StringToUpper(term)].Preference ){
+                                bestTerminal = term;
+                            }
+                            SendSubnegotiation( Telnet::Commands::TERMINAL_TYPE, Telnet::Commands::SEND );
+                        } break;
+                        case 1:{
+                            if( term == bestTerminal ){
+                                requestingTerminal = 2;
+                            }
+                            else
+                                SendSubnegotiation( Telnet::Commands::TERMINAL_TYPE, Telnet::Commands::SEND );
+                        } break;
+                        default:
+                            break;
+                        }
+                    } break;
+                    default:
+                        break;
+                }
+            } break;
+            break;
 
         }
+        return Error::None;
     }
 
     Telnet::TelnetSession::TelnetSession( CommStream s, Telnet &Parent ) : parent(Parent), stream(s), myScreen(80, 25, *this) {
         echos = false;
         s.RegisterCallback( std::bind(&Telnet::TelnetSession::ReadStream, this) );
+        requestingTerminal = 0;
+        bestTerminal = "DEFAULT";
+        lastTerminal = "";
     }
 
     Error Telnet::TelnetSession::SendLine( std::string line ){
-
+        return stream.Send( line );
     }
 
     Error Telnet::TelnetSession::SendChar( const char c ){
-
+        std::string s = "";
+        s += c;
+        return stream.Send( s );
     }
 
     bool Telnet::TelnetSession::HasLine(){
-
+        return buffer.find_first_of( "\n" ) != std::string::npos;
     }
 
     bool Telnet::TelnetSession::HasChar(){
-
+        return buffer.length() > 0;
     }
 
     std::string Telnet::TelnetSession::ReadLine(){
-
+        lock.Lock();
+        auto pos = buffer.find_first_of( "\n" );
+        std::string ret = "";
+        if( pos != std::string::npos ){
+            ret = buffer.substr( 0, pos + 1 );
+            buffer = buffer.substr( pos + 1 );
+        }
+        lock.Unlock();
+        return ret;
     }
 
     char Telnet::TelnetSession::ReadChar(){
-
+        lock.Lock();
+        char ret = '\0';
+        if( buffer.length() > 0 ){
+            ret = buffer[0];
+            buffer.erase(0, 1);
+        }
+        lock.Unlock();
+        return ret;
     }
 
     std::string Telnet::TelnetSession::PeekLine(){
-
+        lock.Lock();
+        auto pos = buffer.find_first_of( "\n" );
+        std::string ret = "";
+        if( pos != std::string::npos ){
+            ret = buffer.substr( 0, pos + 1 );
+        }
+        lock.Unlock();
+        return ret;
     }
 
     char Telnet::TelnetSession::PeekChar(){
-
+        lock.Lock();
+        char ret = '\0';
+        if( buffer.length() > 0 ){
+            ret = buffer[0];
+        }
+        lock.Unlock();
+        return ret;
     }
 
     Error Telnet::TelnetSession::Disconnect( bool remoteFailure ){
-
+        return stream.Disconnect(false);
     }
 
     Error Telnet::TelnetSession::SendCommand( Telnet::Commands cmd1, Telnet::Commands cmd2 ){
@@ -322,16 +453,33 @@ namespace GlobalMUD{
         return SendLine( toSend );
     }
 
-    Error Telnet::TelnetSession::SendSubnegotiation( Telnet::Commands cmd, char* data, size_t len ){
+    Error Telnet::TelnetSession::SendSubnegotiation( Telnet::Commands cmd1, Telnet::Commands cmd2, char* data, size_t len ){
         std::string toSend = "";
         toSend += (char) Telnet::Commands::IAC;
         toSend += (char) Telnet::Commands::SB;
-        if( cmd != Telnet::Commands::NONE )
-            toSend += (char) cmd;
-        toSend += BufferToString( data, len );
+        if( cmd1 != Telnet::Commands::NONE )
+            toSend += (char) cmd1;
+        if( cmd2 != Telnet::Commands::NONE )
+            toSend += (char) cmd2;
+        if( len > 0 ){
+            std::string toAdd = BufferToString( data, len );
+            for( unsigned int i = 0; i < toAdd.length(); ++i ){
+                if( toAdd[i] == (char)Telnet::Commands::IAC ){
+                    std::string toInsert = "";
+                    toInsert += (char)Telnet::Commands::IAC;
+                    toAdd.insert( i++, toInsert );
+                }
+            }
+            toSend += toAdd;
+        }
+
         toSend += (char) Telnet::Commands::IAC;
         toSend += (char) Telnet::Commands::SE;
         return SendLine( toSend );
+    }
+
+    Error Telnet::TelnetSession::SendSubnegotiation( Telnet::Commands cmd1, char* data, size_t len ){
+        return SendSubnegotiation( cmd1, Telnet::Commands::NONE, data, len );
     }
 
 
@@ -366,7 +514,7 @@ namespace GlobalMUD{
             while(strend >= 0 && ( buffer[strend] == '\0' || isspace(buffer[strend]) ) ){
                 buffer[strend--] = 0;
             }
-            //printf("%s\n", buffer);
+
             if( strlen( buffer ) == 0 ){
                 if( readingterm ){
                     readingterm = false;
@@ -388,8 +536,7 @@ namespace GlobalMUD{
                 else{
                     char bufferA[500];
                     char bufferB[500];
-                    //printf("%s\n", buffer);
-                    //printf("%d\n", sscanf( buffer, "%s%s", bufferA, bufferB ) );
+
                     if( sscanf( buffer, "%s%s", bufferA, bufferB ) == 2 ){
                         char* bA = bufferA;
                         char* bB = bufferB;
@@ -400,18 +547,18 @@ namespace GlobalMUD{
                         strupr( bA );
                         strupr( bB );
                         bool affirmative = bB[0] == 'Y';
-                        printf("%s\n", bA);
-                        printf("%s\n", bB);
 
                         if( strcmp( bA, "COLOR:" ) == 0 ){
                             temp.Color = affirmative;
-                            printf("JA");
                         }
                         if( strcmp( bA, "WRAPS:" ) == 0 ){
                             temp.Wraps = affirmative;
                         }
                         if( strcmp( bA, "ANSI-ESCAPE:" ) == 0 ){
                             temp.ANSIEscape = affirmative;
+                        }
+                        if( strcmp( bA, "PREFERENCE:" ) == 0 ){
+                            temp.Preference = atol( bB );
                         }
                         if( strcmp( bA, "INHERIT:" ) == 0 ){
                             std::string n = temp.Name;

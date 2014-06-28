@@ -75,6 +75,7 @@ namespace GlobalMUD{
             bool Color;
             bool Wraps;
             bool ANSIEscape;
+            long Preference;
         };
         class TelnetSession{
             class Screen{
@@ -118,6 +119,12 @@ namespace GlobalMUD{
 			Error ParseCommand( char*& cmd, size_t len );
 			std::string buffer;
 			std::string bufferbacklog;
+			int requestingTerminal;
+			std::string bestTerminal;
+			std::string lastTerminal;
+			Mutex lock;
+
+
 
         public:
 			Screen myScreen;
@@ -126,7 +133,8 @@ namespace GlobalMUD{
             Error SendLine( std::string line );
             Error SendChar( const char c );
             Error SendCommand( Telnet::Commands cmd1 = Telnet::Commands::NONE, Telnet::Commands cmd2 = Telnet::Commands::NONE );
-            Error SendSubnegotiation( Telnet::Commands cmd, char* data, size_t len );
+            Error SendSubnegotiation( Telnet::Commands cmd, char* data = NULL, size_t len = 0 );
+            Error SendSubnegotiation( Telnet::Commands cmd1, Telnet::Commands cmd2, char* data = NULL, size_t len = 0 );
 
             bool HasLine();
             bool HasChar();
