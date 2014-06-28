@@ -20,6 +20,7 @@ namespace GlobalMUD{
                 case Error::ImportantOperation: return "Important operation in progress (Error::ImportantOperation)";
                 case Error::InvalidHost:        return "Unable to lookup the specified host (Error::InvalidHost)";
                 case Error::InvalidScheme:      return "Invalid crypto scheme specified (Error::InvalidScheme)";
+                case Error::InvalidSize:        return "Invalid size specified (Error::InvalidSize)";
                 case Error::ListenFailure:      return "Failed to listen (Error::ListenFailure)";
                 case Error::MountExists:        return "Mount already exists (Error::MountExists)";
                 case Error::MountFailure:       return "Failed to mount (Error::MountFailure)";

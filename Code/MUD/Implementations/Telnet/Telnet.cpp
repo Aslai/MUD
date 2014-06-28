@@ -73,24 +73,50 @@ namespace GlobalMUD{
 
 
 
-    Telnet::TelnetSession::Screen::Screen( int Width, int Height ) : myCursor( *this ){
+    Telnet::TelnetSession::Screen::Screen( int Width, int Height, TelnetSession &Parent ) : myCursor( *this ), parent(Parent){
+        width = Width;
+        height = Height;
+        supportsColor = parent.parent.SupportedTerms["DEFAULT"].Color;
+        supportsMovement = parent.parent.SupportedTerms["DEFAULT"].ANSIEscape;
+        myCursor.ShouldWrap( parent.parent.SupportedTerms["DEFAULT"].Wraps );
 
     }
 
     int Telnet::TelnetSession::Screen::Width(){
-
+        return width;
     }
 
     int Telnet::TelnetSession::Screen::Height(){
+        return height;
+    }
 
+    Error Telnet::TelnetSession::Screen::SetTerminal( std::string TerminalType ){
+        supportsColor = parent.parent.SupportedTerms[TerminalType].Color;
+        supportsMovement = parent.parent.SupportedTerms[TerminalType].ANSIEscape;
+        myCursor.ShouldWrap( parent.parent.SupportedTerms[TerminalType].Wraps );
+        return Error::None;
+    }
+
+    Error Telnet::TelnetSession::Screen::Resize( int w, int h ){
+        if( w <= 0 || y <= 0 )
+            return Error::InvalidSize;
+        width = w;
+        height = h;
+        if( myCursor.X >= w )
+            myCursor.X = w - 1;
+        if( myCursor.X < 0 )
+            myCursor.X = 0;
+        if( myCursor.Y >= h )
+            myCursor.Y = h - 1;
+        if( myCursor.Y < 0 )
+            myCursor.Y = 0;
+        return Error::None;
     }
 
 
 
-
-
-    Telnet::TelnetSession::TelnetSession(){
-
+    Telnet::TelnetSession::TelnetSession( CommStream s, Telnet &Parent ) : parent(Parent), myScreen(80, 25, *this), stream(s){
+        echos = false;
     }
 
     Error Telnet::TelnetSession::SendLine( std::string line ){

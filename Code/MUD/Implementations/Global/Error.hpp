@@ -38,7 +38,7 @@ namespace GlobalMUD{
         EndOfLine,
         EndOfFile,
         OutOfBounds,
-
+        InvalidSize,
 
         NotAnError
     };

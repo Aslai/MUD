@@ -76,6 +76,7 @@ namespace GlobalMUD{
             class Screen{
             public:
                 class Cursor{
+				friend Screen;
                     Screen& myScreen;
                     int X, Y;
                     bool wraps;
@@ -91,24 +92,28 @@ namespace GlobalMUD{
                     Error SetColor( Color foreground, Color background );
                     Error MoveTo( int x, int y );
                 };
+				friend Cursor;
             private:
                 int width, height;
                 Cursor myCursor;
                 bool supportsColor;
                 bool supportsMovement;
-                bool echos;
-                CommStream stream;
+				TelnetSession &parent;
             public:
-                Screen( int Width, int Height );
+                Screen( int Width, int Height, TelnetSession &Parent );
                 int Width();
                 int Height();
                 Error SetTerminal( std::string TerminalType );
+				Error Resize( int w, int h );
             };
-
-
+		private:
+			Telnet &parent;
+			bool echos;
+			CommStream stream;
         public:
-
-            TelnetSession();
+			Screen myScreen;
+			
+            TelnetSession( CommStream s, Telnet &Parent);
             Error SendLine( std::string line );
             Error SendChar( const char c );
             bool HasLine();
@@ -117,6 +122,7 @@ namespace GlobalMUD{
             char ReadChar();
             std::string PeekLine();
             char PeekChar();
+			
 
 
         };
