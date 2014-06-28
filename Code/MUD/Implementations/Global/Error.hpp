@@ -39,6 +39,7 @@ namespace GlobalMUD{
         EndOfFile,
         OutOfBounds,
         InvalidSize,
+        PartialData,
 
         NotAnError
     };

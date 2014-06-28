@@ -85,6 +85,8 @@
 		<Unit filename="Implementations/Global/Mutex.cpp" />
 		<Unit filename="Implementations/Global/Mutex.hpp" />
 		<Unit filename="Implementations/Global/RefCounter.hpp" />
+		<Unit filename="Implementations/Global/Strings.cpp" />
+		<Unit filename="Implementations/Global/Strings.hpp" />
 		<Unit filename="Implementations/Global/Thread.cpp" />
 		<Unit filename="Implementations/Global/Thread.hpp" />
 		<Unit filename="Implementations/HTTPd/HTTPStatus.cpp" />

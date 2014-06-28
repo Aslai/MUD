@@ -14,7 +14,8 @@
 namespace GlobalMUD{
     class Telnet{
     public:
-        enum class Commands{
+        enum class Commands {
+            NONE,
             //Begin RFC 854 commands//
             SE = 240,   //Subnegotiation end
             NOP,        //No Op
@@ -42,6 +43,9 @@ namespace GlobalMUD{
 
             //Begin RFC 857 commands//
             ECHO = 1,   //Start/stop echoing. Default is no echo.
+
+            //Begin RFC 858 commands//
+            SUPPRESS_GO_AHEAD = 3,
 
             //Begin RFC 1091 commands//
             TERMINAL_TYPE = 24 //
@@ -110,19 +114,27 @@ namespace GlobalMUD{
 			Telnet &parent;
 			bool echos;
 			CommStream stream;
+			void ReadStream();
+			Error ParseCommand( char*& cmd, size_t len );
+			std::string buffer;
+			std::string bufferbacklog;
+
         public:
 			Screen myScreen;
-			
+
             TelnetSession( CommStream s, Telnet &Parent);
             Error SendLine( std::string line );
             Error SendChar( const char c );
+            Error SendCommand( Telnet::Commands cmd1 = Telnet::Commands::NONE, Telnet::Commands cmd2 = Telnet::Commands::NONE );
+            Error SendSubnegotiation( Telnet::Commands cmd, char* data, size_t len );
+
             bool HasLine();
             bool HasChar();
             std::string ReadLine();
             char ReadChar();
             std::string PeekLine();
             char PeekChar();
-			
+			Error Disconnect( bool remoteFailure = false );
 
 
         };
@@ -130,7 +142,7 @@ namespace GlobalMUD{
         static void ConnectionHandler( CommStream &cs, Telnet *parent );
 
     public:
-                std::map<std::string, Terminal> SupportedTerms;
+        std::map<std::string, Terminal> SupportedTerms;
         Telnet();
         void Listen( int port, std::function<void(TelnetSession)> callback );
         Error ReadTerms( std::string fname );

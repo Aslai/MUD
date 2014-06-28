@@ -143,6 +143,10 @@ namespace GlobalMUD{
             return Internal->Encrypt( type );
         }
 
+        Error CommStream::RegisterCallback( std::function<void()> f ){
+            return Internal->RegisterCallback( f );
+        }
+
         CommStream& CommStream::operator=(CommStream other){
             Internal = other.Internal;
             return *this;
@@ -525,6 +529,11 @@ namespace GlobalMUD{
         return Error::InvalidScheme;
     }
 
+    Error CommStreamInternal::RegisterCallback( std::function<void()> f ){
+        callbacks.push_back( f );
+        return Error::None;
+    }
+
 
     int CommStreamInternal::ServiceSockets(){
         char recvbuf[NETBUFFERSIZE];
@@ -584,6 +593,12 @@ namespace GlobalMUD{
                     CommStreams[i].Get()->MyLock.Lock();
                     CommStreams[i].PushData( recvbuf, result );
                     CommStreams[i].Get()->MyLock.Unlock();
+                    auto iter = CommStreams[i].Get()->callbacks.begin();
+                    auto e = CommStreams[i].Get()->callbacks.end();
+                    while( iter != e ){
+                        (*iter)();
+                        iter++;
+                    }
                 }
             } while( doRepeat );
 

@@ -32,6 +32,7 @@ namespace GlobalMUD{
                 case Error::OutOfBounds:        return "Out of bounds (Error::OutOfBounds)";
                 case Error::OutOfMemory:        return "Out of memory (Error::OutOfMemory)";
                 case Error::ParseFailure:       return "Parse failure (Error::ParseFailure)";
+                case Error::PartialData:        return "Data stream ended unexpectedly (Error::PartialData)";
                 case Error::PartialMessage:     return "Partial message received (Error::PartialMessage)";
                 case Error::SocketFailure:      return "Unspecified socket failure (Error::SocketFailure)";
                 case Error::Timeout:            return "Timeout period exceeded (Error::Timeout)";
