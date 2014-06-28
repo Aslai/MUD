@@ -65,6 +65,13 @@ namespace GlobalMUD{
             Bright_Cyan,
             Bright_White
         };
+        struct Terminal{
+            public:
+            std::string Name;
+            bool Color;
+            bool Wraps;
+            bool ANSIEscape;
+        };
         class TelnetSession{
             class Screen{
             public:
@@ -95,6 +102,7 @@ namespace GlobalMUD{
                 Screen( int Width, int Height );
                 int Width();
                 int Height();
+                Error SetTerminal( std::string TerminalType );
             };
 
 
@@ -114,9 +122,12 @@ namespace GlobalMUD{
         };
     private:
         static void ConnectionHandler( CommStream &cs, Telnet *parent );
+
     public:
+                std::map<std::string, Terminal> SupportedTerms;
         Telnet();
         void Listen( int port, std::function<void(TelnetSession)> callback );
+        Error ReadTerms( std::string fname );
 
     };
 }

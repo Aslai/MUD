@@ -9,6 +9,7 @@
 #include <random>
 #include <cstdio>
 #include<functional>
+#include "Telnet/Telnet.hpp"
 
 int testfunc(int a, std::string b){
     printf("%s\t%d\n", b.c_str(), a);
@@ -23,6 +24,7 @@ int main(){
     WSADATA globalWSAData;
     WSAStartup( MAKEWORD(2, 2), &globalWSAData );
     #endif
+
     Test<GlobalMUD::Thread>();
     Test<GlobalMUD::Ciphers::Cipher>();
     Test<GlobalMUD::Ciphers::XOR>();

@@ -4,8 +4,17 @@
 #include "CommStream/CommStream.hpp"
 #include "Global/Thread.hpp"
 #include "Telnet/Telnet.hpp"
+#include <cctype>
+#include <string.h>
 
 #include<functional>
+
+static void strupr( char* str ){
+    while( *str ){
+        *str = toupper( *str );
+        str++;
+    }
+}
 
 
 namespace GlobalMUD{
@@ -130,6 +139,86 @@ namespace GlobalMUD{
 
     void Telnet::Listen( int port, std::function<void(TelnetSession)> callback ){
 
+    }
+
+    Error Telnet::ReadTerms( std::string fname ){
+        FILE* f = fopen( fname.c_str(), "r" );
+        if( f == NULL )
+            return Error::FileNotFound;
+        Terminal temp;
+        bool readingterm = false;
+        while( true ){
+            char buffer[1000];
+
+            fgets( buffer, 500, f );
+            if( feof(f) )
+                break;
+            int strend = strlen( buffer );
+            while(strend >= 0 && ( buffer[strend] == '\0' || isspace(buffer[strend]) ) ){
+                buffer[strend--] = 0;
+            }
+            //printf("%s\n", buffer);
+            if( strlen( buffer ) == 0 ){
+                if( readingterm ){
+                    readingterm = false;
+                    SupportedTerms[temp.Name] = temp;
+
+                }
+            }
+            else{
+                if( !readingterm ){
+                    char* b = buffer;
+                    while( *b != '\0' && isspace( *b ) )
+                            b++;
+                    strupr( b );
+                    temp = Terminal();
+                    temp.Name = b;
+                    readingterm = true;
+                    printf("%s\n", b);
+                }
+                else{
+                    char bufferA[500];
+                    char bufferB[500];
+                    //printf("%s\n", buffer);
+                    //printf("%d\n", sscanf( buffer, "%s%s", bufferA, bufferB ) );
+                    if( sscanf( buffer, "%s%s", bufferA, bufferB ) == 2 ){
+                        char* bA = bufferA;
+                        char* bB = bufferB;
+                        while( *bA != '\0' && isspace( *bA ) )
+                            bA++;
+                        while( *bB != '\0' && isspace( *bB ) )
+                            bB++;
+                        strupr( bA );
+                        strupr( bB );
+                        bool affirmative = bB[0] == 'Y';
+                        printf("%s\n", bA);
+                        printf("%s\n", bB);
+
+                        if( strcmp( bA, "COLOR:" ) == 0 ){
+                            temp.Color = affirmative;
+                            printf("JA");
+                        }
+                        if( strcmp( bA, "WRAPS:" ) == 0 ){
+                            temp.Wraps = affirmative;
+                        }
+                        if( strcmp( bA, "ANSI-ESCAPE:" ) == 0 ){
+                            temp.ANSIEscape = affirmative;
+                        }
+                        if( strcmp( bA, "INHERIT:" ) == 0 ){
+                            std::string n = temp.Name;
+                            temp = SupportedTerms[bB];
+                            temp.Name = n;
+                        }
+
+                    }
+                }
+            }
+        }
+        if( readingterm ){
+            readingterm = false;
+            SupportedTerms[temp.Name] = temp;
+        }
+        return Error::None;
     }
 
 
