@@ -345,7 +345,7 @@ namespace GlobalMUD{
         }
         void HTTPd::ConnectionHandler(CommStream stream, void* parent ){
             printf("A");
-            Thread T( ConnectionHandlerThread, stream, parent );
+            Thread T( std::bind( ConnectionHandlerThread, stream, parent ) );
 
             T.Detach();
             T.Run();
@@ -528,8 +528,8 @@ namespace GlobalMUD{
 
         Error HTTPd::Run(){
             stream = new CommStream(CommStream::BINARY);
-            MyThread = new ThreadMember( &CommStream::ListenOn, stream, Address, Port,
-                                        (std::function<void(CommStream)>)(std::bind(ConnectionHandler, std::placeholders::_1, (void*)this )) );
+            MyThread = new Thread(  std::bind( &CommStream::ListenOn, stream, Address, Port,
+                                        (std::function<void(CommStream)>)(std::bind(ConnectionHandler, std::placeholders::_1, (void*)this )) ) );
             MyThread->Run();
             printf("Thread dead");
             //stream->ListenOn( Address, Port, ConnectionHandler, (void*)this );

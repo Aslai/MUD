@@ -36,7 +36,7 @@ namespace GlobalMUD{
         std::string Address;
         int Port;
         CommStream *stream;
-        ThreadMember *MyThread;
+        Thread *MyThread;
         static void ConnectionHandler(CommStream stream, void* argument );
 
 

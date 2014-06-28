@@ -229,8 +229,8 @@ namespace GlobalMUD{
             TEST("GlobalMUD::CommStream::Listen()");
             int data = 0;
             int port = time(0) % 1000 + 1000;
-            ThreadMember TestListen( &CommStream::ListenOn, &comm, (std::string)"localhost", port,
-                                    (std::function<void(CommStream)>)(std::bind(Testcode, std::placeholders::_1, (void*)&data) ));
+            Thread TestListen( std::bind( &CommStream::ListenOn, &comm, (std::string)"localhost", port,
+                                    (std::function<void(CommStream)>)(std::bind(Testcode, std::placeholders::_1, (void*)&data) ) ) );
             TestListen.Run();
             //TestListen.Join();
             //comm.Listen(80, Testcode, 0);

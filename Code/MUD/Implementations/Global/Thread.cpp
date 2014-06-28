@@ -15,6 +15,35 @@ namespace GlobalMUD{
         if( !detached )
             Join();
     }
+
+    THREADRETURN THREADCallFunction Thread::ThreadFunc(void*d){
+
+        #ifndef _WIN32
+        args->Lock.Wait();
+        #endif
+        Arguments* args = (Arguments*) d;
+        args->f();
+        delete args;
+        return 0;
+    }
+    Thread::Thread( std::function<void()> f ){
+            detached = false;
+            Arguments* args = new Arguments;
+            args->f = f;
+            args->Lock.Lock();
+            Lock = args->Lock;
+            #ifdef _WIN32
+            ThreadHandle = CreateThread( NULL, 2048, GlobalMUD::Thread::ThreadFunc, args, CREATE_SUSPENDED, &ThreadID );
+            valid = ThreadHandle != NULL;
+            #else
+            pthread_attr_t attr;
+            pthread_attr_init( &attr );
+            valid = 0 == pthread_create(&ThreadHandle, NULL, GlobalMUD::Thread::ThreadFunc<Function, Argument...>, args);
+
+            pthread_attr_destroy( &attr );
+            #endif
+        }
+
     #ifdef _WIN32
     void Thread::Run(){
         Lock.Unlock();
@@ -155,8 +184,8 @@ namespace GlobalMUD{
 
         Mutex testCm;
         testCm.Lock();
-        Thread testC_1(functions::testC_1, testCm);
-        Thread testC_2(functions::testC_2, testCm);
+        Thread testC_1( std::bind(functions::testC_1, testCm) );
+        Thread testC_2( std::bind(functions::testC_2, testCm) );
         testC_1.Run();
         testCm.Unlock();
         Thread::Sleep(100);
@@ -167,12 +196,12 @@ namespace GlobalMUD{
         testC_2.Join();
         ASSERT( functions::accumulator == (16777216-100000) );
 
-        Thread testD_1(functions::testD_1);
-        Thread testD_2(functions::testD_2,1);
-        Thread testD_3(functions::testD_3,2,3);
-        Thread testD_4(functions::testD_4,4,5,6);
-        Thread testD_5(functions::testD_5,7,8,9,10);
-        Thread testD_6(functions::testD_6,11,12,13,14,15);
+        Thread testD_1( std::bind(functions::testD_1) );
+        Thread testD_2( std::bind(functions::testD_2,1) );
+        Thread testD_3( std::bind(functions::testD_3,2,3) );
+        Thread testD_4( std::bind(functions::testD_4,4,5,6) );
+        Thread testD_5( std::bind(functions::testD_5,7,8,9,10) );
+        Thread testD_6( std::bind(functions::testD_6,11,12,13,14,15) );
         testD_1.Run(); testD_1.Join();
         testD_2.Run(); testD_2.Join();
         testD_3.Run(); testD_3.Join();
@@ -183,24 +212,24 @@ namespace GlobalMUD{
 
         functions testEf;
         testEf.accumulator2 = 0;
-        Thread testE(testEf,1337);
+        Thread testE( std::bind(testEf,1337) );
         testE.Run();
         testE.Join();
         ASSERT( functions::accumulator == 1337 );
 
         functions testFf;
         testFf.accumulator2 = 0;
-        ThreadMember testF(&functions::testF, &testFf, 100, 101 );
+        Thread testF( std::bind(&functions::testF, &testFf, 100, 101 ) );
         testF.Run();
         testF.Join();
         ASSERT( testFf.accumulator2 == 201 );
 
-        Thread testG(functions::testG,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26);
+        Thread testG( std::bind(functions::testG,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26) );
         testG.Run();
         testG.Join();
         ASSERT( functions::accumulator == 1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19+20+21+22+23+24+25+26 );
 
-        Thread testG2(functions::testG2,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26);
+        Thread testG2( std::bind(functions::testG2,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26) );
         testG2.Run();
         testG2.Join();
         ASSERT( functions::accumulator == 1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19+20+21+22+23+24+25+26+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15+16+17+18+19+20+21+22+23+24+25+26 );

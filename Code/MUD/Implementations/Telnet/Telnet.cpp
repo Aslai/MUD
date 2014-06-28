@@ -486,16 +486,19 @@ namespace GlobalMUD{
 
 
 
-    void Telnet::ConnectionHandler( CommStream &cs, Telnet *parent ){
-
+    void Telnet::ConnectionHandler( CommStream cs, std::function<void(TelnetSession*)> callback ){
+        TelnetSession* ts = new TelnetSession( cs, *this );
+        Thread thread( std::bind(callback, ts) );
+        thread.Detach();
     }
 
     Telnet::Telnet(){
 
     }
 
-    void Telnet::Listen( int port, std::function<void(TelnetSession)> callback ){
-
+    void Telnet::Listen( int port, std::function<void(TelnetSession*)> callback ){
+        CommStream stream;
+        stream.Listen( port, std::bind( &Telnet::ConnectionHandler, this, std::placeholders::_1, callback ) );
     }
 
     Error Telnet::ReadTerms( std::string fname ){
@@ -576,8 +579,5 @@ namespace GlobalMUD{
         }
         return Error::None;
     }
-
-
-
 }
 

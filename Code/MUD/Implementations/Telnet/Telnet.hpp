@@ -78,6 +78,7 @@ namespace GlobalMUD{
             long Preference;
         };
         class TelnetSession{
+            friend Telnet;
             class Screen{
             public:
                 class Cursor{
@@ -130,6 +131,7 @@ namespace GlobalMUD{
 			Screen myScreen;
 
             TelnetSession( CommStream s, Telnet &Parent);
+
             Error SendLine( std::string line );
             Error SendChar( const char c );
             Error SendCommand( Telnet::Commands cmd1 = Telnet::Commands::NONE, Telnet::Commands cmd2 = Telnet::Commands::NONE );
@@ -146,13 +148,14 @@ namespace GlobalMUD{
 
 
         };
+        friend TelnetSession;
     private:
-        static void ConnectionHandler( CommStream &cs, Telnet *parent );
+        void ConnectionHandler( CommStream cs, std::function<void(TelnetSession*)> callback );
 
     public:
         std::map<std::string, Terminal> SupportedTerms;
         Telnet();
-        void Listen( int port, std::function<void(TelnetSession)> callback );
+        void Listen( int port, std::function<void(TelnetSession*)> callback );
         Error ReadTerms( std::string fname );
 
     };

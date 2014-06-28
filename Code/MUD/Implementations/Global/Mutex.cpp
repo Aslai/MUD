@@ -16,6 +16,12 @@ namespace GlobalMUD{
             return *this;
 		}
 
+		Mutex::Mutex( const Mutex &other ){
+            if( mutex.References() <= 1 )
+                CloseHandle( *mutex );
+            mutex = other.mutex;
+		}
+
         Mutex::~Mutex()
         {
             if( mutex.References() <= 1 )

@@ -18,12 +18,22 @@ int test( std::function<int(int)> f ){
     return f( 6 );
 }
 
+void TNet(GlobalMUD::Telnet::TelnetSession* t){
+    GlobalMUD::Thread::Sleep( 1000 );
+    t->SendLine("Howdy");
+    printf("Screen:\tW: %d\tH: %d\n", t->myScreen.Width(), t->myScreen.Height() );
+
+}
+
 int main(){
     test( std::bind(testfunc, std::placeholders::_1, "Test" ) );
     #ifdef _WIN32
     WSADATA globalWSAData;
     WSAStartup( MAKEWORD(2, 2), &globalWSAData );
     #endif
+
+    GlobalMUD::Telnet t;
+    t.Listen( 23, TNet );
 
     Test<GlobalMUD::Thread>();
     Test<GlobalMUD::Ciphers::Cipher>();
