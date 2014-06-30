@@ -13,17 +13,17 @@
 
 namespace GlobalMUD{
 
-    Telnet::TelnetSession::TheScreen::Cursor::Cursor( TheScreen& screen ) : myScreen(screen) {
+    Telnet::TelnetSession::TheScreen::TheCursor::TheCursor( TheScreen& screen ) : myScreen(screen) {
         X = Y = 0;
         wraps = false;
     }
 
-    Error Telnet::TelnetSession::TheScreen::Cursor::ShouldWrap( bool shouldWrap ){
+    Error Telnet::TelnetSession::TheScreen::TheCursor::ShouldWrap( bool shouldWrap ){
         wraps = shouldWrap;
         return Error::None;
     }
 
-    Error Telnet::TelnetSession::TheScreen::Cursor::Advance( int amount ){
+    Error Telnet::TelnetSession::TheScreen::TheCursor::Advance( int amount ){
         if( X < myScreen.Width() - 1 ){
             X++;
         }
@@ -36,18 +36,18 @@ namespace GlobalMUD{
         return Error::None;
     }
 
-    Error Telnet::TelnetSession::TheScreen::Cursor::LineFeed( int amount ){
+    Error Telnet::TelnetSession::TheScreen::TheCursor::LineFeed( int amount ){
         if( Y < myScreen.Height() - 1 )
             Y++;
         return Error::None;
     }
 
-    Error Telnet::TelnetSession::TheScreen::Cursor::CarriageReturn(){
+    Error Telnet::TelnetSession::TheScreen::TheCursor::CarriageReturn(){
         X = 0;
         return Error::None;
     }
 
-    Error Telnet::TelnetSession::TheScreen::Cursor::MoveTo( int x, int y ){
+    Error Telnet::TelnetSession::TheScreen::TheCursor::MoveTo( int x, int y ){
         if( X < 0 || X >= myScreen.Width() || Y < 0 || Y >= myScreen.Height() ){
             return Error::OutOfBounds;
         }
@@ -59,15 +59,17 @@ namespace GlobalMUD{
 
 
 
-    Telnet::TelnetSession::TheScreen::TheScreen( int Width, int Height, TelnetSession &Parent ) : parent(Parent), myCursor( *this ){
+    Telnet::TelnetSession::TheScreen::TheScreen( int Width, int Height, TelnetSession &Parent ) : parent(Parent), Cursor( *this ){
         width = Width;
         height = Height;
         supportsColor = parent.parent.SupportedTerms["DEFAULT"].Color;
         supportsEscapeCodes = parent.parent.SupportedTerms["DEFAULT"].ANSIEscape;
-        myCursor.ShouldWrap( parent.parent.SupportedTerms["DEFAULT"].Wraps );
+        Cursor.ShouldWrap( parent.parent.SupportedTerms["DEFAULT"].Wraps );
 
         BGColor = Telnet::Color::Default;
         FGColor = Telnet::Color::Default;
+
+        TerminalType = "DEFAULT";
 
     }
 
@@ -79,11 +81,16 @@ namespace GlobalMUD{
         return height;
     }
 
-    Error Telnet::TelnetSession::TheScreen::SetTerminal( std::string TerminalType ){
-        supportsColor = parent.parent.SupportedTerms[TerminalType].Color;
-        supportsEscapeCodes = parent.parent.SupportedTerms[TerminalType].ANSIEscape;
-        myCursor.ShouldWrap( parent.parent.SupportedTerms[TerminalType].Wraps );
+    Error Telnet::TelnetSession::TheScreen::SetTerminal( std::string Type ){
+        supportsColor = parent.parent.SupportedTerms[Type].Color;
+        supportsEscapeCodes = parent.parent.SupportedTerms[Type].ANSIEscape;
+        Cursor.ShouldWrap( parent.parent.SupportedTerms[Type].Wraps );
+        TerminalType = Type;
         return Error::None;
+    }
+
+    std::string Telnet::TelnetSession::TheScreen::GetTerminal( ){
+        return TerminalType;
     }
 
     Error Telnet::TelnetSession::TheScreen::Resize( int w, int h ){
@@ -91,14 +98,14 @@ namespace GlobalMUD{
             return Error::InvalidSize;
         width = w;
         height = h;
-        if( myCursor.X >= w )
-            myCursor.X = w - 1;
-        if( myCursor.X < 0 )
-            myCursor.X = 0;
-        if( myCursor.Y >= h )
-            myCursor.Y = h - 1;
-        if( myCursor.Y < 0 )
-            myCursor.Y = 0;
+        if( Cursor.X >= w )
+            Cursor.X = w - 1;
+        if( Cursor.X < 0 )
+            Cursor.X = 0;
+        if( Cursor.Y >= h )
+            Cursor.Y = h - 1;
+        if( Cursor.Y < 0 )
+            Cursor.Y = 0;
         return Error::None;
     }
 
@@ -590,9 +597,9 @@ namespace GlobalMUD{
 
     }
 
-    void Telnet::Listen( int port, std::function<void(TelnetSession*)> callback ){
+    Error Telnet::Listen( int port, std::function<void(TelnetSession*)> callback ){
         CommStream stream( CommStream::BINARY );
-        stream.Listen( port, std::bind( &Telnet::ConnectionHandler, this, std::placeholders::_1, callback ) );
+        return stream.Listen( port, std::bind( &Telnet::ConnectionHandler, this, std::placeholders::_1, callback ) );
     }
 
     Error Telnet::ReadTerms( std::string fname ){
