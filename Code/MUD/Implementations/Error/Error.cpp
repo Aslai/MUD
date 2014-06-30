@@ -1,4 +1,4 @@
-#include "Global/Error.hpp"
+#include "Error/Error.hpp"
 #include <cstdio>
 namespace GlobalMUD{
     namespace ERROR{

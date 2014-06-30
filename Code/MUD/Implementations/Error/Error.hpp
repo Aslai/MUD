@@ -1,8 +1,8 @@
 #ifdef ERROR
 #undef ERROR
 #endif
-#ifndef MUD_GLOBAL_ERROR_HPP
-#define MUD_GLOBAL_ERROR_HPP
+#ifndef MUD_ERROR_ERROR_HPP
+#define MUD_ERROR_ERROR_HPP
 
 #include <string>
 #include <map>

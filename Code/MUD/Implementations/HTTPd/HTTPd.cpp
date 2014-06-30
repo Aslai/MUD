@@ -1,12 +1,12 @@
 #include<map>
 #include<string>
 #include<cstring>
-#include "Global/Error.hpp"
-#include "Global/Thread.hpp"
+#include "Error/Error.hpp"
+#include "Thread/Thread.hpp"
 #include "HTTPd/HTTPd.hpp"
 #include "CommStream/CommStream.hpp"
-#include "Global/Filesystem.hpp"
-#include "HTTPd/MIME.hpp"
+#include "Filesystem/Filesystem.hpp"
+#include "Filesystem/MIME.hpp"
 #include "HTTPd/HTTPStatus.hpp"
 
 #include <cctype>
@@ -163,7 +163,7 @@ namespace GlobalMUD{
 
             while(state != -1){
                 if( time(0) - starttime > timeout ){
-                    //myerror = Error::Timeout;
+                    myerror = Error::Timeout;
                 }
                 Error e = Error::None;
                 while( true ){
@@ -227,9 +227,13 @@ namespace GlobalMUD{
                             }
                             pos = 0;
                             std::vector<std::string> dir;
+                            bool firstRequest = true;
                             do{
                                 size_t oldpos = pos+1;
                                 pos = r.request.find_first_of('/', oldpos);
+                                if( pos == std::string::npos && firstRequest )
+                                    break;
+                                firstRequest = false;
                                 dir.push_back( r.request.substr(oldpos, pos-oldpos) );
                             }while( pos != std::string::npos );
 

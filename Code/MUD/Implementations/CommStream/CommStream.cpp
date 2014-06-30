@@ -1,6 +1,6 @@
 #include "CommStream.hpp"
-#include "Global/Error.hpp"
-#include "Global/Thread.hpp"
+#include "Error/Error.hpp"
+#include "Thread/Thread.hpp"
 #include <climits>
 #include <cstring>
 
@@ -67,7 +67,7 @@ namespace GlobalMUD{
         }
 
         CommStream::CommStream( CommStream::ReceiveType rectype ) : Internal(new CommStreamInternal(rectype)){
-            transmitting = false;
+
         }
 
         CommStream::~CommStream(){
@@ -109,7 +109,7 @@ namespace GlobalMUD{
             FILE* f = fopen( path.c_str(), "rb" );
             if( f == NULL )
                 return Error::FileNotFound;
-            transmitting = true;
+            Internal->transmitting = true;
             Error err = Error::None;
             int counter = 0;
             do{
@@ -127,7 +127,7 @@ namespace GlobalMUD{
                     break;
             } while( !feof(f) );
             fclose(f);
-            transmitting = false;
+            Internal->transmitting = false;
             return err;
         }
 
@@ -152,8 +152,8 @@ namespace GlobalMUD{
             return *this;
         }
 
-        int CommStream::ServiceSockets(){
-            return CommStreamInternal::ServiceSockets();
+        int CommStream::ServiceSockets(CommStreamInternal *ptr){
+            return CommStreamInternal::ServiceSockets(ptr);
         }
 
         int CommStream::SendBufferSize(){
@@ -196,7 +196,6 @@ namespace GlobalMUD{
             while( true ){
                 Error a = comm.Receive(buf);
                 if( a == Error::None ){
-
 
 
                     if( buf.substr(0, 29) == "ERROR :Closing link: (unknown" ){
@@ -255,34 +254,6 @@ namespace GlobalMUD{
         }
 
         #endif
-    void CommStreamInternal::ServiceSocketsLoop(){
-        int tosleep = 5;
-        int tosleepmax = 100;
-        int tosleepmin = 5;
-        //Thread::Sleep(1000);
-
-        while(true){
-            int result = CommStream::ServiceSockets();
-            if( result < 0 ){
-                delete CommStreamInternal::MyThread;
-                CommStreamInternal::MyThread = 0;
-                return;
-            }
-            if( result == 0 )
-                tosleep++;
-            else{
-                tosleep = tosleepmin;
-            }
-            if( tosleep < tosleepmin )
-                tosleep = tosleepmin;
-            if( tosleep > tosleepmax )
-                tosleep = tosleepmax;
-            Thread::Sleep(tosleep);
-
-        }
-    }
-
-    Thread* CommStreamInternal::MyThread = 0;
 
     CommStreamInternal::Message::Message(std::string message, int flagss ) : msg((char*)malloc(message.length()+1), free) {
         memcpy( msg.get(), message.c_str(), message.length() );
@@ -307,10 +278,7 @@ namespace GlobalMUD{
         RecvLinesBuffer = "";
         connecting = 0;
         disconnecting = false;
-        if( MyThread == 0 ){
-            MyThread = new Thread( ServiceSocketsLoop );
-            MyThread->Run();
-        }
+        transmitting = false;
     }
 
     CommStreamInternal::~CommStreamInternal(){
@@ -453,7 +421,9 @@ namespace GlobalMUD{
             CommStream toPass(MyReceiveType);
             toPass.UseSocket(asock);
             func( toPass );
-
+            #ifdef DISABLETHREADS
+           // break;
+            #endif // DISABLETHREADS
         }
         return Error::ConnectionFailure;
     }
@@ -466,6 +436,7 @@ namespace GlobalMUD{
         MyLock.Lock();
         SendBuffer.push_back( Message(message, important?CommStreamInternal::Message::IMPORTANT:CommStreamInternal::Message::NONE) );
         MyLock.Unlock();
+        CommStream::ServiceSockets(this);
         return Error::None;
     }
 
@@ -477,12 +448,14 @@ namespace GlobalMUD{
         MyLock.Lock();
         SendBuffer.push_back( Message((const char*)message, len, important?CommStreamInternal::Message::IMPORTANT:CommStreamInternal::Message::NONE) );
         MyLock.Unlock();
+        CommStream::ServiceSockets(this);
         return Error::None;
     }
 
     Error CommStreamInternal::Receive( std::string &message ){
         if( !isconnected )
             return Error::NotConnected;
+        CommStream::ServiceSockets(this);
         if( RecvBuffer.size() == 0 )
             return Error::NoData;
         MyLock.Lock();
@@ -497,6 +470,7 @@ namespace GlobalMUD{
         len = 0;
         if( !isconnected )
             return Error::NotConnected;
+        CommStream::ServiceSockets(this);
         if( RecvBuffer.size() == 0 )
             return Error::NoData;
         MyLock.Lock();
@@ -534,28 +508,27 @@ namespace GlobalMUD{
         return Error::None;
     }
 
+    int CommStreamInternal::ServiceSocket( CommStreamInternal *ptr ){
+            char recvbuf[NETBUFFERSIZE];
+            Lock.Lock();
+            int ret = 0;
 
-    int CommStreamInternal::ServiceSockets(){
-        char recvbuf[NETBUFFERSIZE];
-        Lock.Lock();
-        int ret = 0;
-        for( unsigned int i = 0; i < CommStreams.size() || i > INT_MAX - 2; ++i ){
-            if( !CommStreams[i].Connected() ){
-                CommStreams[i].Terminate();
-                CommStreams.erase( CommStreams.begin() + i );
-                continue;
+            if( !ptr->Connected() ){
+                ptr->Terminate();
+                //CommStreams.erase( CommStreams.begin() + i );
+                return ret;
             }
 
             bool doRepeat;
             bool die = false;;
             do {
                 doRepeat = false;
-                int result = recv( CommStreams[i].GetConnection(), recvbuf, NETBUFFERSIZE, 0 );
+                int result = recv( ptr->Connection, recvbuf, NETBUFFERSIZE, 0 );
                 if( result > 0 )
                     ret++;
 
                 if( result == 0 ){
-                    CommStreams[i].Terminate();
+                    ptr->Terminate();
                     die = true;
                     break;
                 }
@@ -569,7 +542,7 @@ namespace GlobalMUD{
                     case WSAEINTR: break;
                     default:
 
-                        CommStreams[i].Terminate();
+                        ptr->Terminate();
                         die = true;
                         break;
                     }
@@ -579,7 +552,7 @@ namespace GlobalMUD{
                     //case EAGAIN:
                     case EWOULDBLOCK: break;
                     default:
-                        CommStreams[i].Terminate();
+                        ptr->Terminate();
                         die = true;
                         break;
                     }
@@ -587,11 +560,11 @@ namespace GlobalMUD{
 
                 }
                 else {
-                    CommStreams[i].Get()->MyLock.Lock();
-                    CommStreams[i].PushData( recvbuf, result );
-                    CommStreams[i].Get()->MyLock.Unlock();
-                    auto iter = CommStreams[i].Get()->callbacks.begin();
-                    auto e = CommStreams[i].Get()->callbacks.end();
+                    ptr->MyLock.Lock();
+                    ptr->PushData( recvbuf, result );
+                    ptr->MyLock.Unlock();
+                    auto iter = ptr->callbacks.begin();
+                    auto e = ptr->callbacks.end();
                     while( iter != e ){
                         (*iter)();
                         iter++;
@@ -600,18 +573,18 @@ namespace GlobalMUD{
             } while( doRepeat );
 
             if( !die ){
-                while( CommStreams[i].CanSend() ){
-                    CommStreams[i].Get()->MyLock.Lock();
-                    Message msg = CommStreams[i].Get()->GetSend();
-                    CommStreams[i].Get()->MyLock.Unlock();
+                while( ptr->CanSend() ){
+                    ptr->MyLock.Lock();
+                    Message msg = ptr->GetSend();
+                    ptr->MyLock.Unlock();
                     int size = msg.length;
                     while( size > 0 ){
 
-                        int result = send( CommStreams[i].GetConnection(), msg.msg.get() + msg.length - size, size, 0 );
+                        int result = send( ptr->Connection, msg.msg.get() + msg.length - size, size, 0 );
                         if( result > 0 )
                             ret++;
                         if( result == 0 ){
-                            CommStreams[i].Terminate();
+                            ptr->Terminate();
                             die = true;
                             break;
                         }
@@ -622,7 +595,7 @@ namespace GlobalMUD{
                             case WSAEWOULDBLOCK:
                             case WSAEINPROGRESS:
                             case WSAEINTR: break;
-                            default: CommStreams[i].Terminate();
+                            default: ptr->Terminate();
                                 die = true;
                                 size = 0;
                                 break;
@@ -632,7 +605,7 @@ namespace GlobalMUD{
                         case EMSGSIZE: doRepeat = true;
                         //case EAGAIN:
                         case EWOULDBLOCK: break;
-                        default:CommStreams[i].Terminate();
+                        default:ptr->Terminate();
                                 die = true;
                                 size = 0;
                                 break;
@@ -647,13 +620,27 @@ namespace GlobalMUD{
                         break;
                 }
             }
-            if( CommStreams[i].Internal->disconnecting == 2 || (!die && CommStreams[i].Internal->disconnecting == 1 && !CommStreams[i].CanSend() && !CommStreams[i].transmitting) ){
-                closesocket( CommStreams[i].Internal->Connection );
-                CommStreams[i].Internal->isconnected = false;
-                CommStreams[i].Internal->aborted = true;
+            if( ptr->disconnecting == 2 || (!die && ptr->disconnecting == 1 && !ptr->CanSend() && !ptr->transmitting) ){
+                closesocket( ptr->Connection );
+                ptr->isconnected = false;
+                ptr->aborted = true;
             }
             if( die ){
-                CommStreams.erase( CommStreams.begin() + i-- );
+                //CommStreams.erase( CommStreams.begin() + i-- );
+            }
+            Lock.Unlock();
+            return ret;
+    }
+
+    int CommStreamInternal::ServiceSockets( CommStreamInternal *ptr ){
+        Lock.Lock();
+        int ret = 0;
+        if( ptr != NULL ){
+            ret = ServiceSocket( ptr );
+        }
+        else {
+            for( unsigned int i = 0; i < CommStreams.size() || i > INT_MAX - 2; ++i ){
+                ret += ServiceSocket( CommStreams[i].Get() );
             }
         }
         Lock.Unlock();

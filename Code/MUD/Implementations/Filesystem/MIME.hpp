@@ -1,5 +1,5 @@
-#ifndef MUD_HTTPD_MIME_HPP
-#define MUD_HTTPD_MIME_HPP
+#ifndef MUD_FILESYSTEM_MIME_HPP
+#define MUD_FILESYSTEM_MIME_HPP
 
 #include <string>
 namespace GlobalMUD{

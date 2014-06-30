@@ -1,15 +1,15 @@
 #include<map>
 #include<string>
-#include "Global/Error.hpp"
+#include "Error/Error.hpp"
 #include "CommStream/CommStream.hpp"
-#include "Global/Thread.hpp"
+#include "Thread/Thread.hpp"
 #include "Telnet/Telnet.hpp"
 #include <cctype>
 #include <string.h>
 
 #include<functional>
 
-#include "Global/Strings.hpp"
+#include "Strings/Strings.hpp"
 
 namespace GlobalMUD{
 
@@ -417,7 +417,7 @@ namespace GlobalMUD{
                         case 1:{
                             if( term == bestTerminal ){
                                 requestingTerminal = 2;
-
+                                printf("|%s|\n", term.c_str());
                                 Screen.SetTerminal( StringToUpper( term ) );
                             }
                             else

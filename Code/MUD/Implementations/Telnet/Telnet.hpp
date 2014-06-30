@@ -4,9 +4,9 @@
 
 #include<map>
 #include<string>
-#include "Global/Error.hpp"
+#include "Error/Error.hpp"
 #include "CommStream/CommStream.hpp"
-#include "Global/Thread.hpp"
+#include "Thread/Thread.hpp"
 
 #include<functional>
 
@@ -207,10 +207,10 @@ namespace GlobalMUD{
             template<class... Args>
             Error SendANSICode( ANSICodes code, Args... args ){
                 if( !Screen.supportsColor && code == Telnet::ANSICodes::SelectGraphicRendition ){
-                    //return Error::Unsupported;
+                    return Error::Unsupported;
                 }
                 if( !Screen.supportsEscapeCodes ){
-                    //return Error::Unsupported;
+                    return Error::Unsupported;
                 }
 
                 struct{

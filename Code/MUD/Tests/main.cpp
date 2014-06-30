@@ -2,21 +2,24 @@
 #include "Tester.hpp"
 #include "CommStream/CommStream.hpp"
 #include "CommStream/Cipher.hpp"
-#include "Global/Thread.hpp"
+#include "Thread/Thread.hpp"
 #include "HTTPd/HTTPd.hpp"
-#include "Global/Error.hpp"
+#include "Error/Error.hpp"
 
 #include <random>
 #include <cstdio>
 #include<functional>
 #include "Telnet/Telnet.hpp"
-#include "Global/Strings.hpp"
+#include "Strings/Strings.hpp"
 
 using namespace GlobalMUD;
 
 void TNet(GlobalMUD::Telnet::TelnetSession* t){
     t->SendANSICode( Telnet::ANSICodes::CursorHide );
     while( t->Connected() ){
+            #ifdef DISABLETHREADS
+            CommStream::ServiceSockets();
+            #endif // DISABLETHREADS
         Thread::Sleep(100);
         t->SendANSICode( Telnet::ANSICodes::EraseDisplay, 2 );
         t->SendANSICode( Telnet::ANSICodes::CursorPosition, t->Screen.Height(), 1 );
@@ -37,6 +40,7 @@ void TNet(GlobalMUD::Telnet::TelnetSession* t){
         t->SendLine( title );
 
     }
+
 }
 
 int main(){
@@ -46,11 +50,13 @@ int main(){
     #endif
 
     GlobalMUD::Telnet t;
+    t.ReadTerms( "terminals.txt" );
     t.Listen( 45141, TNet );
+    return 0;
 
     Test<GlobalMUD::Thread>();
     Test<GlobalMUD::Ciphers::Cipher>();
     Test<GlobalMUD::Ciphers::XOR>();
     Test<GlobalMUD::CommStream>();
-    Test<GlobalMUD::HTTPd>();
+    //Test<GlobalMUD::HTTPd>();
 }

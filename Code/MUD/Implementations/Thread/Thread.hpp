@@ -1,5 +1,5 @@
-#ifndef MUD_GLOBAL_THREAD_HPP
-#define MUD_GLOBAL_THREAD_HPP
+#ifndef MUD_THREAD_THREAD_HPP
+#define MUD_THREAD_THREAD_HPP
 
 
 #ifdef _WIN32
@@ -13,7 +13,7 @@
 #endif
 #include <vector>
 #include <map>
-#include "Global/Mutex.hpp"
+#include "Thread/Mutex.hpp"
 #include <functional>
 
 namespace GlobalMUD{

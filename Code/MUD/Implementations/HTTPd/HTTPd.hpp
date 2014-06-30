@@ -4,9 +4,9 @@
 
 #include<map>
 #include<string>
-#include "Global/Error.hpp"
+#include "Error/Error.hpp"
 #include "CommStream/CommStream.hpp"
-#include "Global/Thread.hpp"
+#include "Thread/Thread.hpp"
 
 namespace GlobalMUD{
     class HTTPd{

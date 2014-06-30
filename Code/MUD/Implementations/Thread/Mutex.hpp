@@ -1,5 +1,5 @@
-#ifndef MUD_GLOBAL_MUTEX_HPP
-#define MUD_GLOBAL_MUTEX_HPP
+#ifndef MUD_THREAD_MUTEX_HPP
+#define MUD_THREAD_MUTEX_HPP
 
 
 #ifdef _WIN32
@@ -7,7 +7,7 @@
 #else
     #include <pthread.h>
 #endif
-#include "Global/RefCounter.hpp"
+#include "Memory/RefCounter.hpp"
 
 namespace GlobalMUD{
     class Mutex{

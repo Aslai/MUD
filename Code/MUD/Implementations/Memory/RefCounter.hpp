@@ -1,5 +1,5 @@
-#ifndef MUD_GLOBAL_REFCOUNTER_HPP
-#define MUD_GLOBAL_REFCOUNTER_HPP
+#ifndef MUD_MEMORY_REFCOUNTER_HPP
+#define MUD_MEMORY_REFCOUNTER_HPP
 
 namespace GlobalMUD{
     template<class type>

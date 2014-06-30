@@ -1,12 +1,12 @@
-#include "Global/Thread.hpp"
+#include "Thread/Thread.hpp"
 #ifdef _WIN32
     #include <windows.h>
 #else
     #include <pthread.h>
     #include <unistd.h>
 #endif
-#include "Global/Mutex.hpp"
-#include "Global/Error.hpp"
+#include "Thread/Mutex.hpp"
+#include "Error/Error.hpp"
 #include <cstdio>
 
 namespace GlobalMUD{
@@ -27,6 +27,9 @@ namespace GlobalMUD{
         return 0;
     }
     Thread::Thread( std::function<void()> f ){
+            #ifdef DISABLETHREADS
+            f();
+            #else
             detached = false;
             Arguments* args = new Arguments;
             args->f = f;
@@ -41,6 +44,7 @@ namespace GlobalMUD{
             valid = 0 == pthread_create(&ThreadHandle, NULL, GlobalMUD::Thread::ThreadFunc<Function, Argument...>, args);
 
             pthread_attr_destroy( &attr );
+            #endif
             #endif
         }
 

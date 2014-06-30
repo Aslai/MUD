@@ -1,6 +1,6 @@
 
 #include <string>
-#include "Global/Filesystem.hpp"
+#include "Filesystem/Filesystem.hpp"
 
 #ifdef _WIN32
     #include <windows.h>

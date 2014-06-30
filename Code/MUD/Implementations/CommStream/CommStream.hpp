@@ -5,7 +5,7 @@
 #include <vector>
 #include <deque>
 #include <memory>
-#include "Global/RefCounter.hpp"
+#include "Memory/RefCounter.hpp"
 #include <utility>
 #ifdef _WIN32
     #include <windows.h>
@@ -24,10 +24,10 @@
     #define SOCKET unsigned int
 #endif
 
-#include "Global/Error.hpp"
-#include "Global/Mutex.hpp"
+#include "Error/Error.hpp"
+#include "Thread/Mutex.hpp"
 #include "CommStream/Cipher.hpp"
-#include "Global/Thread.hpp"
+#include "Thread/Thread.hpp"
 #define NETBUFFERSIZE 1000
 
 
@@ -53,7 +53,6 @@ namespace GlobalMUD{
         CommStreamInternal* Get();
         SOCKET GetConnection();
         RefCounter<CommStreamInternal> Internal;
-        bool transmitting;
 
 
     public:
@@ -76,7 +75,7 @@ namespace GlobalMUD{
         #ifdef RunUnitTests
         static bool RunTests();
         #endif
-        static int ServiceSockets();
+        static int ServiceSockets(CommStreamInternal *ptr = NULL);
 
 
     };
@@ -102,11 +101,10 @@ namespace GlobalMUD{
         int ImportantMessages;
         std::deque<Message> RecvBuffer;
         std::string RecvLinesBuffer;
-        static Thread* MyThread;
-        static void ServiceSocketsLoop();
         bool aborted;
         bool isconnected;
         unsigned int connecting;
+        bool transmitting;
         void Terminate();
         void PushData( char* data, size_t len );
         bool CanSend();
@@ -131,7 +129,9 @@ namespace GlobalMUD{
         Error RegisterCallback( std::function<void()> );
         int SendBufferSize();
 
-        static int ServiceSockets();
+        static int ServiceSockets(CommStreamInternal *ptr = NULL);
+        static int ServiceSocket(CommStreamInternal *ptr = NULL);
+
         static void PushStream( CommStream topush );
         static Mutex Lock;
         static std::vector<CommStream> CommStreams;

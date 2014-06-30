@@ -1,5 +1,5 @@
-#ifndef MUD_GLOBAL_STRINGS_HPP
-#define MUD_GLOBAL_STRINGS_HPP
+#ifndef MUD_STRINGS_STRINGS_HPP
+#define MUD_STRINGS_STRINGS_HPP
 
 #include<string>
 #include<string.h>

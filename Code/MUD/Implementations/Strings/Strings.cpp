@@ -1,4 +1,4 @@
-#include "Global/Strings.hpp"
+#include "Strings/Strings.hpp"
 #include <cstring>
 #include <cctype>
 #include<cstdio>

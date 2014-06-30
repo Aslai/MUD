@@ -3,7 +3,7 @@
 
 #include <string>
 #include <random>
-#include "Global/Error.hpp"
+#include "Error/Error.hpp"
 
 
 namespace GlobalMUD{
