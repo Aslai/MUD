@@ -25,4 +25,9 @@ namespace GlobalMUD{
         }
         return str;
     }
+
+    unsigned int HashString(std::string v){
+        return HashString(v.c_str() );
+    }
+
 }

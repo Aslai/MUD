@@ -13,9 +13,9 @@
 
 namespace GlobalMUD{
     void Telnet::ConnectionHandler( CommStream cs, std::function<void(TelnetSession)> callback ){
+        //Run the user's specified callback function
         TelnetSession ts( cs, *this );
         callback( ts );
-        //std::bind(callback, ts)();
     }
 
     Telnet::Telnet(){
@@ -23,6 +23,7 @@ namespace GlobalMUD{
     }
 
     Error Telnet::Listen( int port, std::function<void(TelnetSession)> callback ){
+        //Start a CommStream daemon that will fire off new TelnetSession's on connect
         CommStream stream( CommStream::BINARY );
         return stream.Listen( port, std::bind( &Telnet::ConnectionHandler, this, std::placeholders::_1, callback ) );
     }
@@ -32,7 +33,7 @@ namespace GlobalMUD{
         if( f == NULL )
             return Error::FileNotFound;
         Terminal temp;
-        bool readingterm = false;
+        bool readingterm = false; //Indicates whether or not we're reading a terminal or parameter
         while( true ){
             char buffer[1000];
 
@@ -44,15 +45,21 @@ namespace GlobalMUD{
                 buffer[strend--] = 0;
             }
 
+            //If we're on a blank line...
             if( strlen( buffer ) == 0 ){
+                //...And we were reading a definition...
                 if( readingterm ){
+                    //Then store it.
                     readingterm = false;
                     SupportedTerms[temp.Name] = temp;
 
                 }
             }
+            //Otherwise if we're not on a blank line...
             else{
+                //And if we aren't reading a definition...
                 if( !readingterm ){
+                    //Then this is the name of the next terminal. Prepare to read parameters.
                     char* b = buffer;
                     while( *b != '\0' && isspace( *b ) )
                             b++;
@@ -62,43 +69,48 @@ namespace GlobalMUD{
                     readingterm = true;
 
                 }
+                //But if we are...
                 else{
-                    char bufferA[500];
-                    char bufferB[500];
+                    char *iter = buffer;
+                    while( *iter != ':' && *iter != '\0' ){
+                        iter++;
+                    }
+                    if( *iter != '\0' ){
+                        *iter = '\0';
+                        char* Key = buffer;
+                        char* Value = iter+1;
 
-                    if( sscanf( buffer, "%s%s", bufferA, bufferB ) == 2 ){
-                        char* bA = bufferA;
-                        char* bB = bufferB;
-                        while( *bA != '\0' && isspace( *bA ) )
-                            bA++;
-                        while( *bB != '\0' && isspace( *bB ) )
-                            bB++;
-                        strupr( bA );
-                        strupr( bB );
-                        bool affirmative = bB[0] == 'Y';
+                        //Trim the whitespace off the start of Key and Value.
+                        while( *Key != '\0' && isspace( *Key ) )
+                            Key++;
+                        while( *Value != '\0' && isspace( *Value ) )
+                            Value++;
 
-                        if( strcmp( bA, "COLOR:" ) == 0 ){
-                            temp.Color = affirmative;
-                        }
-                        if( strcmp( bA, "WRAPS:" ) == 0 ){
-                            temp.Wraps = affirmative;
-                        }
-                        if( strcmp( bA, "ANSI-ESCAPE:" ) == 0 ){
-                            temp.ANSIEscape = affirmative;
-                        }
-                        if( strcmp( bA, "PREFERENCE:" ) == 0 ){
-                            temp.Preference = atol( bB );
-                        }
-                        if( strcmp( bA, "INHERIT:" ) == 0 ){
-                            std::string n = temp.Name;
-                            temp = SupportedTerms[bB];
-                            temp.Name = n;
-                        }
+                        //If we actually have a parameter value...
+                        if( strlen(Value) != 0 ){
+                            strupr( Key );
+                            strupr( Value );
+                            bool affirmative = Value[0] == 'Y';
 
+                            switch( HashString( Key ) ){
+                                case HashString( "COLOR" ):         temp.Color = affirmative;           break;
+                                case HashString( "WRAPS" ):         temp.Wraps = affirmative;           break;
+                                case HashString( "ANSI-ESCAPE" ):   temp.ANSIEscape = affirmative;      break;
+                                case HashString( "PREFERENCE" ):    temp.Preference = atol( Value );    break;
+                                case HashString( "INHERIT" ): {
+                                    std::string n = temp.Name;
+                                    temp = SupportedTerms[Value];
+                                    temp.Name = n;
+                                }                                                                       break;
+                                default: break;
+                            }
+                        }
                     }
                 }
             }
-        }
+        } //End of while
+
+        //If we hit EOF before writing a terminal to the supported terminal map, write it.
         if( readingterm ){
             readingterm = false;
             SupportedTerms[temp.Name] = temp;
