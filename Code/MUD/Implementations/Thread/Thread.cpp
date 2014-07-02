@@ -34,6 +34,7 @@ namespace GlobalMUD{
             //For debugging purposes. Make the thread call the function instead of making a thread.
             f();
             #else
+            f();
             detached = false;
             Arguments* args = new Arguments;
             args->f = f;

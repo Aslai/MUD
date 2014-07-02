@@ -6,6 +6,8 @@
 #include "Error/Error.hpp"
 
 namespace GlobalMUD{
+    typedef unsigned char byte;
+
     class Stream{
         char* buffer;
         size_t reserved;
@@ -29,6 +31,11 @@ namespace GlobalMUD{
             Checkpoint( Stream* s, size_t idx );
             ~Checkpoint();
             Error Remove();
+            size_t operator-(Checkpoint other);
+            Checkpoint& operator++();
+            Checkpoint& operator++(int);
+
+
         };
         friend Checkpoint;
 
@@ -39,10 +46,25 @@ namespace GlobalMUD{
         Error PushBuffer( void* data, size_t length );
         bool HasLine();
         bool HasChar();
+        bool HasByte();
+
+        //bool HasData( size_t len );
+        bool HasData( Checkpoint end );
+
         std::string PeekLine();
         int PeekChar();
+        byte PeekByte();
+
+        //void* PeekData( size_t len );
+        void* PeekData( Checkpoint end );
+
         std::string GetLine();
         int GetChar();
+        byte GetByte();
+
+        //void* GetData( size_t len );
+        void* GetData( Checkpoint end );
+
         Checkpoint SaveCheckpoint();
         Error LoadCheckpoint( Checkpoint point );
     };

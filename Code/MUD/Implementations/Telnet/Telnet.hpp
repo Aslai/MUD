@@ -7,6 +7,7 @@
 #include "Error/Error.hpp"
 #include "CommStream/CommStream.hpp"
 #include "Thread/Thread.hpp"
+#include "Memory/Stream.hpp"
 
 #include<functional>
 
@@ -379,7 +380,20 @@ namespace GlobalMUD{
 			bool echos;
 			CommStream stream;
 			void ReadStream();
-			Error ParseCommand( unsigned char*& cmd, size_t len );
+			Error ParseCommand( Stream& cmd );
+			Error DoDo( Stream& cmd );
+			Error DoDont( Stream& cmd );
+			Error DoWill( Stream& cmd );
+			Error DoWont( Stream& cmd );
+			Error DoSB( Stream& cmd );
+			Error DoEC( Stream& cmd );
+			Error DoEL( Stream& cmd );
+			Error DoAYT( Stream& cmd );
+
+			Error DoSubnegNAWS( Stream& cmd );
+			Error DoSubnegTTYPE( Stream& cmd );
+
+
 			std::string buffer;
 			std::string bufferbacklog;
 			int requestingTerminal;
@@ -514,6 +528,7 @@ namespace GlobalMUD{
     private:
         void ConnectionHandler( CommStream cs, std::function<void(TelnetSession)> callback );
         std::map<std::string, Terminal> SupportedTerms;
+        CommStream stream;
     public:
 
 
@@ -654,6 +669,8 @@ int main( int argc, char *argv[] ){
 
 ****************************************/
         Error ReadTerms( std::string fname );
+
+        Error Disconnect();
 
     };
 }

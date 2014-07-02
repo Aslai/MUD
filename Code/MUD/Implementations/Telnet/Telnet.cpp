@@ -18,14 +18,18 @@ namespace GlobalMUD{
         callback( ts );
     }
 
-    Telnet::Telnet(){
+    Telnet::Telnet() : stream( CommStream::BINARY ) {
 
     }
 
     Error Telnet::Listen( int port, std::function<void(TelnetSession)> callback ){
         //Start a CommStream daemon that will fire off new TelnetSession's on connect
-        CommStream stream( CommStream::BINARY );
         return stream.Listen( port, std::bind( &Telnet::ConnectionHandler, this, std::placeholders::_1, callback ) );
+    }
+
+    Error Telnet::Disconnect(){
+        //Kill any daemon running on the CommStream if there is one running.
+        return stream.Disconnect(true);
     }
 
     Error Telnet::ReadTerms( std::string fname ){

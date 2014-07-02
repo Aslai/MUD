@@ -7,11 +7,9 @@ namespace GlobalMUD{
 int NUM = 0;
         Mutex::Inner::Inner(){
             mutex = CreateMutex( NULL, FALSE, NULL);
-            printf("\nNUM++: %d\t", NUM++);
         }
         Mutex::Inner::~Inner(){
             CloseHandle( mutex );
-            printf("\nNUM--: %d\t", NUM--);
         }
         HANDLE Mutex::Inner::operator*(){
             return mutex;

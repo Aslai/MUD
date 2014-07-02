@@ -2,6 +2,7 @@
 #include<string>
 #include<cstdlib>
 #include<cstring>
+#include<cstdio>
 
 namespace GlobalMUD{
 
@@ -46,6 +47,8 @@ namespace GlobalMUD{
     }
 
     void Stream::Optimize( ){
+        if( earliestCheckpoint > (size_t)-3 )
+            return;
         if( earliestCheckpoint - offset > 5000 ){
             size_t change = earliestCheckpoint - offset;
             memcpy( buffer+earliestCheckpoint-offset, buffer, bufferend-earliestCheckpoint );
@@ -78,6 +81,24 @@ namespace GlobalMUD{
         return Error::None;
     }
 
+    size_t Stream::Checkpoint::operator-(Checkpoint other){
+        if( other.index > index ){
+            return other.index - index;
+        }
+        return index - other.index;
+    }
+    Stream::Checkpoint& Stream::Checkpoint::operator++(){
+        stream->PopCheckpoint( index );
+        index++;
+        stream->PushCheckpoint( index );
+        return *this;
+    }
+    Stream::Checkpoint& Stream::Checkpoint::operator++(int){
+        stream->PopCheckpoint( index );
+        index++;
+        stream->PushCheckpoint( index );
+        return *this;
+    }
 
 
 
@@ -140,6 +161,12 @@ namespace GlobalMUD{
         return readPosition < bufferend;
     }
 
+    bool Stream::HasByte(){
+        return readPosition < bufferend;
+    }
+
+
+
 
     std::string Stream::PeekLine(){
         std::string ret = "";
@@ -161,6 +188,14 @@ namespace GlobalMUD{
             return buffer[readPosition - offset];
         return 1000;
     }
+
+    byte Stream::PeekByte(){
+        if( readPosition < bufferend )
+            return (byte)buffer[readPosition - offset];
+        return 0;
+    }
+
+
 
     std::string Stream::GetLine(){
         std::string ret = "";
@@ -186,10 +221,43 @@ namespace GlobalMUD{
         return chr;
     }
 
+    byte Stream::GetByte(){
+        byte ret = (byte) GetChar();
+        return ret;
+    }
+
+
+
+    bool Stream::HasData( Checkpoint end ){
+        if( end.index - readPosition <= bufferend )
+            return true;
+        return false;
+    }
+
+    void* Stream::PeekData( Checkpoint end ){
+        Optimize( );
+        if( HasData( end ) ){
+            return buffer + readPosition - offset;
+        }
+        return NULL;
+    }
+
+    void* Stream::GetData( Checkpoint end ){
+        Optimize( );
+        if( HasData( end ) ){
+            void* ret = buffer + readPosition - offset;
+            LoadCheckpoint( end );
+            return ret;
+        }
+        return NULL;
+    }
+
+
     Stream::Checkpoint Stream::SaveCheckpoint(){
         Checkpoint chk( this, readPosition );
         return chk;
     }
+
 
     Error Stream::LoadCheckpoint( Stream::Checkpoint point ){
         GoToCheckpoint( point.index );

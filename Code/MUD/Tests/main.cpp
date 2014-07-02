@@ -36,7 +36,6 @@ void TNet(GlobalMUD::Telnet::TelnetSession t){
         t.SendLine( title );
 
     }
-printf("k");
 }
 
 int main(){
