@@ -71,6 +71,9 @@ namespace GlobalMUD{
         Error Receive( char* message, size_t& len );
         Error Encrypt( Encryption type );
         Error RegisterCallback( std::function<void()> );
+        Error ClearCallbacks( );
+
+        void Flush();
         int SendBufferSize();
         #ifdef RunUnitTests
         static bool RunTests();
@@ -103,6 +106,8 @@ namespace GlobalMUD{
         std::string RecvLinesBuffer;
         bool aborted;
         bool isconnected;
+        bool isServer;
+        static bool currentlyServicing;
         unsigned int connecting;
         bool transmitting;
         void Terminate();
@@ -111,6 +116,7 @@ namespace GlobalMUD{
         Message GetSend();
         Mutex MyLock;
         int disconnecting;
+        int ID;
         std::vector<std::function<void()>> callbacks;
 
         public:
@@ -127,12 +133,17 @@ namespace GlobalMUD{
         Error Receive( char* message, size_t& len );
         Error Encrypt( CommStream::Encryption type );
         Error RegisterCallback( std::function<void()> );
+        Error ClearCallbacks( );
         int SendBufferSize();
 
         static int ServiceSockets(CommStreamInternal *ptr = NULL);
         static int ServiceSocket(CommStreamInternal *ptr = NULL);
 
         static void PushStream( CommStream topush );
+        static void PopStream( CommStream * id );
+
+        static int CurrentID;
+
         static Mutex Lock;
         static std::vector<CommStream> CommStreams;
     };

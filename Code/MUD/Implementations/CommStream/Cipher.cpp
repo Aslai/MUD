@@ -2,6 +2,7 @@
 #include <cstdlib>
 
 namespace GlobalMUD{
+    //All of the cipher class is currently a NOP for the most part.
     Ciphers::Cipher::Cipher(){
 
     }
@@ -48,6 +49,7 @@ namespace GlobalMUD{
 
     #ifdef RunUnitTests
     bool Ciphers::Cipher::RunTests(){
+        //Verify that the basic cipher is a NOP
         TEST("GlobalMUD::Ciphers::Cipher");
         Cipher test;
         uint8_t buffer[1000];
@@ -68,6 +70,7 @@ namespace GlobalMUD{
     }
 
     bool Ciphers::XOR::RunTests(){
+        //Verify that the XOR cipher returns the same data when run over a given data set twice
         TEST("GlobalMUD::Ciphers::XOR");
         XOR test;
         test.Seed( 12345, 12345 );
