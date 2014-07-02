@@ -11,12 +11,19 @@
 
 namespace GlobalMUD{
     class Mutex{
-    #ifdef _WIN32
-        RefCounter<HANDLE> mutex;
-    #else
-        RefCounter<pthread_mutex_t> mutex;
-    #endif
-
+        class Inner{
+            public:
+            #ifdef _WIN32
+            HANDLE mutex;
+            HANDLE operator*();
+            #else
+            pthread_mutex_t mutex;
+            pthread_mutex_t operator*();
+            #endif
+            Inner();
+            ~Inner();
+        };
+        RefCounter<Inner> mutex;
 	public:
 		Mutex();
 		Mutex( const Mutex &other );

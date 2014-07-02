@@ -61,8 +61,10 @@ namespace GlobalMUD{
     }
 
     void Thread::Join(){
-        if( !detached )
+        if( !detached ){
         WaitForSingleObject( ThreadHandle, INFINITE );
+        CloseHandle( ThreadHandle );
+        }
     }
 
     void Thread::Suspend(){
@@ -71,10 +73,12 @@ namespace GlobalMUD{
 
     void Thread::Kill(){
         TerminateThread( ThreadHandle, 0 );
+        CloseHandle( ThreadHandle );
     }
 
     void Thread::Detach(){
         detached = true;
+        CloseHandle( ThreadHandle );
     }
 
     void Thread::Sleep(unsigned long msec){

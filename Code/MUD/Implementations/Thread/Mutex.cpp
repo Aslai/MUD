@@ -1,57 +1,69 @@
 #include "Thread/Mutex.hpp"
 #include <string>
 #include <vector>
-
+#include<cstdio>
 namespace GlobalMUD{
 #ifdef _WIN32
-        Mutex::Mutex() : mutex( new HANDLE )
+int NUM = 0;
+        Mutex::Inner::Inner(){
+            mutex = CreateMutex( NULL, FALSE, NULL);
+            printf("\nNUM++: %d\t", NUM++);
+        }
+        Mutex::Inner::~Inner(){
+            CloseHandle( mutex );
+            printf("\nNUM--: %d\t", NUM--);
+        }
+        HANDLE Mutex::Inner::operator*(){
+            return mutex;
+        }
+
+        Mutex::Mutex() : mutex( new Mutex::Inner() )
         {
-            *mutex = CreateMutex( NULL, FALSE, NULL);
+
         }
 
 		Mutex& Mutex::operator=( Mutex& other ){
-		    //If this is the last copy of the mutex handle, close it.
-            if( mutex.References() <= 1 )
-                CloseHandle( *mutex );
             //Take a reference to the other mutex's handle
             mutex = other.mutex;
             return *this;
 		}
 
 		Mutex::Mutex( const Mutex &other ){
-		    //If this is the last copy of the mutex handle, close it.
-            if( mutex.References() <= 1 )
-                CloseHandle( *mutex );
             //Take a reference to the other mutex's handle
             mutex = other.mutex;
 		}
 
         Mutex::~Mutex()
         {
-            //If this is the last copy of the mutex handle, close it.
-            if( mutex.References() <= 1 )
-                CloseHandle( *mutex );
+
         }
 
         void Mutex::Lock()
         {
-            WaitForSingleObject( *mutex, INFINITE);
+            WaitForSingleObject( mutex->mutex, INFINITE);
         }
 
         void Mutex::Unlock()
         {
-            ReleaseMutex(*mutex);
+            ReleaseMutex(mutex->mutex);
         }
 #else
-		Mutex::Mutex() : mutex( new pthread_mutex_t )
+        Mutex::Inner::Inner(){
+            pthread_mutex_init(&mutex,0);
+        }
+        Mutex::Inner::~Inner(){
+            pthread_mutex_destroy( &mutex );
+        }
+        pthread_mutex_t Mutex::Inner::operator*(){
+            return mutex;
+        }
+
+		Mutex::Mutex() : mutex( new Mutex::Inner() )
 		{
-            pthread_mutex_init(mutex.get(),0);
+
 		}
 
 		Mutex& Mutex::operator=( Mutex& other ){
-		    //If this is the last copy of the mutex handle, close it.
-            if( mutex.References() <= 1 )
-                pthread_mutex_destroy( mutex.get() );
             //Take a reference to the other mutex's handle
             mutex = other.mutex;
             return *this;
@@ -59,19 +71,17 @@ namespace GlobalMUD{
 
 		Mutex::~Mutex()
 		{
-		    //If this is the last copy of the mutex handle, close it.
-		    if( mutex.References() <= 1 )
-                pthread_mutex_destroy( mutex.get() );
+
 		}
 
 		void Mutex::Lock()
 		{
-			pthread_mutex_lock( mutex.get() );
+			pthread_mutex_lock( mutex->mutex );
 		}
 
 		void Mutex::Unlock()
 		{
-			pthread_mutex_unlock( mutex.get() );
+			pthread_mutex_unlock( mutex->mutex );
 		}
 #endif
 
