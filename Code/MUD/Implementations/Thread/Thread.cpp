@@ -12,6 +12,8 @@
 namespace GlobalMUD{
     Thread::~Thread(){
         Run();
+        //To prevent unforeseen issues, join with the thread unless
+        //it was explicitly detached.
         if( !detached )
             Join();
     }
@@ -19,6 +21,7 @@ namespace GlobalMUD{
     THREADRETURN THREADCallFunction Thread::ThreadFunc(void*d){
 
         #ifndef _WIN32
+        //This is to simulate a suspended thread on POSIX systems
         args->Lock.Wait();
         #endif
         Arguments* args = (Arguments*) d;
@@ -28,13 +31,16 @@ namespace GlobalMUD{
     }
     Thread::Thread( std::function<void()> f ){
             #ifdef DISABLETHREADS
+            //For debugging purposes. Make the thread call the function instead of making a thread.
             f();
             #else
             detached = false;
             Arguments* args = new Arguments;
             args->f = f;
+            //This is to simulate a suspended thread on POSIX systems
             args->Lock.Lock();
             Lock = args->Lock;
+            //Spawn the thread
             #ifdef _WIN32
             ThreadHandle = CreateThread( NULL, 8048, GlobalMUD::Thread::ThreadFunc, args, CREATE_SUSPENDED, &ThreadID );
             valid = ThreadHandle != NULL;
@@ -102,6 +108,8 @@ namespace GlobalMUD{
     #endif
 
     #ifdef RunUnitTests
+    //A list of functions meant to demonstrate how each feature works.
+    //There are so many just in case there's a corner case that starts to fail.
     struct functions{
         static int accumulator;
         int accumulator2;

@@ -183,7 +183,7 @@ namespace GlobalMUD{
 
             CursorPosition,                 ///<Format: __CursorPosition__ [ _r_ [ _c_ ] ]\n
                                             ///<This moves the cursor to the _r_-th row and _c_-th column.\n
-                                            ///<If a value is unspecified, the value '1' is assumed.\n
+                                            ///<If a value is unspecified, the value __1__ is assumed.\n
                                             ///<This is the equivalent of __HorizontalAndVerticalPosition__.
 
             EraseDisplay,                   ///<Format: __EraseDisplay__ [ _n_ ]\n
@@ -505,7 +505,7 @@ the provided callback will be called.
                 a client connects to the server.
 
 \return
-    __Error::Error::ConnectionFailure__: The connection has failed for some reason.\n
+    __Error::ConnectionFailure__: The connection has failed for some reason.\n
     __Error::None__: The server has shut down gracefully.
 
 __Example__

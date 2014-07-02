@@ -10,20 +10,25 @@ namespace GlobalMUD{
         }
 
 		Mutex& Mutex::operator=( Mutex& other ){
+		    //If this is the last copy of the mutex handle, close it.
             if( mutex.References() <= 1 )
                 CloseHandle( *mutex );
+            //Take a reference to the other mutex's handle
             mutex = other.mutex;
             return *this;
 		}
 
 		Mutex::Mutex( const Mutex &other ){
+		    //If this is the last copy of the mutex handle, close it.
             if( mutex.References() <= 1 )
                 CloseHandle( *mutex );
+            //Take a reference to the other mutex's handle
             mutex = other.mutex;
 		}
 
         Mutex::~Mutex()
         {
+            //If this is the last copy of the mutex handle, close it.
             if( mutex.References() <= 1 )
                 CloseHandle( *mutex );
         }
@@ -44,14 +49,17 @@ namespace GlobalMUD{
 		}
 
 		Mutex& Mutex::operator=( Mutex& other ){
+		    //If this is the last copy of the mutex handle, close it.
             if( mutex.References() <= 1 )
                 pthread_mutex_destroy( mutex.get() );
+            //Take a reference to the other mutex's handle
             mutex = other.mutex;
             return *this;
 		}
 
 		Mutex::~Mutex()
 		{
+		    //If this is the last copy of the mutex handle, close it.
 		    if( mutex.References() <= 1 )
                 pthread_mutex_destroy( mutex.get() );
 		}
@@ -69,6 +77,7 @@ namespace GlobalMUD{
 
 		void Mutex::Wait()
 		{
+            //Wait for the mutex to be released.
 			Lock();
 			Unlock();
 		}
