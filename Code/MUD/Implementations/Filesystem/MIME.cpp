@@ -673,6 +673,7 @@ const char* mimes[] = {
 };
 namespace GlobalMUD{
     std::string GetMimeFromExt( std::string ext ) {
+        //Convert a file extension into a fully qualified MIME type.
         for( int i = 0; mimes[i] != 0; i += 2 ) {
             if( ext == mimes[i] ) {
                 return mimes[i + 1];

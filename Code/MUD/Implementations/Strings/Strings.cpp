@@ -25,6 +25,17 @@ namespace GlobalMUD{
         }
         return str;
     }
+    std::string StringToLower(std::string in){
+        for( size_t i = 0; i < in.size(); ++i ){
+            in[i] = tolower(in[i]);
+        }
+        return in;
+    }
+    std::string StringFromUInt(unsigned int i){
+        char s[300];
+        snprintf(s, 29, "%u", i );
+        return s;
+    }
 
     unsigned int HashString(std::string v){
         return HashString(v.c_str() );

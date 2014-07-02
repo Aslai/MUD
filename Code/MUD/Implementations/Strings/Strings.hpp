@@ -9,6 +9,8 @@
 namespace GlobalMUD{
     std::string BufferToString( const char* buffer, size_t len );
     std::string StringToUpper( std::string str );
+    std::string StringToLower(std::string in);
+    std::string StringFromUInt(unsigned int i);
     unsigned int HashString(std::string v);
 
     template<class... Args>

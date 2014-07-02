@@ -8,6 +8,7 @@
 #include "Filesystem/Filesystem.hpp"
 #include "Filesystem/MIME.hpp"
 #include "HTTPd/HTTPStatus.hpp"
+#include "Strings/Strings.hpp"
 
 #include <cctype>
 #include <ctime>
@@ -15,23 +16,6 @@
 #undef ErrorRoot
 #define ErrorRoot 300
 namespace GlobalMUD{
-        static std::string StringToLower(std::string in){
-            for( size_t i = 0; i < in.size(); ++i ){
-                in[i] = tolower(in[i]);
-            }
-            return in;
-        }
-        /*static std::string StringFromInt(int i){
-            char s[30];
-            snprintf(s, 29, "%d", i );
-            return s;
-        }*/
-        static std::string StringFromUInt(unsigned int i){
-            char s[300];
-            snprintf(s, 29, "%u", i );
-            return s;
-        }
-
         std::string HTTPd::ReadWord(char*&pointer, size_t&len){
             std::string ret = "";
             while( len > 0 && (*pointer == ' ' || *pointer == '\t')){

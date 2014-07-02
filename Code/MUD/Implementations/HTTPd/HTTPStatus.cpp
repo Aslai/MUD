@@ -93,6 +93,7 @@ namespace GlobalMUD{
     };
 
     std::string GetMessageFromHTTPStatus( int status ) {
+        //Get the proper string to send with a given HTTP status code.
         for( int i = 0; HTTPstatuses[i].code != 0; i ++ ) {
             if( status == HTTPstatuses[i].code ) {
                 return HTTPstatuses[i].text;
