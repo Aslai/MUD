@@ -32,6 +32,7 @@ namespace GlobalMUD{
     ///
     /////////////////////////////////////////////////
     class Telnet{
+        class TelnetSessionInternal;
     public:
 
         /////////////////////////////////////////////////
@@ -283,6 +284,9 @@ namespace GlobalMUD{
 
         };
 
+        class TelnetSession;
+        class TheScreen;
+
         /////////////////////////////////////////////////
         ///
         /// This structure is intended to hold values
@@ -304,74 +308,65 @@ namespace GlobalMUD{
 
         /////////////////////////////////////////////////
         ///
-        /// TelnetSession is intended to provide an
-        /// abstracted interface between user code and
-        /// the underlying Telnet protocol, along with
-        /// utilities that permit user code the ability
-        /// to safely try to use ANSI terminal manipulation
-        /// codes without risking sending garbage to a
-        /// terminal that doesn't support them.
+        /// TheScreen is intended to provide an intuitive
+        /// means of querying terminal information and
+        /// changing terminal graphics settings.
         ///
         /////////////////////////////////////////////////
 
-        class TelnetSession{
-            friend Telnet;
+        class TheScreen{
+        friend TelnetSession;
+        friend TelnetSessionInternal;
+
         public:
 
             /////////////////////////////////////////////////
             ///
-            /// TheScreen is intended to provide an intuitive
-            /// means of querying terminal information and
-            /// changing terminal graphics settings.
+            /// TheCursor is intended to provide an intuitive
+            /// means of querying information about the
+            /// terminal's cursor, as well as provide a simple
+            /// method of moving the cursor from user code.
             ///
             /////////////////////////////////////////////////
 
-            class TheScreen{
-            friend TelnetSession;
+            class TheCursor{
+            friend TheScreen;
+                TheScreen& myScreen;
+                int X, Y;
+                bool wraps;
             public:
-
-                /////////////////////////////////////////////////
-                ///
-                /// TheCursor is intended to provide an intuitive
-                /// means of querying information about the
-                /// terminal's cursor, as well as provide a simple
-                /// method of moving the cursor from user code.
-                ///
-                /////////////////////////////////////////////////
-
-                class TheCursor{
-				friend TheScreen;
-                    TheScreen& myScreen;
-                    int X, Y;
-                    bool wraps;
-                public:
-                    TheCursor( TheScreen& screen );
-                    Error ShouldWrap( bool shouldWrap = true );
-                    Error Advance( int amount = 1 );
-                    Error LineFeed( int amount = 1 );
-                    Error CarriageReturn();
-                    Error MoveTo( int x, int y );
-                };
-				friend TheCursor;
-            private:
-                int width, height;
-                bool supportsColor;
-                bool supportsEscapeCodes;
-				TelnetSession &parent;
-                Color BGColor;
-                Color FGColor;
-                std::string TerminalType;
-
-            public:
-                TheCursor Cursor;
-                TheScreen( int Width, int Height, TelnetSession &Parent );
-                int Width();
-                int Height();
-                Error SetTerminal( std::string TerminalType );
-                std::string GetTerminal();
-				Error Resize( int w, int h );
-                Error SetColor( Color foreground, Color background );
+                TheCursor( TheScreen& screen );
+                Error ShouldWrap( bool shouldWrap = true );
+                Error Advance( int amount = 1 );
+                Error LineFeed( int amount = 1 );
+                Error CarriageReturn();
+                Error MoveTo( int x, int y );
             };
+            friend TheCursor;
+        private:
+            int width, height;
+            bool supportsColor;
+            bool supportsEscapeCodes;
+            TelnetSessionInternal &parent;
+            Color BGColor;
+            Color FGColor;
+            std::string TerminalType;
+
+        public:
+            TheCursor Cursor;
+            TheScreen( int Width, int Height, TelnetSessionInternal &Parent );
+            int Width();
+            int Height();
+            Error SetTerminal( std::string TerminalType );
+            std::string GetTerminal();
+            Error Resize( int w, int h );
+            Error SetColor( Color foreground, Color background );
+        };
+
+    private:
+        class TelnetSessionInternal{
+            friend Telnet;
+        public:
             friend TheScreen;
 		private:
 			Telnet &parent;
@@ -391,7 +386,8 @@ namespace GlobalMUD{
         public:
 			TheScreen Screen;
 
-            TelnetSession( CommStream s, Telnet &Parent);
+            TelnetSessionInternal( CommStream s, Telnet &Parent);
+            ~TelnetSessionInternal();
 
             Error SendLine( std::string line );
             Error SendChar( const char c );
@@ -410,6 +406,7 @@ namespace GlobalMUD{
 
             template<class... Args>
             Error SendANSICode( ANSICodes code, Args... args ){
+                stream.Flush();
                 if( !Screen.supportsColor && code == Telnet::ANSICodes::SelectGraphicRendition ){
                     return Error::Unsupported;
                 }
@@ -422,7 +419,7 @@ namespace GlobalMUD{
                     int operator()(int i){
                         if( v != "" )
                             v = ";" + v;
-                        char buffer[20];
+                        char buffer[20*10];
                         snprintf(buffer, 20, "%d", i );
                         v = buffer + v;
                         return 0;
@@ -467,9 +464,49 @@ namespace GlobalMUD{
 
 
         };
+        public:
+
+        /////////////////////////////////////////////////
+        ///
+        /// TelnetSession is intended to provide an
+        /// abstracted interface between user code and
+        /// the underlying Telnet protocol, along with
+        /// utilities that permit user code the ability
+        /// to safely try to use ANSI terminal manipulation
+        /// codes without risking sending garbage to a
+        /// terminal that doesn't support them.
+        ///
+        /////////////////////////////////////////////////
+
+        class TelnetSession{
+			RefCounter<TelnetSessionInternal> internal;
+        public:
+			TheScreen& Screen();
+            TelnetSession( CommStream s, Telnet &Parent);
+            ~TelnetSession();
+            Error SendLine( std::string line );
+            Error SendChar( const char c );
+            Error SendCommand( Telnet::Commands cmd1 = Telnet::Commands::NONE, Telnet::Commands cmd2 = Telnet::Commands::NONE );
+            Error SendSubnegotiation( Telnet::Commands cmd, char* data = NULL, size_t len = 0 );
+            Error SendSubnegotiation( Telnet::Commands cmd1, Telnet::Commands cmd2, char* data = NULL, size_t len = 0 );
+
+            bool HasLine();
+            bool HasChar();
+            std::string ReadLine();
+            char ReadChar();
+            std::string PeekLine();
+            char PeekChar();
+			Error Disconnect( bool remoteFailure = false );
+			bool Connected();
+
+            template<class... Args>
+            Error SendANSICode( ANSICodes code, Args... args ){
+                return internal->SendANSICode( code, args... );
+            }
+        };
         friend TelnetSession;
     private:
-        void ConnectionHandler( CommStream cs, std::function<void(TelnetSession*)> callback );
+        void ConnectionHandler( CommStream cs, std::function<void(TelnetSession)> callback );
         std::map<std::string, Terminal> SupportedTerms;
     public:
 
@@ -515,7 +552,7 @@ __Example__
 #include <iostream> //for std::cout
 #include <functional> //for std::bind()
 
-void callback( GlobalMUD::Telnet::TelnetSession *session ){
+void callback( GlobalMUD::Telnet::TelnetSession session ){
     std::cout << "Made it into the callback!";
 }
 
@@ -527,7 +564,7 @@ int main( int argc, char *argv[] ){
 ~~~~~~~~~~~~~~~
 
 ****************************************/
-        Error Listen( int port, std::function<void(TelnetSession*)> callback );
+        Error Listen( int port, std::function<void(TelnetSession)> callback );
 
 /*!****************************************
 \brief __Read a list of terminal capabilities from a file__
@@ -596,8 +633,8 @@ __Example__
 #include <iostream> //for std::cout
 #include <functional> //for std::bind()
 
-void callback( GlobalMUD::Telnet::TelnetSession *session ){
-    std::cout << session->Screen->GetTerminal();
+void callback( GlobalMUD::Telnet::TelnetSession session ){
+    std::cout << session.Screen().GetTerminal();
 }
 
 int main( int argc, char *argv[] ){

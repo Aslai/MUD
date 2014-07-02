@@ -27,7 +27,7 @@ namespace GlobalMUD{
             return s;
         }*/
         static std::string StringFromUInt(unsigned int i){
-            char s[30];
+            char s[300];
             snprintf(s, 29, "%u", i );
             return s;
         }

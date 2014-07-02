@@ -29,6 +29,7 @@ namespace GlobalMUD{
         RefCounter() : RefCounter( new type() ) {
 
         }
+
         RefCounter( const RefCounter<type> &t ){
             myptr = t.myptr;
             count = t.count;
@@ -63,6 +64,11 @@ namespace GlobalMUD{
             count = t.count;
             countup();
             return *this;
+        }
+        RefCounter<type>& operator=(type* t){
+            countdown();
+            RefCounter<type> tmp(t);
+            return operator=(tmp);
         }
         int References(){
             return *count;
