@@ -8,12 +8,15 @@ namespace GlobalMUD{
 
     void Stream::PushCheckpoint( size_t idx ){
         checkpoints.push_back( idx );
+        //If the new index is earlier than the old earliest checkpoint, update the earliest checkpoint.
         if( idx < earliestCheckpoint )
             earliestCheckpoint = idx;
         Optimize( );
     }
 
     void Stream::PopCheckpoint( size_t idx ){
+        //Remove a checkpoint from the list of checkpoints.
+        //If the checkpoint being removed is the earliest, find the next earliest.
         if( idx == earliestCheckpoint ){
             size_t e = -1;
             for( unsigned int i = 0; i < checkpoints.size(); ++i ){
@@ -47,6 +50,8 @@ namespace GlobalMUD{
     }
 
     void Stream::Optimize( ){
+        //If 5Kb of empty space exists before the earliest checkpoint, move the occupied memory
+        //back so that the empty space is sitting at the end of the array instead.
         if( earliestCheckpoint > (size_t)-3 )
             return;
         if( earliestCheckpoint - offset > 5000 ){
@@ -119,6 +124,8 @@ namespace GlobalMUD{
 
 
     void* Stream::GetBuffer( size_t length ){
+        //Return a raw pointer of given size.
+        //The data must be committed with a subsequent call to CommitBuffer().
         if( bufferend + length < reserved ){
             return buffer + bufferend - offset ;
         }
@@ -131,6 +138,8 @@ namespace GlobalMUD{
 
 
     Error Stream::CommitBuffer( size_t length ){
+        //Any data written to a buffer provided by GetBuffer will only be acknowledged
+        //upon calling CommitBuffer().
         if( bufferend + length <= reserved ){
             bufferend += length;
         }
@@ -141,6 +150,7 @@ namespace GlobalMUD{
 
 
     Error Stream::PushBuffer( void* data, size_t length ){
+        //Push a buffer full of data onto the end of this buffer.
         void *writeto = GetBuffer( length );
         memcpy( writeto, data, length );
         CommitBuffer( length );
@@ -243,6 +253,7 @@ namespace GlobalMUD{
     }
 
     void* Stream::GetData( Checkpoint end ){
+        //Retrieve the data between the read position and the end checkpoint.
         Optimize( );
         if( HasData( end ) ){
             void* ret = buffer + readPosition - offset;
