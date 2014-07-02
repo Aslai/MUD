@@ -179,8 +179,8 @@ namespace GlobalMUD{
             CursorPreviousLine,             ///<Format: __CursorForward__ [ _n_ ]\n
                                             ///<This moves the cursor to the _n_-th previous line.
 
-            CursorHorizontalAbsolute,       ///<Format: __CursorHorizontalAbsolute__\n
-                                            ///<This moves the cursor to the right-most edge of the terminal.
+            CursorHorizontalAbsolute,       ///<Format: __CursorHorizontalAbsolute__ [ _n_ ]\n
+                                            ///<This moves the cursor to the _n_-th column of the terminal.
 
             CursorPosition,                 ///<Format: __CursorPosition__ [ _r_ [ _c_ ] ]\n
                                             ///<This moves the cursor to the _r_-th row and _c_-th column.\n
@@ -333,6 +333,7 @@ namespace GlobalMUD{
             friend TheScreen;
                 TheScreen& myScreen;
                 int X, Y;
+                bool isHidden;
                 bool wraps;
             public:
                 TheCursor( TheScreen& screen );
@@ -341,6 +342,9 @@ namespace GlobalMUD{
                 Error LineFeed( int amount = 1 );
                 Error CarriageReturn();
                 Error MoveTo( int x, int y );
+                Error Hide();
+                Error Unhide();
+                bool Hidden();
             };
             friend TheCursor;
         private:
@@ -351,12 +355,14 @@ namespace GlobalMUD{
             Color BGColor;
             Color FGColor;
             std::string TerminalType;
+            TheCursor myCursor;
 
         public:
-            TheCursor Cursor;
+            TheCursor &Cursor();
             TheScreen( int Width, int Height, TelnetSessionInternal &Parent );
             int Width();
             int Height();
+            Error Clear();
             Error SetTerminal( std::string TerminalType );
             std::string GetTerminal();
             Error Resize( int w, int h );

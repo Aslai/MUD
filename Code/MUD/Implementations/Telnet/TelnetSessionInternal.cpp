@@ -33,13 +33,6 @@ namespace GlobalMUD{
                 default: break;
             }
 
-
-
-
-
-
-
-
             if( len == 0 )
                 break;
             unsigned int i = 0;
@@ -397,18 +390,6 @@ namespace GlobalMUD{
             toSend += (unsigned char) cmd1;
         if( cmd2 != Telnet::Commands::NONE )
             toSend += (unsigned char) cmd2;
-
-
-
-
-
-
-
-
-
-
-
-
 
         return SendLine( toSend );
     }

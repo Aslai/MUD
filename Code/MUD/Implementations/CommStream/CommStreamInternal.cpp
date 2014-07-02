@@ -43,14 +43,14 @@ namespace GlobalMUD{
     }
 
     //Must initialize the shared_ptr in the initialization
-    CommStreamInternal::Message::Message(std::string message, int flagss ) : msg((char*)malloc(message.length()+1), free) {
+    CommStream::Internal::Message::Message(std::string message, int flagss ) : msg((char*)malloc(message.length()+1), free) {
         //Fill the shared_ptr with information from message
         memcpy( msg.get(), message.c_str(), message.length() );
         msg.get()[message.length()] = 0;
         length = message.length();
         flags = flagss;
     }
-    CommStreamInternal::Message::Message(const char* message, size_t len, int flagss ) : msg((char*)malloc(len+1), free) {
+    CommStream::Internal::Message::Message(const char* message, size_t len, int flagss ) : msg((char*)malloc(len+1), free) {
         //Fill the shared_ptr with information from message
         memcpy( msg.get(), message, len );
         msg.get()[len] = 0;
@@ -58,7 +58,7 @@ namespace GlobalMUD{
         flags = flagss;
     }
 
-    CommStreamInternal::CommStreamInternal( CommStream::ReceiveType rectype ){
+    CommStream::Internal::Internal( CommStream::ReceiveType rectype ){
         MyReceiveType = rectype;
         MyEncryption = CommStream::NONE;
         MyCipher = new Ciphers::Cipher();
@@ -73,7 +73,7 @@ namespace GlobalMUD{
         ID = -1;
     }
 
-    CommStreamInternal::~CommStreamInternal(){
+    CommStream::Internal::~Internal(){
         if( MyCipher )
             delete MyCipher;
         MyLock.Unlock();
@@ -81,13 +81,13 @@ namespace GlobalMUD{
             closesocket( Connection );
     }
 
-    void CommStreamInternal::Terminate(){
+    void CommStream::Internal::Terminate(){
 
         Disconnect( true );
     }
 
     //Push data onto the data buffer for later retrieval with Receive()
-    void CommStreamInternal::PushData( char* data, size_t len ){
+    void CommStream::Internal::PushData( char* data, size_t len ){
 
         if( MyReceiveType == CommStream::BINARY ){
             //If the data expected is binary, just push it onto the end as-is
@@ -111,18 +111,18 @@ namespace GlobalMUD{
         }
     }
 
-    bool CommStreamInternal::CanSend(){
+    bool CommStream::Internal::CanSend(){
         return SendBuffer.size() > 0;
     }
 
     //Get the next bit of data that needs to be sent
-    CommStreamInternal::Message CommStreamInternal::GetSend(){
+    CommStream::Internal::Message CommStream::Internal::GetSend(){
         Message toReturn = SendBuffer.front();
         SendBuffer.pop_front();
         return toReturn;
     }
 
-    Error CommStreamInternal::Connect( std::string address, int port ){
+    Error CommStream::Internal::Connect( std::string address, int port ){
         //Look up the host / resolve IP
         hostent* host = gethostbyname( address.c_str() );
         if( host == 0 )
@@ -167,7 +167,7 @@ namespace GlobalMUD{
         return Error::None;
     }
 
-    bool CommStreamInternal::Connected( ){
+    bool CommStream::Internal::Connected( ){
         //Evaluate this socket for validity and fill any buffers with data waiting on the network stack.
         ServiceSockets( this );
         //if( !isconnected || Connection == (unsigned)SOCKET_ERROR )
@@ -176,7 +176,7 @@ namespace GlobalMUD{
         return isconnected;
     }
 
-    Error CommStreamInternal::Disconnect( bool force ){
+    Error CommStream::Internal::Disconnect( bool force ){
         if( !force && ImportantMessages > 0 )
             return Error::ImportantOperation;
         //Signal to the connection handler that we have a desire to disconnect.
@@ -192,11 +192,11 @@ namespace GlobalMUD{
         return Error::None;
     }
     //For listening on any address
-    Error CommStreamInternal::Listen( int port, std::function<void(CommStream)> func ){
+    Error CommStream::Internal::Listen( int port, std::function<void(CommStream)> func ){
         return ListenOn( "any", port, func);
     }
 
-    Error CommStreamInternal::ListenOn( std::string address, int port, std::function<void(CommStream)> func ){
+    Error CommStream::Internal::ListenOn( std::string address, int port, std::function<void(CommStream)> func ){
         //Establish the listening socket
         SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
         if (sock == (unsigned)SOCKET_ERROR) {
@@ -268,21 +268,21 @@ namespace GlobalMUD{
         return Error::ConnectionFailure;
     }
 
-    Error CommStreamInternal::Send( std::string message, bool important ){
+    Error CommStream::Internal::Send( std::string message, bool important ){
         if( !Connected() )
             return Error::NotConnected;
         if( important )
             ImportantMessages ++;
         //Necessary to avoid corrupting SendBuffer due to race conditions
         MyLock.Lock();
-        SendBuffer.push_back( Message(message, important?CommStreamInternal::Message::IMPORTANT:CommStreamInternal::Message::NONE) );
+        SendBuffer.push_back( Message(message, important?CommStream::Internal::Message::IMPORTANT:CommStream::Internal::Message::NONE) );
         MyLock.Unlock();
         //Put the data on the line
         CommStream::ServiceSockets(this);
         return Error::None;
     }
 
-    Error CommStreamInternal::Send( void* message, size_t len, bool important ){
+    Error CommStream::Internal::Send( void* message, size_t len, bool important ){
         if( !Connected() )
             return Error::NotConnected;
         if( important )
@@ -290,14 +290,14 @@ namespace GlobalMUD{
 
         //Necessary to avoid corrupting SendBuffer due to race conditions
         MyLock.Lock();
-        SendBuffer.push_back( Message((const char*)message, len, important?CommStreamInternal::Message::IMPORTANT:CommStreamInternal::Message::NONE) );
+        SendBuffer.push_back( Message((const char*)message, len, important?CommStream::Internal::Message::IMPORTANT:CommStream::Internal::Message::NONE) );
         MyLock.Unlock();
         //Put the data on the line
         CommStream::ServiceSockets(this);
         return Error::None;
     }
 
-    Error CommStreamInternal::Receive( std::string &message ){
+    Error CommStream::Internal::Receive( std::string &message ){
         if( !Connected() )
             return Error::NotConnected;
         //Collect any data pending on the network buffers
@@ -312,7 +312,7 @@ namespace GlobalMUD{
         return Error::None;
     }
 
-    Error CommStreamInternal::Receive( char* message, size_t& len ){
+    Error CommStream::Internal::Receive( char* message, size_t& len ){
         size_t len2 = len;
         len = 0;
         if( !Connected() )
@@ -351,24 +351,24 @@ namespace GlobalMUD{
         return Error::None;
     }
 
-    Error CommStreamInternal::Encrypt( CommStream::Encryption type ){
+    Error CommStream::Internal::Encrypt( CommStream::Encryption type ){
         //TODO: implement
         return Error::InvalidScheme;
     }
 
-    Error CommStreamInternal::RegisterCallback( std::function<void()> f ){
+    Error CommStream::Internal::RegisterCallback( std::function<void()> f ){
         //Register a function here that gets called every time data is received for this stream.
         callbacks.push_back( f );
         return Error::None;
     }
 
-    Error CommStreamInternal::ClearCallbacks( ){
+    Error CommStream::Internal::ClearCallbacks( ){
         callbacks.clear();
         return Error::None;
     }
 
     //Evaluate a socket for validity and grab data from the network buffers
-    int CommStreamInternal::ServiceSocket( CommStreamInternal *ptr ){
+    int CommStream::Internal::ServiceSocket( CommStream::Internal *ptr ){
             char recvbuf[NETBUFFERSIZE];
             Lock.Lock();
             int ret = 0;
@@ -491,7 +491,7 @@ namespace GlobalMUD{
             return ret;
     }
 
-    int CommStreamInternal::ServiceSockets( CommStreamInternal *ptr ){
+    int CommStream::Internal::ServiceSockets( CommStream::Internal *ptr ){
         Lock.Lock();
         if( !currentlyServicing ){
             currentlyServicing = true;
@@ -527,22 +527,22 @@ namespace GlobalMUD{
         return 0;
     }
 
-    int CommStreamInternal::SendBufferSize(){
+    int CommStream::Internal::SendBufferSize(){
         return SendBuffer.size();
     }
 
-    void CommStreamInternal::PushStream( CommStream topush ){
+    void CommStream::Internal::PushStream( CommStream topush ){
         Lock.Lock();
-        topush.Internal->ID = CurrentID++;
+        topush.myInternal->ID = CurrentID++;
         CommStreams.push_back(topush);
         Lock.Unlock();
     }
 
 
-    void CommStreamInternal::PopStream( CommStream *topush ){
+    void CommStream::Internal::PopStream( CommStream *topush ){
         Lock.Lock();
         for( unsigned int i = 0; i < CommStreams.size(); ++i ){
-            if( CommStreams[i].Get()->ID == topush->Internal->ID ){
+            if( CommStreams[i].Get()->ID == topush->myInternal->ID ){
                 CommStreams.erase( CommStreams.begin() + i );
                 break;
             }
@@ -550,8 +550,8 @@ namespace GlobalMUD{
         Lock.Unlock();
     }
 
-    Mutex CommStreamInternal::Lock;
-    std::vector<CommStream> CommStreamInternal::CommStreams;
-    bool CommStreamInternal::currentlyServicing = false;
-    int CommStreamInternal::CurrentID = 0;
+    Mutex CommStream::Internal::Lock;
+    std::vector<CommStream> CommStream::Internal::CommStreams;
+    bool CommStream::Internal::currentlyServicing = false;
+    int CommStream::Internal::CurrentID = 0;
 }

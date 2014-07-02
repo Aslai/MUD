@@ -30,4 +30,10 @@ namespace GlobalMUD{
         return HashString(v.c_str() );
     }
 
+
+    std::string StringRepeat(std::string str, int amt){
+        std::string ret = "";
+        for( ; amt-->0; ret += str ){}
+        return ret;
+    }
 }

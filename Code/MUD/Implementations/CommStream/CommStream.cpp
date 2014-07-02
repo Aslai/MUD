@@ -33,72 +33,72 @@
 namespace GlobalMUD{
     void CommStream::UseSocket(SOCKET sock){
         //Dump the provided sock into the current CommStream for use.
-        Internal = RefCounter<CommStreamInternal>(new CommStreamInternal(Internal->MyReceiveType));
-        Internal->Connection = sock;
-        Internal->isconnected = true;
-        CommStreamInternal::PushStream(*this);
+        myInternal = RefCounter<Internal>(new Internal(myInternal->MyReceiveType));
+        myInternal->Connection = sock;
+        myInternal->isconnected = true;
+        Internal::PushStream(*this);
     }
 
     void CommStream::Terminate(){
-        Internal->Terminate();
+        myInternal->Terminate();
     }
 
     void CommStream::PushData( char* data, size_t len ){
-        return Internal->PushData( data, len );
+        return myInternal->PushData( data, len );
     }
 
     bool CommStream::CanSend(){
-        return Internal->CanSend();
+        return myInternal->CanSend();
     }
 
-    CommStreamInternal* CommStream::Get(){
-        return Internal.get();
+    CommStream::Internal* CommStream::Get(){
+        return myInternal.get();
     }
 
     SOCKET CommStream::GetConnection(){
-        return Internal->Connection;
+        return myInternal->Connection;
     }
 
-    CommStream::CommStream( CommStream::ReceiveType rectype ) : Internal(new CommStreamInternal(rectype)){
+    CommStream::CommStream( CommStream::ReceiveType rectype ) : myInternal(new Internal(rectype)){
 
     }
 
     CommStream::~CommStream(){
-        CommStreamInternal::PopStream(this);
+        Internal::PopStream(this);
     }
 
     Error CommStream::Connect( std::string address, int port ){
-        Error ret = Internal->Connect( address, port );
+        Error ret = myInternal->Connect( address, port );
         if( ret == Error::None )
-            CommStreamInternal::PushStream(*this);
+            Internal::PushStream(*this);
         return ret;
     }
 
     bool CommStream::Connected( ){
-        return Internal->Connected();
+        return myInternal->Connected();
     }
 
     Error CommStream::Disconnect( bool force ){
-        return Internal->Disconnect( force );
+        return myInternal->Disconnect( force );
     }
 
     Error CommStream::Listen( int port, std::function<void(CommStream)> func ){
-        return Internal->Listen( port, func );
+        return myInternal->Listen( port, func );
     }
 
     Error CommStream::ListenOn( std::string address, int port, std::function<void(CommStream)> func ){
-        return Internal->ListenOn( address, port, func );
+        return myInternal->ListenOn( address, port, func );
     }
 
     Error CommStream::Send( std::string message, bool important ){
-        return Internal->Send( message, important );
+        return myInternal->Send( message, important );
     }
     Error CommStream::Send( void* message, size_t len, bool important ){
-        return Internal->Send( message, len, important );
+        return myInternal->Send( message, len, important );
     }
 
     void CommStream::Flush(){
-        CommStreamInternal::ServiceSocket(Internal.get());
+        Internal::ServiceSocket(myInternal.get());
     }
 
     Error CommStream::SendFile( std::string path, bool important ){
@@ -108,14 +108,14 @@ namespace GlobalMUD{
         FILE* f = fopen( path.c_str(), "rb" );
         if( f == NULL )
             return Error::FileNotFound;
-        Internal->transmitting = true;
+        myInternal->transmitting = true;
         Error err = Error::None;
         int counter = 0;
         do{
             //This is to prevent many megabytes of data from accumulating in the send buffer
-            if( Internal->SendBufferSize() < 32 ){
+            if( myInternal->SendBufferSize() < 32 ){
                 int amt = fread( buffer, 1, 1000, f );
-                err = Internal->Send(buffer, amt, false );
+                err = myInternal->Send(buffer, amt, false );
                 counter = 0;
             }
             else{
@@ -129,41 +129,41 @@ namespace GlobalMUD{
                 break;
         } while( !feof(f) );
         fclose(f);
-        Internal->transmitting = false;
+        myInternal->transmitting = false;
         return err;
     }
 
     Error CommStream::Receive( std::string &message ){
-        return Internal->Receive( message );
+        return myInternal->Receive( message );
     }
 
     Error CommStream::Receive( char* message, size_t& len ){
-        return Internal->Receive( message, len );
+        return myInternal->Receive( message, len );
     }
 
     Error CommStream::Encrypt( CommStream::Encryption type ){
-        return Internal->Encrypt( type );
+        return myInternal->Encrypt( type );
     }
 
     Error CommStream::RegisterCallback( std::function<void()> f ){
-        return Internal->RegisterCallback( f );
+        return myInternal->RegisterCallback( f );
     }
 
     Error CommStream::ClearCallbacks( ){
-        return Internal->ClearCallbacks( );
+        return myInternal->ClearCallbacks( );
     }
 
     CommStream& CommStream::operator=(CommStream other){
-        Internal = other.Internal;
+        myInternal = other.myInternal;
         return *this;
     }
 
-    int CommStream::ServiceSockets(CommStreamInternal *ptr){
-        return CommStreamInternal::ServiceSockets(ptr);
+    int CommStream::ServiceSockets(Internal *ptr){
+        return Internal::ServiceSockets(ptr);
     }
 
     int CommStream::SendBufferSize(){
-        return Internal->SendBufferSize();
+        return myInternal->SendBufferSize();
     }
 
 
@@ -178,7 +178,7 @@ namespace GlobalMUD{
             }
 
             Thread::Sleep(100);
-            //CommStreamInternal::ServiceSockets();
+            //Internal::ServiceSockets();
             if( test == "The test was successful" ){
                 *((int*)data) = 1;
                 break;

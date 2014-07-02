@@ -12,6 +12,9 @@
 #include "Strings/Strings.hpp"
 
 namespace GlobalMUD{
+    //This entire object is just a wrapper that keeps a refcounted pointer to TelnetSessionInternal, and allows
+    //user interaction via these wrapper functions.
+
     Telnet::TelnetSession::TelnetSession( CommStream s, Telnet &Parent ) : internal( new TelnetSessionInternal( s, Parent ) ) {
 
     }

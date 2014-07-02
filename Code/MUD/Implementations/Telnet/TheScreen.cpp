@@ -12,18 +12,27 @@
 #include "Strings/Strings.hpp"
 
 namespace GlobalMUD{
-    Telnet::TheScreen::TheScreen( int Width, int Height, TelnetSessionInternal &Parent ) : parent(Parent), Cursor( *this ){
+    Telnet::TheScreen::TheScreen( int Width, int Height, TelnetSessionInternal &Parent ) : parent(Parent), myCursor( *this ){
         width = Width;
         height = Height;
+
         supportsColor = parent.parent.SupportedTerms["DEFAULT"].Color;
         supportsEscapeCodes = parent.parent.SupportedTerms["DEFAULT"].ANSIEscape;
-        Cursor.ShouldWrap( parent.parent.SupportedTerms["DEFAULT"].Wraps );
+        myCursor.ShouldWrap( parent.parent.SupportedTerms["DEFAULT"].Wraps );
 
         BGColor = Telnet::Color::Default;
         FGColor = Telnet::Color::Default;
 
         TerminalType = "DEFAULT";
 
+    }
+
+    Telnet::TheScreen::TheCursor &Telnet::TheScreen::Cursor(){
+        return myCursor;
+    }
+
+    Error Telnet::TheScreen::Clear(){
+        return parent.SendANSICode( Telnet::ANSICodes::EraseDisplay, 2 );
     }
 
     int Telnet::TheScreen::Width(){
@@ -37,8 +46,8 @@ namespace GlobalMUD{
     Error Telnet::TheScreen::SetTerminal( std::string Type ){
         supportsColor = parent.parent.SupportedTerms[Type].Color;
         supportsEscapeCodes = parent.parent.SupportedTerms[Type].ANSIEscape;
-        printf("\n%d %d\n", supportsColor,supportsEscapeCodes);
-        Cursor.ShouldWrap( parent.parent.SupportedTerms[Type].Wraps );
+        myCursor.ShouldWrap( parent.parent.SupportedTerms[Type].Wraps );
+
         TerminalType = Type;
         return Error::None;
     }
@@ -52,27 +61,33 @@ namespace GlobalMUD{
             return Error::InvalidSize;
         width = w;
         height = h;
-        if( Cursor.X >= w )
-            Cursor.X = w - 1;
-        if( Cursor.X < 0 )
-            Cursor.X = 0;
-        if( Cursor.Y >= h )
-            Cursor.Y = h - 1;
-        if( Cursor.Y < 0 )
-            Cursor.Y = 0;
+        //If the cursor was moved off the screen, bring it back in.
+        if( myCursor.X >= w )
+            myCursor.X = w - 1;
+        if( myCursor.X < 0 )
+            myCursor.X = 0;
+        if( myCursor.Y >= h )
+            myCursor.Y = h - 1;
+        if( myCursor.Y < 0 )
+            myCursor.Y = 0;
+
+        parent.SendANSICode( Telnet::ANSICodes::CursorPosition, myCursor.Y, myCursor.X );
+
         return Error::None;
     }
 
     Error Telnet::TheScreen::SetColor( Color foreground, Color background ){
-        //if( BGColor != background )
-            {
+
+        if( BGColor != background ){
             BGColor = background;
             int idx = (int) background;
             int bright = false;
+            //If the color index is a Bright_*** or Default, set the bright flag.
             if( idx >= 8){
                 bright = true;
                 idx -= 8;
             }
+            //Since the bright flag is set if Default is chosen, let's check for default first.
             if( background == Telnet::Color::Default ){
                 parent.SendANSICode( Telnet::ANSICodes::SelectGraphicRendition, (int)Telnet::SGRCodes::DefaultBackgroundColor );
             }
@@ -83,15 +98,17 @@ namespace GlobalMUD{
                 parent.SendANSICode( Telnet::ANSICodes::SelectGraphicRendition, (int)Telnet::SGRCodes::BackgroundColor + idx );
             }
         }
-        //if( FGColor != foreground )
-            {
+
+        if( FGColor != foreground ){
             FGColor = foreground;
             int idx = (int) foreground;
             int bright = false;
+            //If the color index is a Bright_*** or Default, set the bright flag.
             if( idx >= 8){
                 bright = true;
                 idx -= 8;
             }
+            //Since the bright flag is set if Default is chosen, let's check for default first.
             if( foreground == Telnet::Color::Default ){
                 parent.SendANSICode( Telnet::ANSICodes::SelectGraphicRendition, (int)Telnet::SGRCodes::DefaultForegroundColor );
             }

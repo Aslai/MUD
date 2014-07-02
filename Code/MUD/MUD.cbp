@@ -79,6 +79,7 @@
 		<Unit filename="Implementations/CommStream/Cipher.hpp" />
 		<Unit filename="Implementations/CommStream/CommStream.cpp" />
 		<Unit filename="Implementations/CommStream/CommStream.hpp" />
+		<Unit filename="Implementations/CommStream/CommStreamInternal.cpp" />
 		<Unit filename="Implementations/Error/Error.cpp" />
 		<Unit filename="Implementations/Error/Error.hpp" />
 		<Unit filename="Implementations/ExpressionParser/ExpressionParser.hpp" />
@@ -95,6 +96,10 @@
 		<Unit filename="Implementations/Strings/Strings.hpp" />
 		<Unit filename="Implementations/Telnet/Telnet.cpp" />
 		<Unit filename="Implementations/Telnet/Telnet.hpp" />
+		<Unit filename="Implementations/Telnet/TelnetSession.cpp" />
+		<Unit filename="Implementations/Telnet/TelnetSessionInternal.cpp" />
+		<Unit filename="Implementations/Telnet/TheCursor.cpp" />
+		<Unit filename="Implementations/Telnet/TheScreen.cpp" />
 		<Unit filename="Implementations/Tester.cpp" />
 		<Unit filename="Implementations/Tester.hpp" />
 		<Unit filename="Implementations/Thread/Mutex.cpp" />

@@ -32,10 +32,8 @@
 
 
 namespace GlobalMUD{
-    class CommStreamInternal;
 
     class CommStream{
-    friend CommStreamInternal;
     public:
         enum Encryption{
             NONE = 0,
@@ -46,13 +44,80 @@ namespace GlobalMUD{
             LINES = 1
         };
     private:
+        class Internal{
+            friend CommStream;
+            struct Message{
+                enum FLAGS{
+                    NONE = 0,
+                    IMPORTANT = 1
+                };
+                Message(std::string message, int flagss );
+                Message(const char* message, size_t len, int flagss );
+
+                std::shared_ptr<char> msg;
+                size_t length;
+                int flags;
+            };
+            CommStream::ReceiveType MyReceiveType;
+            CommStream::Encryption MyEncryption;
+            Ciphers::Cipher* MyCipher;
+            SOCKET Connection;
+            std::deque<Message> SendBuffer;
+            int ImportantMessages;
+            std::deque<Message> RecvBuffer;
+            std::string RecvLinesBuffer;
+            bool aborted;
+            bool isconnected;
+            bool isServer;
+            static bool currentlyServicing;
+            unsigned int connecting;
+            bool transmitting;
+            void Terminate();
+            void PushData( char* data, size_t len );
+            bool CanSend();
+            Message GetSend();
+            Mutex MyLock;
+            int disconnecting;
+            int ID;
+            std::vector<std::function<void()>> callbacks;
+
+            public:
+            Internal( CommStream::ReceiveType rectype = CommStream::LINES );
+            ~Internal();
+            Error Connect( std::string address, int port );
+            bool Connected( );
+            Error Disconnect( bool force = false );
+            Error Listen( int port, std::function<void(CommStream)> );
+            Error ListenOn( std::string address, int port, std::function<void(CommStream)> );
+            Error Send( std::string message, bool important = false );
+            Error Send( void* message, size_t len, bool important = false );
+            Error Receive( std::string &message );
+            Error Receive( char* message, size_t& len );
+            Error Encrypt( CommStream::Encryption type );
+            Error RegisterCallback( std::function<void()> );
+            Error ClearCallbacks( );
+            int SendBufferSize();
+
+            static int ServiceSockets(Internal *ptr = NULL);
+            static int ServiceSocket(Internal *ptr = NULL);
+
+            static void PushStream( CommStream topush );
+            static void PopStream( CommStream * id );
+
+            static int CurrentID;
+
+            static Mutex Lock;
+            static std::vector<CommStream> CommStreams;
+        };
+        friend Internal;
+
         void UseSocket(SOCKET sock);
         void Terminate();
         void PushData( char* data, size_t len );
         bool CanSend();
-        CommStreamInternal* Get();
+        Internal* Get();
         SOCKET GetConnection();
-        RefCounter<CommStreamInternal> Internal;
+        RefCounter<Internal> myInternal;
 
 
     public:
@@ -78,77 +143,10 @@ namespace GlobalMUD{
         #ifdef RunUnitTests
         static bool RunTests();
         #endif
-        static int ServiceSockets(CommStreamInternal *ptr = NULL);
+        static int ServiceSockets(Internal *ptr = NULL);
 
 
     };
-    class CommStreamInternal{
-        friend CommStream;
-        struct Message{
-            enum FLAGS{
-                NONE = 0,
-                IMPORTANT = 1
-            };
-            Message(std::string message, int flagss );
-            Message(const char* message, size_t len, int flagss );
-
-            std::shared_ptr<char> msg;
-            size_t length;
-            int flags;
-        };
-        CommStream::ReceiveType MyReceiveType;
-        CommStream::Encryption MyEncryption;
-        Ciphers::Cipher* MyCipher;
-        SOCKET Connection;
-        std::deque<Message> SendBuffer;
-        int ImportantMessages;
-        std::deque<Message> RecvBuffer;
-        std::string RecvLinesBuffer;
-        bool aborted;
-        bool isconnected;
-        bool isServer;
-        static bool currentlyServicing;
-        unsigned int connecting;
-        bool transmitting;
-        void Terminate();
-        void PushData( char* data, size_t len );
-        bool CanSend();
-        Message GetSend();
-        Mutex MyLock;
-        int disconnecting;
-        int ID;
-        std::vector<std::function<void()>> callbacks;
-
-        public:
-        CommStreamInternal( CommStream::ReceiveType rectype = CommStream::LINES );
-        ~CommStreamInternal();
-        Error Connect( std::string address, int port );
-        bool Connected( );
-        Error Disconnect( bool force = false );
-        Error Listen( int port, std::function<void(CommStream)> );
-        Error ListenOn( std::string address, int port, std::function<void(CommStream)> );
-        Error Send( std::string message, bool important = false );
-        Error Send( void* message, size_t len, bool important = false );
-        Error Receive( std::string &message );
-        Error Receive( char* message, size_t& len );
-        Error Encrypt( CommStream::Encryption type );
-        Error RegisterCallback( std::function<void()> );
-        Error ClearCallbacks( );
-        int SendBufferSize();
-
-        static int ServiceSockets(CommStreamInternal *ptr = NULL);
-        static int ServiceSocket(CommStreamInternal *ptr = NULL);
-
-        static void PushStream( CommStream topush );
-        static void PopStream( CommStream * id );
-
-        static int CurrentID;
-
-        static Mutex Lock;
-        static std::vector<CommStream> CommStreams;
-    };
-
-
 }
 #undef SOCKET
 

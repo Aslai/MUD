@@ -33,7 +33,7 @@ namespace GlobalMUD{
         if( f == NULL )
             return Error::FileNotFound;
         Terminal temp;
-        bool readingterm = false; //Indicates whether or not we're reading a terminal or parameter
+        bool readingterm = false; //Indicates whether or not we're reading a terminal name or parameter
         while( true ){
             char buffer[1000];
 
@@ -71,13 +71,17 @@ namespace GlobalMUD{
                 }
                 //But if we are...
                 else{
+                    //Find a colon in the buffer
                     char *iter = buffer;
                     while( *iter != ':' && *iter != '\0' ){
                         iter++;
                     }
+                    //If a colon indeed exists...
                     if( *iter != '\0' ){
                         *iter = '\0';
+                        //Set Key to the string between buffer and iter
                         char* Key = buffer;
+                        //Set Value to the string following iter
                         char* Value = iter+1;
 
                         //Trim the whitespace off the start of Key and Value.
@@ -88,6 +92,7 @@ namespace GlobalMUD{
 
                         //If we actually have a parameter value...
                         if( strlen(Value) != 0 ){
+                            //Make it all uppercase
                             strupr( Key );
                             strupr( Value );
                             bool affirmative = Value[0] == 'Y';

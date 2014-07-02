@@ -26,3 +26,5 @@ MUD.layout
 
 Code/*/bin/*
 Code/*/obj/*
+
+DoxygenOutput/*

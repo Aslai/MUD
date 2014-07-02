@@ -16,6 +16,7 @@ namespace GlobalMUD{
     Telnet::TheScreen::TheCursor::TheCursor( TheScreen& screen ) : myScreen(screen) {
         X = Y = 0;
         wraps = false;
+        isHidden = false;
     }
 
     Error Telnet::TheScreen::TheCursor::ShouldWrap( bool shouldWrap ){
@@ -24,36 +25,68 @@ namespace GlobalMUD{
     }
 
     Error Telnet::TheScreen::TheCursor::Advance( int amount ){
-        if( X < myScreen.Width() - 1 ){
-            X++;
-        }
-        else {
+        X += amount;
+        if( X >= myScreen.Width() ){
             if( wraps ){
-                CarriageReturn();
-                LineFeed();
+                Y += X / myScreen.Width();
+                X %= myScreen.Width();
+            }
+            else{
+                X = myScreen.Width() - 1;
             }
         }
-        return Error::None;
+        //CursorPosition is Row;Column format
+        return myScreen.parent.SendANSICode( Telnet::ANSICodes::CursorPosition, Y + 1, X + 1 );
     }
 
     Error Telnet::TheScreen::TheCursor::LineFeed( int amount ){
-        if( Y < myScreen.Height() - 1 )
-            Y++;
-        return Error::None;
+        Y += amount;
+        if( Y >= myScreen.Height() ){
+            Y = myScreen.Height() - 1;
+        }
+        return myScreen.parent.SendANSICode( Telnet::ANSICodes::CursorNextLine, amount );
     }
 
     Error Telnet::TheScreen::TheCursor::CarriageReturn(){
         X = 0;
-        return Error::None;
+        return myScreen.parent.SendANSICode( Telnet::ANSICodes::CursorHorizontalAbsolute, 1 );
     }
 
     Error Telnet::TheScreen::TheCursor::MoveTo( int x, int y ){
-        if( X < 0 || X >= myScreen.Width() || Y < 0 || Y >= myScreen.Height() ){
+        //Screen coordinates are 1-based, so convert them to 0-based
+        x--;
+        y--;
+
+        if( x < 0 || x >= myScreen.Width() || y < 0 || y >= myScreen.Height() ){
             return Error::OutOfBounds;
         }
+
         X = x;
         Y = y;
+
+        //CursorPosition is Row;Column format
+        return myScreen.parent.SendANSICode( Telnet::ANSICodes::CursorPosition, Y + 1, X + 1 );
+    }
+
+    Error Telnet::TheScreen::TheCursor::Hide(){
+        if( myScreen.parent.SendANSICode( Telnet::ANSICodes::CursorHide ) == Error::None )
+            isHidden = true;
+        else
+            return Error::Unsupported;
         return Error::None;
     }
+
+    Error Telnet::TheScreen::TheCursor::Unhide(){
+        if( myScreen.parent.SendANSICode( Telnet::ANSICodes::CursorShow ) == Error::None )
+            isHidden = false;
+        else
+            return Error::Unsupported;
+        return Error::None;
+    }
+
+    bool Telnet::TheScreen::TheCursor::Hidden(){
+        return isHidden;
+    }
+
 }
 

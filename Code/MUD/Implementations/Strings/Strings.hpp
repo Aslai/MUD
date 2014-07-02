@@ -35,6 +35,8 @@ namespace GlobalMUD{
     }
 
     void strupr( char *str );
+    std::string StringRepeat(std::string str, int amt);
+
 }
 
 #endif

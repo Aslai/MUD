@@ -15,25 +15,22 @@
 using namespace GlobalMUD;
 
 void TNet(GlobalMUD::Telnet::TelnetSession t){
-    //return;
-    t.SendANSICode( Telnet::ANSICodes::CursorHide );
+    t.Screen().Cursor().Hide();
+
     while( t.Connected() ){
         Thread::Sleep(100);
-        if( t.SendANSICode( Telnet::ANSICodes::EraseDisplay, 2 ) == Error::Unsupported ) printf("FUCK");;
-        t.SendANSICode( Telnet::ANSICodes::CursorPosition, t.Screen().Height(), 1 );
+        t.Screen().Clear();
 
         t.Screen().SetColor( Telnet::Color::Bright_White, Telnet::Color::Green );
-        t.SendANSICode( Telnet::ANSICodes::CursorPosition, t.Screen().Height(), 1 );
-        std::string block = "          ";
-        for( ; block.length() < (unsigned)t.Screen().Width(); block = block + block ){}
-        block = block.substr( 0, t.Screen().Width() );
-        t.SendLine( block );
+        t.Screen().Cursor().MoveTo( 1, t.Screen().Height() );
+        t.SendLine( StringRepeat(" ", t.Screen().Width() ) );
 
-        t.SendANSICode( Telnet::ANSICodes::CursorPosition, t.Screen().Height(), 1 );
+        t.Screen().Cursor().MoveTo( 1, t.Screen().Height() );
         t.SendLine( StringFormat("Terminal Size: %d\t%d", t.Screen().Width(), t.Screen().Height() ) );
 
         std::string title = "Telnet Test";
-        t.SendANSICode( Telnet::ANSICodes::CursorPosition, 3, ( t.Screen().Width() - title.length() ) / 2 );
+        t.Screen().Cursor().MoveTo( ( t.Screen().Width() - title.length() ) / 2, 3 );
+
         t.Screen().SetColor( Telnet::Color::Default, Telnet::Color::Default );
         t.SendLine( title );
 
