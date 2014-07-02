@@ -5,6 +5,7 @@
 #include "Thread/Thread.hpp"
 #include "HTTPd/HTTPd.hpp"
 #include "Error/Error.hpp"
+#include "Memory/Stream.hpp"
 
 #include <random>
 #include <cstdio>

@@ -10,6 +10,7 @@
 #include<functional>
 
 #include "Strings/Strings.hpp"
+#include "Memory/Stream.hpp"
 
 namespace GlobalMUD{
     void Telnet::TelnetSessionInternal::ReadStream(){
