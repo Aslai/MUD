@@ -222,10 +222,7 @@ namespace GlobalMUD{
                             do{
                                 size_t oldpos = pos+1;
                                 pos = r.request.find_first_of('/', oldpos);
-                                if( pos == std::string::npos && firstRequest )
-                                    break;
-                                firstRequest = false;
-                                dir.push_back( r.request.substr(oldpos, pos-oldpos) );
+                                dir.push_back( r.request.substr(oldpos, pos == std::string::npos ? pos : pos-oldpos) );
                             }while( pos != std::string::npos );
 
                             for( size_t i = 0; i < dir.size(); ++i ){
