@@ -13,13 +13,26 @@ namespace GlobalMUD{
     std::string StringFromUInt(unsigned int i);
     unsigned int HashString(std::string v);
 
+    namespace{
+        template<class T>
+        T Helper(T value){
+            return value;
+        }
+        //template<std::string T>
+        const char* Helper(std::string value){
+            return value.c_str();
+        }
+
+    }
+
     template<class... Args>
     std::string StringFormat( std::string format, Args... args ){
-        size_t len = snprintf( NULL, 0, format.c_str(), args...);
+
+        size_t len = snprintf( NULL, 0, format.c_str(), Helper(args)...);
         std::string ret;
         ret.resize(len);
         ret.reserve(len+1);
-        snprintf( &ret[0], len+1, format.c_str(), args...);
+        snprintf( &ret[0], len+1, format.c_str(), Helper(args)...);
         return ret;
     }
 

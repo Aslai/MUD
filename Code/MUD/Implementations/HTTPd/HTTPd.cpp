@@ -66,6 +66,7 @@ namespace GlobalMUD{
                 if( escaped ){
                     char c = tolower( url[i] );
                     int v = 0;
+                    //Convert a hexadecimal glyph into a numeric value and store for later.
                     if( c >= '0' && c <='9' ){
                         v = c - '0';
                     }
@@ -75,11 +76,14 @@ namespace GlobalMUD{
                     else{
                         valid = false;
                     }
+                    //If this is the first glyph in the escape sequence...
                     if( escapelevel == 0 ){
                         escape += v << 4;
                         escapelevel++;
                     }
                     else{
+                        //otherwise generate a character from the two hexadecimal values and
+                        //dump it into the output.
                         escape += v;
                         if( valid )
                             ret += escape;
@@ -87,15 +91,18 @@ namespace GlobalMUD{
                     }
                 }
                 else {
+                    //Convert pluses to spaces
                     if( url[i] == '+' ){
                         ret += ' ';
                     }
+                    //Drop into escape mode if a percent is present
                     else if( url[i] == '%'){
                         escaped = true;
                         escape = 0;
                         escapelevel = 0;
                         valid = true;
                     }
+                    //Otherwise just dump the character as-is into the output
                     else {
                         ret += url[i];
                     }
@@ -297,10 +304,10 @@ namespace GlobalMUD{
 
             HTTPd::HTTPResponse tosend;
             if( myerror == Error::ParseFailure ){
-                tosend = HTTPd::Do400(r, *(HTTPd*)parent);
+                tosend = HTTPd::DoError(r, *(HTTPd*)parent, 404);
             }
             else if( myerror == Error::Timeout ){
-                tosend = HTTPd::Do408(r, *(HTTPd*)parent);
+                tosend = HTTPd::DoError(r, *(HTTPd*)parent, 408);
             }
             else if( myerror == Error::None ){
                 tosend = ((HTTPd*)parent)->PushPage(r);
@@ -334,74 +341,32 @@ namespace GlobalMUD{
         void HTTPd::ConnectionHandler(CommStream stream, void* parent ){
 
             Thread T( std::bind( ConnectionHandlerThread, stream, parent ) );
-
-            T.Detach();
             T.Run();
+            T.Detach();
+
 
         }
 
-
-        HTTPd::HTTPResponse HTTPd::Do400(HTTPResponse response, HTTPd& parent){
-
-            HTTPd::HTTPResponse r;
-            r = parent.PushPage(r, "e400");
-            if( r.error == 404 ){
-                std::string html = "<!DOCTYPE html><html><head><title>Error 400 - Bad Request</title></head>\
-                            <body><h1>400 - Bad Request</h1><br/><p>Your request could not be parsed.</p><br/>\
-                            <br/><p>Additionally, a 404 was encountered when attempting to retrieve the error document.</p></body></html>";
-                r.content.resize(html.size());
-
-                memcpy( &(r.content[0]), html.c_str(), html.length() );
-            }
-            r.error = 400;
-            return r;
+        void HTTPd::HTTPResponse::SetContent(std::string value){
+            content.resize(value.size());
+            memcpy( &(content[0]), value.c_str(), value.length() );
         }
 
-        HTTPd::HTTPResponse HTTPd::Do403(HTTPResponse response, HTTPd& parent){
 
+        HTTPd::HTTPResponse HTTPd::DoError(HTTPResponse response, HTTPd& parent, int code){
             HTTPd::HTTPResponse r;
-            r = parent.PushPage(r, "e403");
+            r = parent.PushPage(r, StringFormat( "e%d", code ));
             if( r.error == 404 ){
-                std::string html = "<!DOCTYPE html><html><head><title>Error 403 - Forbidden</title></head>\
-                            <body><h1>403 - Forbidden</h1><br/><p>The requested resource is forbidden from the likes of you.</p><br/>\
-                            <br/><p>Additionally, a 404 was encountered when attempting to retrieve the error document.</p></body></html>";
-                r.content.resize(html.size());
-
-                memcpy( &(r.content[0]), html.c_str(), html.length() );
+                std::string title = GetMessageFromHTTPStatus( code );
+                std::string message = GetDetailedMessageFromHTTPStatus( code );
+                r.SetContent( StringFormat(
+                            "<!DOCTYPE html><html><head><title>%d - %s</title></head>\
+                            <body><h1>%d - %s</h1>%s<br/>\
+                            Additionally, a 404 was encountered when attempting to retrieve the error document.\
+                            <hr align=\"LEFT\" width=\"100%\"><i>MUDHTTPd version x.x.x</i></body></html>",
+                            code, title, code, title, message ) );
             }
-            r.error = 403;
-            return r;
-        }
-
-        HTTPd::HTTPResponse HTTPd::Do404(HTTPResponse response, HTTPd& parent){
-
-            HTTPd::HTTPResponse r;
-            r = parent.PushPage(r, "e404");
-            if( r.error == 404 ){
-                std::string html = "<!DOCTYPE html><html><head><title>Error 404 - Not Found</title></head>\
-                            <body><h1>404 - Not Found</h1><br/><p>The requested resource could not be found.</p><br/>\
-                            <br/><p>Additionally, a 404 was encountered when attempting to retrieve the error document.</p></body></html>";
-                r.content.resize(html.size());
-
-                memcpy( &(r.content[0]), html.c_str(), html.length() );
-            }
-            r.error = 404;
-            return r;
-        }
-
-        HTTPd::HTTPResponse HTTPd::Do408(HTTPResponse response, HTTPd& parent){
-
-            HTTPd::HTTPResponse r;
-            r = parent.PushPage(r, "e408");
-            if( r.error == 404 ){
-                std::string html = "<!DOCTYPE html><html><head><title>Error 408 - Request Timeout</title></head>\
-                            <body><h1>408 - Request Timeout</h1><br/><p>The request for this resource has timed out.</p><br/>\
-                            <br/><p>Additionally, a 404 was encountered when attempting to retrieve the error document.</p></body></html>";
-                r.content.resize(html.size());
-
-                memcpy( &(r.content[0]), html.c_str(), html.length() );
-            }
-            r.error = 408;
+            r.error = code;
             return r;
         }
 
@@ -430,7 +395,7 @@ namespace GlobalMUD{
                 }
             }
             if( mount == "" || (mount[0] != 'e' && mount != StringToLower(r.request) && MountPoints[mount].Type != HTTPd::MountPoint::FOLDER ) ){
-                return Do404(r, *this);
+                return DoError(r, *this, 404);
             }
             HTTPd::HTTPResponse ret;
             if( mount[0] == 'e' && MountPoints[mount].Type == HTTPd::MountPoint::BAD ){
@@ -444,7 +409,7 @@ namespace GlobalMUD{
                 path = MountPoints[mount].Path + r.request.substr(mount.length());
             case HTTPd::MountPoint::FILE:{
                 if( !Filesystem::FileExists( path ) ){
-                    return Do404(r, *this);
+                    return DoError(r, *this, 404);
                 }
 
                 ret.headers["Content-Length"] = StringFromUInt(Filesystem::FileSize( path ));
@@ -463,9 +428,9 @@ namespace GlobalMUD{
                 return ret;
             }
             case HTTPd::MountPoint::BAD:
-                return Do404(r,*this);
+               return DoError(r, *this, 404);
             default:
-                return Do404(r,*this);
+                return DoError(r, *this, 404);
             break;
             }
         }

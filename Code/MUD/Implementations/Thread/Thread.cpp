@@ -34,7 +34,6 @@ namespace GlobalMUD{
             //For debugging purposes. Make the thread call the function instead of making a thread.
             f();
             #else
-            f();
             detached = false;
             Arguments* args = new Arguments;
             args->f = f;
@@ -64,7 +63,9 @@ namespace GlobalMUD{
     void Thread::Join(){
         if( !detached ){
         WaitForSingleObject( ThreadHandle, INFINITE );
-        CloseHandle( ThreadHandle );
+        if( ThreadHandle != NULL )
+            CloseHandle( ThreadHandle );
+        ThreadHandle = NULL;
         }
     }
 
@@ -74,12 +75,16 @@ namespace GlobalMUD{
 
     void Thread::Kill(){
         TerminateThread( ThreadHandle, 0 );
-        CloseHandle( ThreadHandle );
+        if( ThreadHandle != NULL )
+            CloseHandle( ThreadHandle );
+        ThreadHandle = NULL;
     }
 
     void Thread::Detach(){
         detached = true;
-        CloseHandle( ThreadHandle );
+        if( ThreadHandle != NULL )
+            CloseHandle( ThreadHandle );
+        ThreadHandle = NULL;
     }
 
     void Thread::Sleep(unsigned long msec){

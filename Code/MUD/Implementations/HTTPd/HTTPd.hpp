@@ -19,6 +19,7 @@ namespace GlobalMUD{
             std::string request;
             std::string filepath;
             std::vector<char> content;
+            void SetContent(std::string value);
         };
         struct MountPoint{
             enum Types{
@@ -55,10 +56,8 @@ namespace GlobalMUD{
         static int HasLine(char*pointer, size_t len);
         static std::string URLDecode(std::string url);
 
-        static HTTPResponse Do400(HTTPResponse response, HTTPd& parent);
-        static HTTPResponse Do403(HTTPResponse response, HTTPd& parent);
-        static HTTPResponse Do404(HTTPResponse response, HTTPd& parent);
-        static HTTPResponse Do408(HTTPResponse response, HTTPd& parent);
+        static HTTPResponse DoError(HTTPResponse response, HTTPd& parent, int code);
+
 
         #ifdef RunUnitTests
         static bool RunTests();

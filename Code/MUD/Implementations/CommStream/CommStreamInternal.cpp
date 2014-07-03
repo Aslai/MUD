@@ -528,6 +528,9 @@ namespace GlobalMUD{
     }
 
     int CommStream::Internal::SendBufferSize(){
+        //Collect any data pending on the network buffers
+        CommStream::ServiceSockets(this);
+
         return SendBuffer.size();
     }
 
