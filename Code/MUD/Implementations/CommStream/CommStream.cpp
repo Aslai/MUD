@@ -97,6 +97,10 @@ namespace GlobalMUD{
         return myInternal->Send( message, len, important );
     }
 
+    bool CommStream::HasData(){
+        return myInternal->HasData();
+    }
+
     void CommStream::Flush(){
         Internal::ServiceSocket(myInternal.get());
     }

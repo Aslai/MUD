@@ -4,7 +4,6 @@
 #include<cstdio>
 namespace GlobalMUD{
 #ifdef _WIN32
-int NUM = 0;
         Mutex::Inner::Inner(){
             mutex = CreateMutex( NULL, FALSE, NULL);
         }

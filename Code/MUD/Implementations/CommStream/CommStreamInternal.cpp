@@ -367,6 +367,10 @@ namespace GlobalMUD{
         return Error::None;
     }
 
+    bool CommStream::Internal::HasData(){
+        return RecvBuffer.size() > 0;
+    }
+
     //Evaluate a socket for validity and grab data from the network buffers
     int CommStream::Internal::ServiceSocket( CommStream::Internal *ptr ){
             char recvbuf[NETBUFFERSIZE];

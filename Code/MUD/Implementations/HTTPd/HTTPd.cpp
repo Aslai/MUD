@@ -134,6 +134,7 @@ namespace GlobalMUD{
             return true;
         }
         #endif
+
         static void ConnectionHandlerThread(CommStream stream, void* parent){
 
             HTTPd::HTTPResponse r;
@@ -218,7 +219,7 @@ namespace GlobalMUD{
                             }
                             pos = 0;
                             std::vector<std::string> dir;
-                            bool firstRequest = true;
+
                             do{
                                 size_t oldpos = pos+1;
                                 pos = r.request.find_first_of('/', oldpos);

@@ -41,20 +41,24 @@ namespace GlobalMUD{
                     buff.LoadCheckpoint( start );
                     //Copy the information between the start and end checkpoints and dump it into the buffer.
                     buffer += BufferToString( (const char*) buff.GetData( end ), end-start );
-                    buff.GetChar();
                     start = buff.SaveCheckpoint();
+                    buff.GetChar();
 
                     //If it turns out that the following character is another IAC, turn on escape mode.
-                    if( (byte) buff.PeekChar() == (byte) Telnet::Commands::IAC ){
+                    if( buff.PeekByte() == (byte) Telnet::Commands::IAC ){
                         escaped = true;
                         start ++;
                         buff.GetChar();
                     }
                     else{
-                        ParseCommand( buff );
+                        buff.LoadCheckpoint( start );
+                        Error e = ParseCommand( buff );
                         //Move the start checkpoint to the next position in the data stream following
                         //the last telnet command.
                         start = buff.SaveCheckpoint();
+                        if( e == Error::PartialData ){
+                            break;
+                        }
                     }
 
                 }
@@ -74,14 +78,20 @@ namespace GlobalMUD{
                 if( echos == true )
                     SendLine( s );
             }
-        } while( buff.HasChar() );
+        } while( stream.HasData() );
         lock.Unlock();
     }
 
     Error Telnet::TelnetSessionInternal::ParseCommand( Stream& cmd ){
-        //Save a checkpoint to return to if a full command is unable to be read.
+        //Verify that this is actually a Telnet escape sequence
+        if( cmd.PeekByte() != (byte)Telnet::Commands::IAC ){
+            return Error::ParseFailure;
+        }
 
+        //Save a checkpoint to return to if a full command is unable to be read.
         auto start = cmd.SaveCheckpoint();
+
+        cmd.GetByte();
 
         //If there is no byte to read, return to the starting checkpoint and report an error.
         if( !cmd.HasByte() ){

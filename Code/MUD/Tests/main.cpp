@@ -44,10 +44,10 @@ int main(){
     WSAStartup( MAKEWORD(2, 2), &globalWSAData );
     #endif
 
-    /*GlobalMUD::Telnet t;
+    GlobalMUD::Telnet t;
     t.ReadTerms( "terminals.txt" );
     t.Listen( 45141, TNet );
-    return 0;*/
+    return 0;
 
     Test<GlobalMUD::Thread>();
     Test<GlobalMUD::Ciphers::Cipher>();

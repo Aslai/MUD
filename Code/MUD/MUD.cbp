@@ -92,6 +92,8 @@
 		<Unit filename="Implementations/HTTPd/HTTPd.cpp" />
 		<Unit filename="Implementations/HTTPd/HTTPd.hpp" />
 		<Unit filename="Implementations/Memory/RefCounter.hpp" />
+		<Unit filename="Implementations/Memory/Stream.cpp" />
+		<Unit filename="Implementations/Memory/Stream.hpp" />
 		<Unit filename="Implementations/Strings/Strings.cpp" />
 		<Unit filename="Implementations/Strings/Strings.hpp" />
 		<Unit filename="Implementations/Telnet/Telnet.cpp" />

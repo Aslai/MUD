@@ -96,6 +96,7 @@ namespace GlobalMUD{
             Error Encrypt( CommStream::Encryption type );
             Error RegisterCallback( std::function<void()> );
             Error ClearCallbacks( );
+            bool HasData();
             int SendBufferSize();
 
             static int ServiceSockets(Internal *ptr = NULL);
@@ -137,6 +138,7 @@ namespace GlobalMUD{
         Error Encrypt( Encryption type );
         Error RegisterCallback( std::function<void()> );
         Error ClearCallbacks( );
+        bool HasData();
 
         void Flush();
         int SendBufferSize();
