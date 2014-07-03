@@ -42,12 +42,12 @@ namespace GlobalMUD{
             Lock = args->Lock;
             //Spawn the thread
             #ifdef _WIN32
-            ThreadHandle = CreateThread( NULL, 8048, GlobalMUD::Thread::ThreadFunc, args, CREATE_SUSPENDED, &ThreadID );
-            valid = ThreadHandle != NULL;
+            ThreadHandle = CreateThread( nullptr, 8048, GlobalMUD::Thread::ThreadFunc, args, CREATE_SUSPENDED, &ThreadID );
+            valid = ThreadHandle != nullptr;
             #else
             pthread_attr_t attr;
             pthread_attr_init( &attr );
-            valid = 0 == pthread_create(&ThreadHandle, NULL, GlobalMUD::Thread::ThreadFunc, args);
+            valid = 0 == pthread_create(&ThreadHandle, nullptr, GlobalMUD::Thread::ThreadFunc, args);
 
             pthread_attr_destroy( &attr );
             #endif
@@ -63,9 +63,9 @@ namespace GlobalMUD{
     void Thread::Join(){
         if( !detached ){
         WaitForSingleObject( ThreadHandle, INFINITE );
-        if( ThreadHandle != NULL )
+        if( ThreadHandle != nullptr )
             CloseHandle( ThreadHandle );
-        ThreadHandle = NULL;
+        ThreadHandle = nullptr;
         }
     }
 
@@ -75,16 +75,16 @@ namespace GlobalMUD{
 
     void Thread::Kill(){
         TerminateThread( ThreadHandle, 0 );
-        if( ThreadHandle != NULL )
+        if( ThreadHandle != nullptr )
             CloseHandle( ThreadHandle );
-        ThreadHandle = NULL;
+        ThreadHandle = nullptr;
     }
 
     void Thread::Detach(){
         detached = true;
-        if( ThreadHandle != NULL )
+        if( ThreadHandle != nullptr )
             CloseHandle( ThreadHandle );
-        ThreadHandle = NULL;
+        ThreadHandle = nullptr;
     }
 
     void Thread::Sleep(unsigned long msec){
@@ -98,7 +98,7 @@ namespace GlobalMUD{
 
     void Thread::Join(){
         if( valid )
-            pthread_join( ThreadHandle, NULL );
+            pthread_join( ThreadHandle, nullptr );
         valid = !valid;
     }
 

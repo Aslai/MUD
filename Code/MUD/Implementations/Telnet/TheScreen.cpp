@@ -12,9 +12,9 @@
 #include "Strings/Strings.hpp"
 
 namespace GlobalMUD{
-    Telnet::TheScreen::TheScreen( int Width, int Height, TelnetSessionInternal &Parent ) : parent(Parent), myCursor( *this ){
-        width = Width;
-        height = Height;
+    Telnet::TheScreen::TheScreen( int W, int H, TelnetSessionInternal &Parent ) : parent(Parent), myCursor( *this ){
+        width = W;
+        height = H;
 
         supportsColor = parent.parent.SupportedTerms["DEFAULT"].Color;
         supportsEscapeCodes = parent.parent.SupportedTerms["DEFAULT"].ANSIEscape;

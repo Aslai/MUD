@@ -110,7 +110,7 @@ namespace GlobalMUD{
         //It is just dumped into the stream as-is.
         char buffer[1000];
         FILE* f = fopen( path.c_str(), "rb" );
-        if( f == NULL )
+        if( f == nullptr )
             return Error::FileNotFound;
         myInternal->transmitting = true;
         Error err = Error::None;
@@ -244,7 +244,7 @@ namespace GlobalMUD{
         }
         TEST("GlobalMUD::CommStream::Listen()");
         int data = 0;
-        int port = time(0) % 1000 + 1000;
+        int port = time( nullptr ) % 1000 + 1000;
         //Set up a server in its own thread and see if the callback is being called correctly
         Thread TestListen( std::bind( &CommStream::ListenOn, &comm, (std::string)"localhost", port,
                                 (std::function<void(CommStream)>)(std::bind(Testcode, std::placeholders::_1, (void*)&data) ) ) );

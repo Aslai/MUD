@@ -1,4 +1,5 @@
 #include <string>
+#include "Filesystem/MIME.hpp"
 
 const char* mimes[] = {
     "3dm",          "x-world/x-3dmf",
@@ -669,12 +670,12 @@ const char* mimes[] = {
     "zip",          "multipart/x-zip",
     "zoo",          "application/octet-stream",
     "zsh",          "text/x-script.zsh",
-    0,              0
+    nullptr,        nullptr
 };
 namespace GlobalMUD{
     std::string GetMimeFromExt( std::string ext ) {
         //Convert a file extension into a fully qualified MIME type.
-        for( int i = 0; mimes[i] != 0; i += 2 ) {
+        for( int i = 0; mimes[i] != nullptr; i += 2 ) {
             if( ext == mimes[i] ) {
                 return mimes[i + 1];
             }

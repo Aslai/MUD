@@ -31,7 +31,7 @@ namespace GlobalMUD{
                 break;
             bool escaped = false;
             //Create a checkpoint where we can return to in order to read everything
-            //proceeding the next telnet instruction.
+            //preceding the next telnet instruction.
             auto start = buff.SaveCheckpoint();
 
             while( buff.HasChar() ){
@@ -504,7 +504,7 @@ namespace GlobalMUD{
         if( len > 0 ){
             std::string toAdd = BufferToString( data, len );
             for( unsigned int i = 0; i < toAdd.length(); ++i ){
-                if( toAdd[i] == (unsigned char)Telnet::Commands::IAC ){
+                if( (byte)toAdd[i] == (byte)Telnet::Commands::IAC ){
                     std::string toInsert = "";
                     toInsert += (unsigned char)Telnet::Commands::IAC;
                     toAdd.insert( i++, toInsert );

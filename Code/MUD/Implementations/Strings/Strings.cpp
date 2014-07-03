@@ -25,6 +25,7 @@ namespace GlobalMUD{
         }
         return str;
     }
+
     std::string StringToLower(std::string in){
         for( size_t i = 0; i < in.size(); ++i ){
             in[i] = tolower(in[i]);

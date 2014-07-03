@@ -151,10 +151,10 @@ namespace GlobalMUD{
 
 
             int state = 0;
-            time_t starttime = time(0);
+            time_t starttime = time( nullptr );
 
             while(state != -1){
-                if( time(0) - starttime > timeout ){
+                if( time( nullptr ) - starttime > timeout ){
                     myerror = Error::Timeout;
                 }
                 Error e = Error::None;
@@ -296,7 +296,7 @@ namespace GlobalMUD{
                             else break;
                         }
                     case 5: state = -1;
-
+                    default: break;
                 }
             }
 
@@ -462,16 +462,16 @@ namespace GlobalMUD{
         HTTPd::HTTPd(std::string address, int port){
             Address = address;
             Port = port;
-            stream = 0;
-            MyThread = 0;
+            stream = nullptr;
+            MyThread = nullptr;
         }
 
         HTTPd::~HTTPd(){
             MyThread->Join();
-            if( MyThread != 0 ){
+            if( MyThread != nullptr ){
                 delete MyThread;
             }
-            if( stream != 0 ){
+            if( stream != nullptr ){
                 delete stream;
             }
         }

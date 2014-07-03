@@ -21,11 +21,11 @@ namespace GlobalMUD{
 
         size_t FileSize(std::string path){
             size_t ret;
-            HANDLE f = CreateFile(path.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL,
-                          OPEN_EXISTING, FILE_ATTRIBUTE_READONLY, NULL);
+            HANDLE f = CreateFile(path.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr,
+                          OPEN_EXISTING, FILE_ATTRIBUTE_READONLY, nullptr);
 
             if( sizeof(ret) == sizeof(DWORD) ){
-                size_t v = GetFileSize(f, NULL);
+                size_t v = GetFileSize(f, nullptr);
                 CloseHandle(f);
                 return v;
             }

@@ -1,4 +1,5 @@
 #include<cstdlib>
+#include "Tester.hpp"
 
 bool Assert( int value ){
     if( value )

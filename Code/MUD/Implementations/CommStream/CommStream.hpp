@@ -99,8 +99,8 @@ namespace GlobalMUD{
             bool HasData();
             int SendBufferSize();
 
-            static int ServiceSockets(Internal *ptr = NULL);
-            static int ServiceSocket(Internal *ptr = NULL);
+            static int ServiceSockets(Internal *ptr = nullptr);
+            static int ServiceSocket(Internal *ptr = nullptr);
 
             static void PushStream( CommStream topush );
             static void PopStream( CommStream * id );
@@ -145,7 +145,7 @@ namespace GlobalMUD{
         #ifdef RunUnitTests
         static bool RunTests();
         #endif
-        static int ServiceSockets(Internal *ptr = NULL);
+        static int ServiceSockets(Internal *ptr = nullptr);
 
 
     };

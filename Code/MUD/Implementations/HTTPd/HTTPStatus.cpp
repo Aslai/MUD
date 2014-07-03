@@ -1,4 +1,6 @@
 #include <string>
+#include "HTTPd/HTTPStatus.hpp"
+
 namespace GlobalMUD{
     static struct{int code; std::string text; std::string message;} HTTPstatuses[] = {
 

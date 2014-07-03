@@ -28,7 +28,7 @@ namespace GlobalMUD{
     template<class... Args>
     std::string StringFormat( std::string format, Args... args ){
 
-        size_t len = snprintf( NULL, 0, format.c_str(), Helper(args)...);
+        size_t len = snprintf( nullptr, 0, format.c_str(), Helper(args)...);
         std::string ret;
         ret.resize(len);
         ret.reserve(len+1);

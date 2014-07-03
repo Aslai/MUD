@@ -72,16 +72,16 @@ namespace GlobalMUD{
 
 
     Stream::Checkpoint::~Checkpoint(){
-        if( stream != NULL )
+        if( stream != nullptr )
             stream->PopCheckpoint( index );
     }
 
 
     Error Stream::Checkpoint::Remove(){
 
-        if( stream != NULL ){
+        if( stream != nullptr ){
             stream->PopCheckpoint( index );
-            stream = NULL;
+            stream = nullptr;
         }
         return Error::None;
     }
@@ -108,7 +108,7 @@ namespace GlobalMUD{
 
 
     Stream::Stream(){
-        buffer = NULL;
+        buffer = nullptr;
         reserved = 0;
         bufferend = 0;
         readPosition = 0;
@@ -249,7 +249,7 @@ namespace GlobalMUD{
         if( HasData( end ) ){
             return buffer + readPosition - offset;
         }
-        return NULL;
+        return nullptr;
     }
 
     void* Stream::GetData( Checkpoint end ){
@@ -260,7 +260,7 @@ namespace GlobalMUD{
             LoadCheckpoint( end );
             return ret;
         }
-        return NULL;
+        return nullptr;
     }
 
 

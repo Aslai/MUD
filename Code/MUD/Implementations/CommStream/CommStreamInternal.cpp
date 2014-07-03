@@ -125,7 +125,7 @@ namespace GlobalMUD{
     Error CommStream::Internal::Connect( std::string address, int port ){
         //Look up the host / resolve IP
         hostent* host = gethostbyname( address.c_str() );
-        if( host == 0 )
+        if( host == nullptr )
         {
             //If we're on Windows, make sure that the failure isn't due to
             //Winsock not being initialized.
@@ -135,7 +135,7 @@ namespace GlobalMUD{
                 WSADATA globalWSAData;
                 WSAStartup( MAKEWORD(2, 2), &globalWSAData );
                 host = gethostbyname( address.c_str() );
-                if( host == 0 )
+                if( host == nullptr )
                     return Error::InvalidHost;
             }
             else
@@ -152,7 +152,7 @@ namespace GlobalMUD{
         clientService.sin_port = htons( port );
 
         int result = SOCKET_ERROR;
-        for( int i = 0; host->h_addr_list[i] != NULL && i < 10; ++i ){
+        for( int i = 0; host->h_addr_list[i] != nullptr && i < 10; ++i ){
             clientService.sin_addr.s_addr = *((unsigned long long*) host->h_addr_list[i]);
             result = connect( sock, (sockaddr*) &clientService, sizeof(clientService));
             if( result == 0 ) break;
@@ -226,7 +226,7 @@ namespace GlobalMUD{
         else {
             //Winsock is definitely initialized by this point
             hostent* host = gethostbyname( address.c_str() );
-            if( host == 0 ) return Error::InvalidHost;
+            if( host == nullptr ) return Error::InvalidHost;
             myhost = *((unsigned long long*) host->h_addr_list[0]);
         }
 
@@ -501,7 +501,7 @@ namespace GlobalMUD{
         if( !currentlyServicing ){
             currentlyServicing = true;
             int ret = 0;
-            if( ptr != NULL ){
+            if( ptr != nullptr ){
                 ret = ServiceSocket( ptr );
                 if( ret == -1 ){
                     for( unsigned int i = 0; i < CommStreams.size(); ++i ){

@@ -34,7 +34,7 @@ namespace GlobalMUD{
 
     Error Telnet::ReadTerms( std::string fname ){
         FILE* f = fopen( fname.c_str(), "r" );
-        if( f == NULL )
+        if( f == nullptr )
             return Error::FileNotFound;
         Terminal temp;
         bool readingterm = false; //Indicates whether or not we're reading a terminal name or parameter

@@ -12,8 +12,23 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-Wnon-virtual-dtor" />
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wredundant-decls" />
+					<Add option="-Wcast-align" />
+					<Add option="-Wundef" />
+					<Add option="-Wfloat-equal" />
+					<Add option="-Winline" />
+					<Add option="-Wunreachable-code" />
+					<Add option="-Wmissing-declarations" />
+					<Add option="-Wmissing-include-dirs" />
+					<Add option="-Wswitch-default" />
+					<Add option="-Wmain" />
 					<Add option="-pedantic" />
+					<Add option="-Wzero-as-null-pointer-constant" />
 					<Add option="-std=c++11" />
+					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-pg" />
 					<Add option="-g" />
@@ -73,6 +88,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-Wno-unused-parameter -Wno-switch-enum" />
 			<Add directory="Implementations" />
 		</Compiler>
 		<Unit filename="Implementations/CommStream/Cipher.cpp" />

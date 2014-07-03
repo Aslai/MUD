@@ -5,7 +5,7 @@
 namespace GlobalMUD{
 #ifdef _WIN32
         Mutex::Inner::Inner(){
-            mutex = CreateMutex( NULL, FALSE, NULL);
+            mutex = CreateMutex( nullptr, FALSE, nullptr);
         }
         Mutex::Inner::~Inner(){
             CloseHandle( mutex );
