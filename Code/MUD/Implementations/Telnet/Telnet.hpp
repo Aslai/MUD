@@ -11,6 +11,10 @@
 
 #include<functional>
 
+#ifdef ECHO
+#undef ECHO
+#endif
+
 
 namespace GlobalMUD{
     /////////////////////////////////////////////////

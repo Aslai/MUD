@@ -19,12 +19,12 @@ namespace GlobalMUD{
     }
 
     THREADRETURN THREADCallFunction Thread::ThreadFunc(void*d){
-
+        Arguments* args = (Arguments*) d;
         #ifndef _WIN32
         //This is to simulate a suspended thread on POSIX systems
         args->Lock.Wait();
         #endif
-        Arguments* args = (Arguments*) d;
+
         args->f();
         delete args;
         return 0;
@@ -47,7 +47,7 @@ namespace GlobalMUD{
             #else
             pthread_attr_t attr;
             pthread_attr_init( &attr );
-            valid = 0 == pthread_create(&ThreadHandle, NULL, GlobalMUD::Thread::ThreadFunc<Function, Argument...>, args);
+            valid = 0 == pthread_create(&ThreadHandle, NULL, GlobalMUD::Thread::ThreadFunc, args);
 
             pthread_attr_destroy( &attr );
             #endif
@@ -109,6 +109,13 @@ namespace GlobalMUD{
     void Thread::Kill(){
         if( valid )
             pthread_cancel( ThreadHandle );
+    }
+    void Thread::Detach(){
+        detached = true;
+        pthread_detach( ThreadHandle );
+        pthread_detach( ThreadHandle );
+        pthread_detach( ThreadHandle );
+        pthread_detach( ThreadHandle );
     }
 
     void Thread::Sleep(unsigned long msec){

@@ -46,10 +46,13 @@ namespace GlobalMUD{
         }
 #else
         Mutex::Inner::Inner(){
-            pthread_mutex_init(&mutex,0);
+            pthread_mutexattr_init( &attr );
+            pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_RECURSIVE );
+            pthread_mutex_init(&mutex, &attr );
         }
         Mutex::Inner::~Inner(){
             pthread_mutex_destroy( &mutex );
+            pthread_mutexattr_destroy( &attr );
         }
         pthread_mutex_t Mutex::Inner::operator*(){
             return mutex;
@@ -58,6 +61,10 @@ namespace GlobalMUD{
 		Mutex::Mutex() : mutex( new Mutex::Inner() )
 		{
 
+		}
+        Mutex::Mutex( const Mutex &other ){
+            //Take a reference to the other mutex's handle
+            mutex = other.mutex;
 		}
 
 		Mutex& Mutex::operator=( Mutex& other ){
@@ -73,12 +80,12 @@ namespace GlobalMUD{
 
 		void Mutex::Lock()
 		{
-			pthread_mutex_lock( mutex->mutex );
+			pthread_mutex_lock( &mutex->mutex );
 		}
 
 		void Mutex::Unlock()
 		{
-			pthread_mutex_unlock( mutex->mutex );
+			pthread_mutex_unlock( &mutex->mutex );
 		}
 #endif
 

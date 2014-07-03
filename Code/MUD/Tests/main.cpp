@@ -17,7 +17,7 @@ using namespace GlobalMUD;
 
 void TNet(GlobalMUD::Telnet::TelnetSession t){
     t.Screen().Cursor().Hide();
-
+    printf("a");
     while( t.Connected() ){
         Thread::Sleep(100);
         t.Screen().Clear();

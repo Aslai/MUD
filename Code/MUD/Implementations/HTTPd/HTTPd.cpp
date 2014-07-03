@@ -342,7 +342,6 @@ namespace GlobalMUD{
             T.Run();
             T.Detach();
 
-
         }
 
         void HTTPd::HTTPResponse::SetContent(std::string value){

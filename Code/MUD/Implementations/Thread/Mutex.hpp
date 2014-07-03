@@ -17,6 +17,7 @@ namespace GlobalMUD{
             HANDLE mutex;
             HANDLE operator*();
             #else
+            pthread_mutexattr_t attr;
             pthread_mutex_t mutex;
             pthread_mutex_t operator*();
             #endif

@@ -26,7 +26,7 @@
     #define closesocket(a) close(a)
     #define SOCKET unsigned int
     #define SOCKET_ERROR -1
-    #define INVALID_SOCKET -1
+    #define INVALID_SOCKET (unsigned int)-1
 #endif
 #undef ERROR
 
@@ -232,11 +232,12 @@ namespace GlobalMUD{
 
         //Put the listening socket into a valid state
         sockaddr_in service;
-
         service.sin_family = AF_INET;
         service.sin_addr.s_addr = myhost;
         service.sin_port = htons( port );
-        if (bind(sock,(sockaddr*) (&service), sizeof(service)) < 0) {
+
+        if (bind(sock,(sockaddr*) (&service), sizeof(service)) != 0) {
+            printf("Err: %d\n", errno );
             return Error::BindFailure;
         }
         listen( sock, 10 );
