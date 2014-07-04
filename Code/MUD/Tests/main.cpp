@@ -39,11 +39,41 @@ void TNet(GlobalMUD::Telnet::TelnetSession t){
     }
 }
 
+class A{
+public:
+    A(){
+
+    }
+    operator std::string(){
+        std::string ret = "A was casted to std::string!";
+        return ret;
+    }
+};
+
+class B{
+public:
+    B(){
+
+    }
+    operator const char*(){
+        return "B was casted to const char*!";
+    }
+    operator std::string(){
+        return "B was casted to std::string!()";
+    }
+};
+
+template<class T, int a>
+class C{
+public:
+    C(){
+
+    }
+};
+
+
 int main(){
-    #ifdef _WIN32
-    WSADATA globalWSAData;
-    WSAStartup( MAKEWORD(2, 2), &globalWSAData );
-    #endif
+
 
     GlobalMUD::Telnet t;
     t.ReadTerms( "terminals.txt" );
