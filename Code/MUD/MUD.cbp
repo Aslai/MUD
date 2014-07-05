@@ -88,6 +88,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-ansi" />
 			<Add option="-Wno-unused-parameter -Wno-switch-enum" />
 			<Add directory="Implementations" />
 		</Compiler>

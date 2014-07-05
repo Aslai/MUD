@@ -7,6 +7,7 @@
 #include "Error/Error.hpp"
 #include "CommStream/CommStream.hpp"
 #include "Thread/Thread.hpp"
+#include "Memory/Stream.hpp"
 
 namespace GlobalMUD{
     class HTTPd{
@@ -39,7 +40,8 @@ namespace GlobalMUD{
         CommStream *stream;
         Thread *MyThread;
         static void ConnectionHandler(CommStream stream, void* argument );
-
+        static void ConnectionHandlerThread(CommStream stream, void* parent);
+        static std::string ParseRequest(Stream &data, HTTPResponse &r);
 
     public:
         Error MountFolder(std::string mountpath, std::string folderpath);
@@ -50,10 +52,6 @@ namespace GlobalMUD{
         ~HTTPd();
         Error Run();
         HTTPResponse PushPage( HTTPd::HTTPResponse r, std::string mount = "" );
-        static std::string ReadWord(char*&pointer, size_t&len);
-        static std::string ReadLine(char*&pointer, size_t&len);
-        static int HasWord(char*pointer, size_t len);
-        static int HasLine(char*pointer, size_t len);
         static std::string URLDecode(std::string url);
 
         static HTTPResponse DoError(HTTPResponse response, HTTPd& parent, int code);

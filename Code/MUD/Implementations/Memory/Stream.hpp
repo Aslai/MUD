@@ -3,6 +3,8 @@
 
 #include<string>
 #include<vector>
+#include<cstring>
+#include<cstdlib>
 #include "Error/Error.hpp"
 
 namespace GlobalMUD{
@@ -21,6 +23,14 @@ namespace GlobalMUD{
         void PopCheckpoint( size_t idx );
         void GoToCheckpoint( size_t idx );
         void Optimize();
+
+        struct Token{
+            size_t pos;
+            std::string delimiter;
+        };
+        Token TokenEnd( std::vector<std::string> delimiters );
+
+
 
     public:
         class Checkpoint{
@@ -43,26 +53,59 @@ namespace GlobalMUD{
         ~Stream();
         void* GetBuffer( size_t length );
         Error CommitBuffer( size_t length );
-        Error PushBuffer( void* data, size_t length );
+        Error PushBuffer( const void* data, size_t length );
+
+        Checkpoint End();
+
         bool HasLine();
+        template<class... Args>
+        bool HasToken( Args... args ){
+            std::vector<std::string> t = {args...};
+            Token tok = TokenEnd( t );
+            return tok.pos != std::string::npos;
+        }
         bool HasChar();
         bool HasByte();
-
-        //bool HasData( size_t len );
         bool HasData( Checkpoint end );
 
         std::string PeekLine();
+        template<class... Args>
+        std::string PeekToken( Args... args ){
+            std::vector<std::string> t = {args...};
+
+            Token tok = TokenEnd( t );
+            size_t end = tok.pos;
+            std::string ret = "";
+            if( end != std::string::npos ){
+                ret.resize( end - readPosition );
+                memcpy( &ret[0], buffer+readPosition - offset , end - readPosition );
+            }
+            return ret;
+        }
+
         int PeekChar();
         byte PeekByte();
-
-        //void* PeekData( size_t len );
         void* PeekData( Checkpoint end );
 
         std::string GetLine();
+        template<class... Args>
+        std::string GetToken( Args... args ){
+            std::vector<std::string> t = {args...};
+
+            Token tok = TokenEnd( t );
+            size_t end = tok.pos;
+            std::string ret = "";
+            if( end != std::string::npos ){
+                ret.resize( end - readPosition );
+                memcpy( &ret[0], buffer+readPosition - offset , end - readPosition );
+                readPosition = end + tok.delimiter.length();
+                Optimize();
+            }
+
+            return ret;
+        }
         int GetChar();
         byte GetByte();
-
-        //void* GetData( size_t len );
         void* GetData( Checkpoint end );
 
         Checkpoint SaveCheckpoint();

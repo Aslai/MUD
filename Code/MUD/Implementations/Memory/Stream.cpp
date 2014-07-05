@@ -3,6 +3,7 @@
 #include<cstdlib>
 #include<cstring>
 #include<cstdio>
+#include "Strings/Strings.hpp"
 
 namespace GlobalMUD{
 
@@ -60,6 +61,52 @@ namespace GlobalMUD{
             offset += change;
             reserved += change;
         }
+    }
+
+    Stream::Token Stream::TokenEnd( std::vector<std::string> delimiters ){
+        size_t i = readPosition;
+        std::string delimiter = "empty";
+        bool valid = false;
+        for( ; i < bufferend; ++i ){
+            bool found = true;
+            for( unsigned int delimiteri = 0; delimiteri < delimiters.size(); ++delimiteri ){
+                delimiter = delimiters[delimiteri];
+                if( delimiter == "" ){
+                    valid = true;
+                    found = true;
+                    break;
+                }
+
+                //Determine if the next delimiter.length() bytes contain the delimiter
+                found = true;
+                for( size_t j = 0; j < delimiter.length() && i + j < bufferend; ++j ){
+                    if( buffer[i + j - offset] != delimiter[j] ){
+                        found = false;
+                        break;
+                    }
+                    if( j+1 == delimiter.length() ){
+                        valid = true;
+                        found = true;
+                        break;
+                    }
+                }
+                if( found )
+                    break;
+            }
+            if( found )
+                break;
+        }
+        //If the previous loop was terminated without setting the valid flag,
+        //then return npos.
+        Token ret;
+        if( !valid ){
+            ret.pos = std::string::npos;
+            ret.delimiter = "";
+            return ret;
+        }
+        ret.pos = i;
+        ret.delimiter = delimiter;
+        return ret;
     }
 
 
@@ -137,6 +184,7 @@ namespace GlobalMUD{
     }
 
 
+
     Error Stream::CommitBuffer( size_t length ){
         //Any data written to a buffer provided by GetBuffer will only be acknowledged
         //upon calling CommitBuffer().
@@ -149,7 +197,7 @@ namespace GlobalMUD{
     }
 
 
-    Error Stream::PushBuffer( void* data, size_t length ){
+    Error Stream::PushBuffer( const void* data, size_t length ){
         //Push a buffer full of data onto the end of this buffer.
         void *writeto = GetBuffer( length );
         memcpy( writeto, data, length );
@@ -157,13 +205,14 @@ namespace GlobalMUD{
         return Error::None;
     }
 
+    Stream::Checkpoint Stream::End(){
+        Checkpoint chk( this, bufferend );
+        return chk;
+    }
+
 
     bool Stream::HasLine(){
-        for( size_t i = readPosition; i < bufferend; ++i ){
-            if( buffer[i - offset] == '\n' )
-                return true;
-        }
-        return false;
+        return HasToken( "\n" );
     }
 
 
@@ -176,20 +225,8 @@ namespace GlobalMUD{
     }
 
 
-
-
     std::string Stream::PeekLine(){
-        std::string ret = "";
-        size_t i = readPosition;
-        for( ; i < bufferend; ++i ){
-            if( buffer[i - offset] == '\n' )
-                break;
-        }
-        if( buffer[i - offset ] == '\n' ){
-            ret.resize( i - readPosition );
-            memcpy( &ret[0], buffer+readPosition - offset , i - readPosition );
-        }
-        return ret;
+        return PeekToken( "\n" );
     }
 
 
@@ -206,21 +243,8 @@ namespace GlobalMUD{
     }
 
 
-
     std::string Stream::GetLine(){
-        std::string ret = "";
-        size_t i = readPosition;
-        for( ; i < bufferend; ++i ){
-            if( buffer[i - offset] == '\n' )
-                break;
-        }
-        if( buffer[i - offset] == '\n' ){
-            ret.resize( i - readPosition );
-            memcpy( &ret[0], buffer+readPosition - offset , i - readPosition );
-        }
-        readPosition = i + 1;
-        Optimize( );
-        return ret;
+        return GetToken( "\n" );
     }
 
     int Stream::GetChar(){

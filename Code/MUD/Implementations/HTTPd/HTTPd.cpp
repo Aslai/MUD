@@ -9,6 +9,7 @@
 #include "Filesystem/MIME.hpp"
 #include "HTTPd/HTTPStatus.hpp"
 #include "Strings/Strings.hpp"
+#include "Memory/Stream.hpp"
 
 #include <cctype>
 #include <ctime>
@@ -16,46 +17,6 @@
 #undef ErrorRoot
 #define ErrorRoot 300
 namespace GlobalMUD{
-        std::string HTTPd::ReadWord(char*&pointer, size_t&len){
-            std::string ret = "";
-            while( len > 0 && (*pointer == ' ' || *pointer == '\t')){
-                pointer++;
-                len--;
-            }
-            while( len > 0 && !isspace( *pointer )){
-                    ret += *pointer;
-                pointer++;
-                len--;
-            }
-            return ret;
-        }
-        std::string HTTPd::ReadLine(char*&pointer, size_t&len){
-            std::string ret = "";
-            while( len > 0 && *pointer != '\n'){
-                ret += *pointer;
-                pointer++;
-                len--;
-            }
-            return ret;
-        }
-        int HTTPd::HasWord(char*pointer, size_t len){
-            while( len > 0 && (*pointer == ' ' || *pointer == '\t')){
-                pointer++;
-                len--;
-            }
-            while( len > 0 && !isspace( *pointer )){
-                pointer++;
-                len--;
-            }
-            return len != 0;
-        }
-        int HTTPd::HasLine(char*pointer, size_t len){
-            while( len > 0 && *pointer != '\n'){
-                pointer++;
-                len--;
-            }
-            return len != 0;
-        }
         std::string HTTPd::URLDecode(std::string url){
             std::string ret = "";
             char escape;
@@ -126,24 +87,15 @@ namespace GlobalMUD{
             HTTPd server("any", 45141);
             server.MountFunction("/api/test", funfunc );
              server.MountFolder("/", "C:\\Users\\Kaslai\\Downloads\\timcook\\");
-            //server.MountFolder("/", "testsite/");
-            //server.MountFile("/music.mp3", "E:\\Music\\CRISCY TUNEZ\\xc3.ogg");
-            //server.MountFile("/stuff/index.html", "C:\\Users\\Kaslai\\Documents\\Documents\\Random text clips\\pasta\\mountaindew2018.txt");
 
             server.Run();
             return true;
         }
         #endif
 
-        static void ConnectionHandlerThread(CommStream stream, void* parent){
-
+        void HTTPd::ConnectionHandlerThread(CommStream stream, void* parent){
+            Stream data;
             HTTPd::HTTPResponse r;
-            size_t size = 1000;
-            size_t myend = 0;
-            char* buffer = (char*)malloc(size);
-            char* bufferwrite = buffer;
-            char* bufferread = buffer;
-            size_t readremaining = 0;
             const time_t timeout = 45;
             std::string verb;
 
@@ -154,114 +106,43 @@ namespace GlobalMUD{
             time_t starttime = time( nullptr );
 
             while(state != -1){
+                //If the user has exceeded the maximum allotted timeout, kill the connection.
                 if( time( nullptr ) - starttime > timeout ){
                     myerror = Error::Timeout;
+                    break;
                 }
                 Error e = Error::None;
                 while( true ){
-                    size_t mysize = size-myend;
-                    e = stream.Receive( bufferwrite, mysize );
+                    //Fill the Stream with data from CommStream
+                    size_t mysize = 1000;
+                    e = stream.Receive( (char*)data.GetBuffer(mysize), mysize );
                     if( e == Error::NoData || e == Error::NotConnected )
                         break;
-                    myend += mysize;
-                    bufferwrite += mysize;
-                    if( myend > size/2 ){
-                        size *= 2;
-                        int bufferwriteoffset = bufferwrite - buffer;
-                        int bufferreadoffset = bufferread - buffer;
-
-                        buffer = (char*) realloc(buffer, size);
-                        bufferwrite = buffer + bufferwriteoffset;
-                        bufferread = buffer + bufferreadoffset;
-                    }
+                    data.CommitBuffer( mysize );
                 }
                 if( e == Error::NotConnected )
                     break;
-                readremaining = myend-(bufferread-buffer);
+
                 switch(state){
                     case 0:
-                        if( HTTPd::HasWord (bufferread, readremaining) ){
-                            verb = HTTPd::ReadWord(bufferread, readremaining);
+                        //Get the HTTP verb (GET, POST, etc)
+                        if( data.HasToken(" ", "\r\n") ){
+                            verb = data.GetToken(" ", "\r\n");
                         }
                         else break;
                     case 1: state = 1;
-                        if( HTTPd::HasWord (bufferread, readremaining) ){
-                            r.request = HTTPd::ReadWord(bufferread, readremaining);
-                            size_t pos = r.request.find_first_of('?');
-                            if( pos == std::string::npos ){
-                                r.request = HTTPd::URLDecode( r.request );
-                            }
-                            else{
-                                std::string params = r.request.substr(pos+1);
-                                r.request = HTTPd::URLDecode( r.request.substr(0,pos) );
-                                pos = 0;
-                                while( true ){
-                                    size_t oldpos = pos;
-                                    pos = params.find_first_of('&', pos);
-                                    std::string entry = params.substr(oldpos, pos-oldpos);
-
-                                    oldpos = entry.find_first_of('=');
-                                    std::string id = "";
-                                    if( oldpos != std::string::npos ){
-                                        id = HTTPd::URLDecode(entry.substr(0, oldpos));
-                                        for( size_t i = 0; i < id.size(); ++i ){
-                                            id[i] = tolower(id[i]);
-                                        }
-                                        entry = HTTPd::URLDecode(entry.substr(oldpos+1));
-                                        r.gets[id] = entry;
-                                    }
-
-                                    if( pos == std::string::npos ){
-                                        break;
-                                    }
-                                    pos++;
-                                }
-                            }
-                            pos = 0;
-                            std::vector<std::string> dir;
-
-                            do{
-                                size_t oldpos = pos+1;
-                                pos = r.request.find_first_of('/', oldpos);
-                                dir.push_back( r.request.substr(oldpos, pos == std::string::npos ? pos : pos-oldpos) );
-                            }while( pos != std::string::npos );
-
-                            for( size_t i = 0; i < dir.size(); ++i ){
-                                if( dir[i] == ".." ){
-                                    dir.erase(dir.begin()+i);
-                                    if( i != 0 ){
-                                        dir.erase(dir.begin()+i-1);
-                                    }
-                                    i -= 2;
-                                }
-                                else if( dir[i] == "." ){
-                                    dir.erase(dir.begin()+i);
-                                    i--;
-                                }
-                                else if( dir[i] == "" ){
-                                    if( i < dir.size()-1 ){
-                                    dir.erase(dir.begin()+i);
-                                    i--;
-                                    }
-                                    else{
-                                        dir[i] = "index.html";
-                                    }
-                                }
-
-                            }
-                            r.request = "";
-                            for( size_t i = 0; i < dir.size(); ++i ){
-                                r.request += "/"+dir[i];
-                            }
-                            if( r.request == "/" || r.request == "" )
-                                r.request = "/index.html";
+                        //Parse GET parameters, unescape, and sanitize . and .. in the url
+                        if( data.HasToken(" ", "\r\n") ){
+                            r.request = HTTPd::ParseRequest( data, r );
 
                         }
                         else break;
-
+                        if(data.PeekToken("\r\n").length() <= 2 )
+                            data.GetToken( "\r\n" );
                     case 2: state = 2;
-                        if( HTTPd::HasWord (bufferread, readremaining) ){
-                             std::string tmp = HTTPd::ReadWord(bufferread, readremaining);
+                        //Verify that the http/1.x line is present
+                        if( data.HasToken(" ", "\r\n") ){
+                             std::string tmp = data.GetToken(" ", "\r\n");
 
                              if( StringToLower(tmp.substr(0,5)) != "http/" ){
                                 myerror = Error::ParseFailure;
@@ -270,10 +151,11 @@ namespace GlobalMUD{
                              }
                         }
                         else break;
-                        HTTPd::ReadLine(bufferread, readremaining);
+                        data.GetLine();
                     case 3: state = 3;
-                        while( HTTPd::HasLine(bufferread, readremaining) ){
-                            std::string tmp = HTTPd::ReadLine(bufferread, readremaining);
+                        while( data.HasLine() ){
+                            //Extract the headers from the stream
+                            std::string tmp = data.GetLine();
                             if( tmp == "" ){
                                 break;
                             }
@@ -283,15 +165,21 @@ namespace GlobalMUD{
                                 while( tmp[pos] == ' ' && pos < tmp.size() ){
                                     pos++;
                                 }
-                                r.headers[StringToLower(id)] = tmp.substr(pos);
+                                r.headers[StringToLower(id)] = tmp.substr(pos,tmp.find_first_of('\r')-1);
                             }
                         }
                     case 4: state = 4;
+                        //Finish reading data from the stream, and stick it in the response object.
                         if( r.headers["content-length"] != "" ){
                             size_t len = atol( r.headers["content-length"].c_str() );
-                            if( len <= readremaining ){
+                            auto end = data.End();
+                            if( data.HasData( end ) ){
+                                auto start = data.SaveCheckpoint();
+                                if( len > end - start )
+                                    len = end - start;
+
                                 r.content.resize( len );
-                                memcpy( &(r.content[0]), bufferread, len );
+                                memcpy( &(r.content[0]), data.GetData( end ), len );
                             }
                             else break;
                         }
@@ -302,25 +190,28 @@ namespace GlobalMUD{
 
             HTTPd::HTTPResponse tosend;
             if( myerror == Error::ParseFailure ){
-                tosend = HTTPd::DoError(r, *(HTTPd*)parent, 404);
+                tosend = HTTPd::DoError(r, *(HTTPd*)parent, 400);
             }
             else if( myerror == Error::Timeout ){
                 tosend = HTTPd::DoError(r, *(HTTPd*)parent, 408);
             }
             else if( myerror == Error::None ){
+                //If all went well, push relevant headers into the HTTPResponse
                 tosend = ((HTTPd*)parent)->PushPage(r);
             }
 
+            //Begin responding with an HTTP response
             stream.Send("HTTP/1.1 " + StringFromUInt(tosend.error) + " " + GetMessageFromHTTPStatus(tosend.error) + "\r\n", false);
             tosend.headers["Connection"] = "Close";
 
             std::map<std::string,std::string>::iterator iter = tosend.headers.begin();
 
-
+            //Send all the headers
             while( iter != tosend.headers.end()){
                 stream.Send( iter->first + ": " + iter->second + "\r\n", false );
                 iter++;
             }
+            //Finished with headers. Begin sending data.
             stream.Send("\r\n", false);
 
             if( tosend.filepath != "" ){
@@ -331,11 +222,92 @@ namespace GlobalMUD{
             }
             //Thread::Sleep(1000);
             stream.Disconnect();
-            free(buffer);
-
 
             return;
         }
+
+        std::string HTTPd::ParseRequest(Stream &data, HTTPResponse &r){
+            //Get the request string
+            r.request = data.GetToken( " ", "\r\n" );
+            size_t pos = r.request.find_first_of('?');
+            if( pos == std::string::npos ){
+                //If there are no GET parameters, just decode the entire string
+                r.request = HTTPd::URLDecode( r.request );
+            }
+            else{
+                std::string params = r.request.substr(pos+1);
+                //Decode everything preceding the parameters.
+                r.request = HTTPd::URLDecode( r.request.substr(0,pos) );
+                pos = 0;
+                while( true ){
+                    size_t oldpos = pos;
+                    pos = params.find_first_of('&', pos);
+                    std::string entry = params.substr(oldpos, pos-oldpos);
+
+                    oldpos = entry.find_first_of('=');
+                    std::string id = "";
+                    if( oldpos != std::string::npos ){
+                        //Once we've found a parameter, URLDecode them into the HTTP header
+                        id = HTTPd::URLDecode(entry.substr(0, oldpos));
+                        for( size_t i = 0; i < id.size(); ++i ){
+                            id[i] = tolower(id[i]);
+                        }
+                        entry = HTTPd::URLDecode(entry.substr(oldpos+1));
+                        r.gets[id] = entry;
+                    }
+
+                    if( pos == std::string::npos ){
+                        break;
+                    }
+                    pos++;
+                }
+            }
+            pos = 0;
+            std::vector<std::string> dir;
+            //Split the request string up into a series of strings. One string per level of the directory.
+            do{
+                size_t oldpos = pos+1;
+                pos = r.request.find_first_of('/', oldpos);
+                dir.push_back( r.request.substr(oldpos, pos == std::string::npos ? pos : pos-oldpos) );
+            }while( pos != std::string::npos );
+
+            //Convert instances of .. and . into what the actual directory will be by removing directories
+            //for instances of ..
+            for( size_t i = 0; i < dir.size(); ++i ){
+                if( dir[i] == ".." ){
+                    dir.erase(dir.begin()+i);
+                    if( i != 0 ){
+                        dir.erase(dir.begin()+i-1);
+                    }
+                    i -= 2;
+                }
+                else if( dir[i] == "." ){
+                    dir.erase(dir.begin()+i);
+                    i--;
+                }
+                else if( dir[i] == "" ){
+                    if( i < dir.size()-1 ){
+                    dir.erase(dir.begin()+i);
+                    i--;
+                    }
+                    else{
+                        //If this is a request for an empty directory, point it at index.html
+                        dir[i] = "index.html";
+                    }
+                }
+
+            }
+            //Reconstruct a single string for the request, but all sanitized and with GET
+            //parameters stripped off.
+            r.request = "";
+            for( size_t i = 0; i < dir.size(); ++i ){
+                r.request += "/"+dir[i];
+            }
+            if( r.request == "/" || r.request == "" )
+                r.request = "/index.html";
+            return r.request;
+        }
+
         void HTTPd::ConnectionHandler(CommStream stream, void* parent ){
 
             Thread T( std::bind( ConnectionHandlerThread, stream, parent ) );
@@ -351,6 +323,8 @@ namespace GlobalMUD{
 
 
         HTTPd::HTTPResponse HTTPd::DoError(HTTPResponse response, HTTPd& parent, int code){
+            //Return an error page.
+            //If a registered error handler does not exist, return a generic page.
             HTTPd::HTTPResponse r;
             r = parent.PushPage(r, StringFormat( "e%d", code ));
             if( r.error == 404 ){
@@ -360,7 +334,7 @@ namespace GlobalMUD{
                             "<!DOCTYPE html><html><head><title>%d - %s</title></head>\
                             <body><h1>%d - %s</h1>%s<br/>\
                             Additionally, a 404 was encountered when attempting to retrieve the error document.\
-                            <hr align=\"LEFT\" width=\"100%\"><i>MUDHTTPd version x.x.x</i></body></html>",
+                            <hr align=\"LEFT\" width=\"100%\"><i>MUDHTTPd web server</i></body></html>",
                             code, title, code, title, message ) );
             }
             r.error = code;
@@ -375,6 +349,7 @@ namespace GlobalMUD{
 
         HTTPd::HTTPResponse HTTPd::PushPage(HTTPd::HTTPResponse r, std::string mount2 ){
             std::string mount = mount2;
+            //Find a mountpoint that forms part of the base directories for the request
             if( mount == "" ){
                 std::string test = StringToLower(r.request);
                 size_t pos = std::string::npos;
@@ -391,6 +366,7 @@ namespace GlobalMUD{
                     pos = test.find_last_of('/');
                 }
             }
+            //If no mount could be found, or it's a folder, 404
             if( mount == "" || (mount[0] != 'e' && mount != StringToLower(r.request) && MountPoints[mount].Type != HTTPd::MountPoint::FOLDER ) ){
                 return DoError(r, *this, 404);
             }
@@ -402,9 +378,14 @@ namespace GlobalMUD{
             ret.error = 200;
             std::string path = MountPoints[mount].Path;
             switch( MountPoints[mount].Type ){
+            //If the mount that we're working from is a folder, set path to the fully qualified
+            //local path
             case HTTPd::MountPoint::FOLDER:
                 path = MountPoints[mount].Path + r.request.substr(mount.length());
+            //Fall through to file handling.
+            //The next case is also used if the mountpoint is a single file.
             case HTTPd::MountPoint::FILE:{
+                //404 if the file doesn't exist
                 if( !Filesystem::FileExists( path ) ){
                     return DoError(r, *this, 404);
                 }
@@ -415,15 +396,18 @@ namespace GlobalMUD{
                 if( path.find_first_of('.') != std::string::npos ){
                     ret.headers["Content-Type"] = GetMimeFromExt(path.substr(pos==std::string::npos?pos:pos+1));
                 }
+                //Save the file path for sending at a different point.
                 ret.filepath = path;
                 return ret;
             }
             break;
 
             case HTTPd::MountPoint::FUNCTION:{
+                //Call a mounted function if that's what the mount is
                 ret = MountPoints[mount].Func(r, *this);
                 return ret;
             }
+            //In the case of a bad mount, 404
             case HTTPd::MountPoint::BAD:
                return DoError(r, *this, 404);
             default:

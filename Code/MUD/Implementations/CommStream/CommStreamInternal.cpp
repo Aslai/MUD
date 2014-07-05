@@ -397,7 +397,7 @@ namespace GlobalMUD{
                     break;
                 }
                 else if( result == SOCKET_ERROR ){
-
+                    //Handle different error cases on Windows
                     #ifdef _WIN32
                     switch(WSAGetLastError()){
                     case WSAEMSGSIZE: doRepeat = true;
@@ -411,6 +411,7 @@ namespace GlobalMUD{
                         break;
                     }
                     #else
+                    //Handle different error cases on Linux
                     switch(errno){
                     case EMSGSIZE: doRepeat = true;
                     //case EAGAIN:
@@ -427,6 +428,7 @@ namespace GlobalMUD{
                     ptr->MyLock.Lock();
                     ptr->PushData( recvbuf, result );
                     ptr->MyLock.Unlock();
+                    //Call all registered callbacks to alert objects about their data being ready
                     auto iter = ptr->callbacks.begin();
                     auto e = ptr->callbacks.end();
                     while( iter != e ){
@@ -453,6 +455,7 @@ namespace GlobalMUD{
                             break;
                         }
                         else if( result == SOCKET_ERROR ){
+                            //Handle different error cases on Windows
                             #ifdef _WIN32
                             switch(WSAGetLastError()){
                             case WSAENOBUFS: doRepeat = true;
@@ -465,6 +468,7 @@ namespace GlobalMUD{
                                 break;
                             }
                         #else
+                        //Handle different error cases on Linux
                         switch(errno){
                         case EMSGSIZE: doRepeat = true;
                         //case EAGAIN:
@@ -484,6 +488,9 @@ namespace GlobalMUD{
                         break;
                 }
             }
+            //If the connection is being forced closed, close it immediately.
+            //If the connection isn't being forced closed, wait for all data being transmitted
+            //To get completely transmitted.
             if( ptr->disconnecting == 2 || (!die && ptr->disconnecting == 1 && !ptr->CanSend() && !ptr->transmitting) ){
                 closesocket( ptr->Connection );
                 ptr->isconnected = false;
@@ -498,12 +505,12 @@ namespace GlobalMUD{
 
     int CommStream::Internal::ServiceSockets( CommStream::Internal *ptr ){
         Lock.Lock();
-        if( !currentlyServicing ){
+        if( !currentlyServicing ){ //Avoid infinite recursion here
             currentlyServicing = true;
             int ret = 0;
-            if( ptr != nullptr ){
+            if( ptr != nullptr ){ //If a single object was specified, only update that one.
                 ret = ServiceSocket( ptr );
-                if( ret == -1 ){
+                if( ret == -1 ){ //If the socket was deemed to be dead, remove it from the list.
                     for( unsigned int i = 0; i < CommStreams.size(); ++i ){
                         if( CommStreams[i].Get() == ptr ){
                             CommStreams.erase( CommStreams.begin() + i );
@@ -512,12 +519,12 @@ namespace GlobalMUD{
                     }
                 }
             }
-            else {
+            else { //If no object was specified, update them all.
                 for( unsigned int i = 0; i < CommStreams.size(); ++i ){
                     int amt = ServiceSocket( CommStreams[i].Get() );
                     if( amt >= 0 )
                         ret += amt;
-                    if( amt == -1 ){
+                    if( amt == -1 ){ //If a socket was deemed to be dead, remove it from the list.
                         CommStreams.erase( CommStreams.begin() + i );
                         i--;
                     }

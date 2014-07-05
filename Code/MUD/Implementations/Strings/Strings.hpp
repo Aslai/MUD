@@ -120,6 +120,7 @@ namespace GlobalMUD{
         }
 
         //A list of specializations for the template that will spit out std::string versions of various types.
+        template<>          std::string ToString<bool>                  ( bool value )                  { return StringFormat( "%s",  value?"True" : "False" ); }
         template<>          std::string ToString<char>                  ( char value )                  { return StringFormat( "%c",  value ); }
         template<>          std::string ToString<unsigned char>         ( unsigned char value )         { return StringFormat( "%hhu",value ); }
         template<>          std::string ToString<short>                 ( short value )                 { return StringFormat( "%hd", value ); }
