@@ -61,6 +61,7 @@ namespace GlobalMUD{
             return Error::InvalidSize;
         width = w;
         height = h;
+        PrintFormat("W: %d\nH: %d\n", w, h);
         //If the cursor was moved off the screen, bring it back in.
         if( myCursor.X >= w )
             myCursor.X = w - 1;

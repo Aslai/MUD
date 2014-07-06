@@ -377,6 +377,7 @@ namespace GlobalMUD{
             case 1:{ //Searching for the best terminal noticed during the first loop
                 //If we find it, stop requesting more terminals.
                 if( term == bestTerminal ){
+                    PrintFormat( "Chosen terminal: %s\n", term );
                     requestingTerminal = 2;
                     Screen.SetTerminal( StringToUpper( term ) );
                 }
