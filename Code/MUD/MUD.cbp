@@ -21,12 +21,10 @@
 					<Add option="-Wfloat-equal" />
 					<Add option="-Winline" />
 					<Add option="-Wunreachable-code" />
-					<Add option="-Wmissing-declarations" />
 					<Add option="-Wmissing-include-dirs" />
 					<Add option="-Wswitch-default" />
 					<Add option="-Wmain" />
 					<Add option="-pedantic" />
-					<Add option="-Wzero-as-null-pointer-constant" />
 					<Add option="-std=c++11" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
@@ -39,6 +37,7 @@
 					<Add option="-pg -lgmon" />
 					<Add library="ws2_32" />
 					<Add library="wsock32" />
+					<Add library="lua" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -129,6 +128,11 @@
 		<Unit filename="Implementations/HTTPd/HTTPStatus.hpp" />
 		<Unit filename="Implementations/HTTPd/HTTPd.cpp" />
 		<Unit filename="Implementations/HTTPd/HTTPd.hpp" />
+		<Unit filename="Implementations/Lua/Lua.cpp" />
+		<Unit filename="Implementations/Lua/Lua.hpp" />
+		<Unit filename="Implementations/Lua/LuaFunction.cpp" />
+		<Unit filename="Implementations/Lua/LuaStack.cpp" />
+		<Unit filename="Implementations/Lua/LuaTable.cpp" />
 		<Unit filename="Implementations/Memory/RefCounter.hpp" />
 		<Unit filename="Implementations/Memory/Stream.cpp" />
 		<Unit filename="Implementations/Memory/Stream.hpp" />

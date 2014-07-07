@@ -13,6 +13,8 @@
 #include "Telnet/Telnet.hpp"
 #include "Strings/Strings.hpp"
 
+#include "Lua/Lua.hpp"
+
 using namespace GlobalMUD;
 
 void TNet(GlobalMUD::Telnet::TelnetSession t);
@@ -41,6 +43,28 @@ void TNet(GlobalMUD::Telnet::TelnetSession t){
 }
 
 int main(){
+    Lua l;
+    l.Load( "                   \
+            Stats = {           \
+                \"hp\",         \
+                \"mp\",         \
+                \"fatigue\",    \
+                \"str\",        \
+                \"dex\",        \
+                \"wis\",        \
+                \"int\",        \
+                \"luk\"         \
+            }                   \
+           ", "main", 0 );
+
+    l.Run();
+    Lua::Table table = l.Get<Lua::Table>("Stats");
+    for( size_t i = 1; i < table.Length(); ++i ){
+        Print( table.Get<std::string>(i), "\n" );
+    }
+    return 0;
+
+
 
     GlobalMUD::Telnet t;
     t.ReadTerms( "terminals.txt" );

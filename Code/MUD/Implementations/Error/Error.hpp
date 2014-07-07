@@ -41,6 +41,7 @@ namespace GlobalMUD{
         InvalidSize,
         PartialData,
         Unsupported,
+        LuaError,
 
         NotAnError
     };
