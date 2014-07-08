@@ -133,6 +133,7 @@
 		<Unit filename="Implementations/Lua/LuaFunction.cpp" />
 		<Unit filename="Implementations/Lua/LuaStack.cpp" />
 		<Unit filename="Implementations/Lua/LuaTable.cpp" />
+		<Unit filename="Implementations/Lua/LuaValue.cpp" />
 		<Unit filename="Implementations/Memory/RefCounter.hpp" />
 		<Unit filename="Implementations/Memory/Stream.cpp" />
 		<Unit filename="Implementations/Memory/Stream.hpp" />

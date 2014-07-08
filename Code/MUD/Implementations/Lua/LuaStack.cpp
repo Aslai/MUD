@@ -54,17 +54,35 @@ int Lua::Stack::lua_push( void* s ){
     return 0;
 }
 
+int Lua::Stack::lua_push( Lua::Value s ){
+    switch( s.myType ){
+    case Lua::Value::Type::Nil:
+        lua_pushnil(L); break;
+    case Lua::Value::Type::Number:
+        lua_push(s.GetNumber()); break;
+    case Lua::Value::Type::String:
+        lua_push( s.GetString() ); break;
+    case Lua::Value::Type::Table:
+        break;
+        default: break;
+    }
+    return 0;
+}
+
 std::string Lua::Stack::lua_ret( std::string, int pos ){
     if( pos == -100000 ) pos = position++;
-    if( trythrow(pos) == 0 )
-        return luaL_checkstring( L, pos );
+    if( trythrow(pos) == 0 ){
+        const char* t = lua_tostring( L, pos );
+        if( t )
+            return t;
+    }
     return "";
 }
 
 const char* Lua::Stack::lua_ret( const char*, int pos ){
     if( pos == -100000 ) pos = position++;
     if( trythrow(pos) == 0 )
-        return luaL_checkstring( L, pos );
+        return lua_tostring( L, pos );
     return "";
 }
 
@@ -119,9 +137,27 @@ Lua::Function Lua::Stack::lua_ret( Lua::Function, int pos ){
 Lua::Table Lua::Stack::lua_ret( Lua::Table, int pos ){
     if( pos == -100000 ) pos = position++;
     if( trythrow(pos) == 0 ){
+        lua_pushvalue( L, pos );
         int f = luaL_ref(L, LUA_REGISTRYINDEX);
         Table ret(L, f);
         return ret;
     }
     return Table(L, "");
 }
+
+Lua::Value Lua::Stack::lua_ret( Lua::Value, int pos ){
+    if( pos == -100000 ) pos = position++;
+    if( trythrow(pos) == 0 ){
+        if( lua_istable(L, pos ) ){
+            return Lua::Value(lua_ret(Lua::Table(), pos));
+        }
+        try{
+            return Lua::Value(luaL_checknumber( L, pos ));
+        }
+        catch( GlobalMUD::Error e ){
+            return Lua::Value(lua_ret(std::string(), pos));
+        }
+    }
+    return Lua::Value();
+}
+

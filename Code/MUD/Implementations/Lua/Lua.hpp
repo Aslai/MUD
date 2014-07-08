@@ -8,6 +8,7 @@ extern "C"{
 }
 #include<string>
 #include <vector>
+#include <map>
 
 #define RegisterFunction(a,b) funcreg<decltype(&a),a>(b,a)
 
@@ -17,8 +18,10 @@ class Lua{
     public:
     class Table;
     class Function;
+    class Value;
     private:
     struct Stack{
+        friend Value;
         lua_State *L;int position;
         Stack();
         int trythrow(int idx);
@@ -29,6 +32,8 @@ class Lua{
         int lua_push( double s );
         int lua_push( void );
         int lua_push( void* s );
+        int lua_push( Value s );
+
         std::string lua_ret( std::string, int pos = -100000 );
         const char* lua_ret( const char*, int pos = -100000 );
         int lua_ret( int , int pos = -100000 );
@@ -36,6 +41,7 @@ class Lua{
         void* lua_ret( void*, int pos = -100000 );
         Function lua_ret( Function, int pos = -100000 );
         Table lua_ret( Table, int pos = -100000 );
+        Value lua_ret( Value, int pos = -100000 );
     };
 
     template <class RetType, class...args>
@@ -62,11 +68,48 @@ class Lua{
     static bool GetValueToStack( lua_State *L, std::string globalid, int reference = -1 );
 
 public:
+    class Value{
+        friend Stack;
+        std::vector<Value> TableIndex;
+        std::map<std::string, Value> TableKeys;
+        std::string StringValue;
+        double NumberValue;
+        enum class Type{
+            Table,
+            String,
+            Number,
+            Nil
+        }myType;
+        friend Table;
+    public:
+        Value();
+        Value(double value);
+        Value(std::string value);
+        Value(const Value& value);
+        Value(Table value);
+        bool IsNumber();
+        bool IsString();
+        bool IsTable();
+        bool IsNil();
+        double& GetNumber();
+        std::string& GetString();
+        Value& GetTable(std::string key);
+        Value& GetTable(unsigned int index);
+        Value& operator[](std::string key);
+        Value& operator[](unsigned int index);
+        Value& operator=(double value);
+        Value& operator=(std::string value);
+        Value& operator=(const Value value);
+        Value& operator=(Table value);
+    };
+
     class Table{
         std::string globalname;
         Stack p;
         int ref;
         lua_State *L;
+        void FillValue( Value& ToFill );
+        friend Value;
     public:
         Table( lua_State *Lua, const char* name );
         Table( lua_State *Lua, int reference );
@@ -92,6 +135,7 @@ public:
             }
             return ReturnType();
         }
+
         template<class T, class V>
         bool Set(T key, V value){
             if( GetValueToStack( L, globalname, ref ) ){
@@ -109,6 +153,14 @@ public:
 
 
     };
+
+    /*class Type{
+        union T{
+            std::string str,
+            Function func,
+            Table
+        };
+    };*/
 
     class Function{
         std::string funcname;
@@ -140,6 +192,22 @@ public:
             }
             return ReturnType();
         }
+        template<class... Arguments>
+        void Call(Arguments... a){
+            p.position = 1; //Reset the position for calling another function
+            if( GetValueToStack( L, funcname, ref ) ){
+                if (!lua_isfunction(L, -1)){
+                    return;
+                }
+                pass(p.lua_push(a)...);
+
+                lua_pcall(L, sizeof...(Arguments), 1, 0);
+
+                lua_pop(L,lua_gettop(L));
+            }
+            return;
+        }
+
     };
 
     template<class T, T f, class ReturnType, class... arg0>

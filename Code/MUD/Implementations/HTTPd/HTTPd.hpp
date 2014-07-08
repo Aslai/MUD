@@ -13,7 +13,7 @@ namespace GlobalMUD{
     class HTTPd{
     public:
         struct HTTPResponse{
-            int error;
+            int status;
             std::map<std::string,std::string> headers;
             std::map<std::string,std::string> gets;
             std::map<std::string,std::string> posts;

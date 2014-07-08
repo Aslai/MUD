@@ -42,26 +42,73 @@ void TNet(GlobalMUD::Telnet::TelnetSession t){
     }
 }
 
+HTTPd::HTTPResponse func( HTTPd::HTTPResponse headers, HTTPd& parent ){
+    HTTPd::HTTPResponse response;
+    response.status = 200;
+    auto iter = headers.gets.begin();
+    std::string content = "{";
+    while( iter != headers.gets.end() ){
+        if( content != "{" )
+            content += ",";
+        auto pair = *iter;
+        content += StringFormat( " %s = %s", pair.first, pair.second );
+        iter++;
+    }
+    content += " }";
+    response.SetContent( content );
+    return response;
+}
+
+HTTPd::HTTPResponse my404( HTTPd::HTTPResponse headers, HTTPd& parent ){
+    HTTPd::HTTPResponse response;
+    response.status = 200;
+    response.SetContent( "DANGER!!! DANGER!!! 404!!! 404!!! DANGER!!! DANGER!!!" );
+    return response;
+}
+
+
+
 int main(){
     Lua l;
-    l.Load( "                   \
-            Stats = {           \
-                \"hp\",         \
-                \"mp\",         \
-                \"fatigue\",    \
-                \"str\",        \
-                \"dex\",        \
-                \"wis\",        \
-                \"int\",        \
-                \"luk\"         \
-            }                   \
+    l.Load( "                               \
+            Player = {                      \
+                name = \"Mister Awesome\",  \
+                hp = 450,                   \
+                mp = 120,                   \
+                fatigue = 300,              \
+                str = 16,                   \
+                dex = 12,                   \
+                wis = 21,                   \
+                int = 22,                   \
+                luk = 15,                   \
+                attributes =                \
+                    {                       \
+                        \"Cartographer\",   \
+                        \"Poison immunity\" \
+                    }                       \
+            }                               \
            ", "main", 0 );
 
     l.Run();
-    Lua::Table table = l.Get<Lua::Table>("Stats");
-    for( size_t i = 1; i < table.Length(); ++i ){
+    Lua::Value table = l.Get<Lua::Value>("Player");
+    PrintFormat(    "Name: %s\nHP: %f\nMP: %f\nFatigue: %f\n...\n\n"
+                    "Attributes: {\n%s,\n%s\n}\n",
+            table["name"].GetString(),
+            table["hp"].GetNumber(),
+            table["mp"].GetNumber(),
+            table["fatigue"].GetNumber(),
+            table["attributes"][1].GetString(),
+            table["attributes"][2].GetString()
+            );
+    //table.iterate<char>();
+
+    /*for( size_t i = 1; i < table.Length(); ++i ){
         Print( table.Get<std::string>(i), "\n" );
     }
+
+    Print("\n\nTesting table setting and getting by key\n\n");
+    table.Set( "p", 42 );
+    l.GetFunction( "Printer" ).Call();*/
     return 0;
 
 

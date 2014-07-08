@@ -74,7 +74,7 @@ namespace GlobalMUD{
         #ifdef RunUnitTests
         static HTTPd::HTTPResponse funfunc(HTTPd::HTTPResponse r, HTTPd& parent ){
             HTTPd::HTTPResponse ret;
-            ret.error = 200;
+            ret.status = 200;
             std::string t = "Testing";
             ret.content.resize( t.size() );
             memcpy( &(ret.content[0]), t.c_str(), t.length() );
@@ -201,7 +201,7 @@ namespace GlobalMUD{
             }
 
             //Begin responding with an HTTP response
-            stream.Send("HTTP/1.1 " + StringFromUInt(tosend.error) + " " + GetMessageFromHTTPStatus(tosend.error) + "\r\n", false);
+            stream.Send("HTTP/1.1 " + StringFromUInt(tosend.status) + " " + GetMessageFromHTTPStatus(tosend.status) + "\r\n", false);
             tosend.headers["Connection"] = "Close";
 
             std::map<std::string,std::string>::iterator iter = tosend.headers.begin();
@@ -327,7 +327,7 @@ namespace GlobalMUD{
             //If a registered error handler does not exist, return a generic page.
             HTTPd::HTTPResponse r;
             r = parent.PushPage(r, StringFormat( "e%d", code ));
-            if( r.error == 404 ){
+            if( r.status == 404 ){
                 std::string title = GetMessageFromHTTPStatus( code );
                 std::string message = GetDetailedMessageFromHTTPStatus( code );
                 r.SetContent( StringFormat(
@@ -337,7 +337,7 @@ namespace GlobalMUD{
                             <hr align=\"LEFT\" width=\"100%\"><i>MUDHTTPd web server</i></body></html>",
                             code, title, code, title, message ) );
             }
-            r.error = code;
+            r.status = code;
             return r;
         }
 
@@ -366,16 +366,19 @@ namespace GlobalMUD{
                     pos = test.find_last_of('/');
                 }
             }
+            Print(mount);
+            HTTPd::HTTPResponse ret;
+            if( mount[0] == 'e' && MountPoints[mount].Type == HTTPd::MountPoint::BAD ){
+                ret.status = 404;
+                return ret;
+            }
+
             //If no mount could be found, or it's a folder, 404
             if( mount == "" || (mount[0] != 'e' && mount != StringToLower(r.request) && MountPoints[mount].Type != HTTPd::MountPoint::FOLDER ) ){
                 return DoError(r, *this, 404);
             }
-            HTTPd::HTTPResponse ret;
-            if( mount[0] == 'e' && MountPoints[mount].Type == HTTPd::MountPoint::BAD ){
-                ret.error = 404;
-                return ret;
-            }
-            ret.error = 200;
+
+            ret.status = 200;
             std::string path = MountPoints[mount].Path;
             switch( MountPoints[mount].Type ){
             //If the mount that we're working from is a folder, set path to the fully qualified
