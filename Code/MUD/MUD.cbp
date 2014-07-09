@@ -37,7 +37,6 @@
 					<Add option="-pg -lgmon" />
 					<Add library="ws2_32" />
 					<Add library="wsock32" />
-					<Add library="lua" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -82,6 +81,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="pthread" />
 				</Linker>
 			</Target>
 		</Build>
@@ -91,6 +91,9 @@
 			<Add option="-Wno-unused-parameter -Wno-switch-enum" />
 			<Add directory="Implementations" />
 		</Compiler>
+		<Linker>
+			<Add library="lua" />
+		</Linker>
 		<Unit filename="Implementations/CommStream/Cipher.cpp" />
 		<Unit filename="Implementations/CommStream/Cipher.hpp" />
 		<Unit filename="Implementations/CommStream/CommStream.cpp" />
@@ -120,6 +123,7 @@
 		<Unit filename="Implementations/Game/Engine/PlayerInterface/PlayerInterface.hpp" />
 		<Unit filename="Implementations/Game/Interactions/Behavior.hpp" />
 		<Unit filename="Implementations/Game/Interactions/Dialogue.hpp" />
+		<Unit filename="Implementations/Game/Interactions/Event.hpp" />
 		<Unit filename="Implementations/Game/Interactions/Faction.hpp" />
 		<Unit filename="Implementations/Game/Interactions/Quest.hpp" />
 		<Unit filename="Implementations/Game/Interactions/Shop.hpp" />
@@ -131,6 +135,7 @@
 		<Unit filename="Implementations/Lua/Lua.cpp" />
 		<Unit filename="Implementations/Lua/Lua.hpp" />
 		<Unit filename="Implementations/Lua/LuaFunction.cpp" />
+		<Unit filename="Implementations/Lua/LuaScript.cpp" />
 		<Unit filename="Implementations/Lua/LuaStack.cpp" />
 		<Unit filename="Implementations/Lua/LuaTable.cpp" />
 		<Unit filename="Implementations/Lua/LuaValue.cpp" />

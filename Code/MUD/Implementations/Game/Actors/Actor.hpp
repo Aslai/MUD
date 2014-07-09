@@ -3,7 +3,9 @@
 
 namespace GlobalMUD{
     namespace Game{
+        class Actor{
 
+        };
     }
 }
 

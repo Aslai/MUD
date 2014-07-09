@@ -11,9 +11,21 @@ namespace GlobalMUD{
 #ifndef MUD_GAME_AREAS_ZONE_HPP
 #define MUD_GAME_AREAS_ZONE_HPP
 
+#include "Game/Areas/Zone.hpp"
+#include "Game/Areas/Room.hpp"
+#include "Lua/Lua.hpp"
+
 namespace GlobalMUD{
     namespace Game{
         class Zone{
+            Realm& MyRealm;
+            std::map<std::string, Room> Rooms;
+            Lua::Value Properties;
+            std::string id;
+            Lua::Script ZoneScript;
+        public:
+
+            static Zone& GetZoneByID( std::string RealmID, std::string ZoneID );
 
         };
     }

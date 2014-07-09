@@ -95,28 +95,29 @@ namespace GlobalMUD{
                 std::integral_constant<int, HasStringCast<TMap>::Has?1:0>());
         }
 
+        template<class T, class U>
+        struct is_same {
+            enum { value = 0 };
+        };
+
+        template<class T>
+        struct is_same<T, T> {
+            enum { value = 1 };
+        };
+
         //This is the default ToString method for any types that aren't accounted for
         //in the explicit specializations that follow.
         template<class T>
         std::string ToString( T value ){
-            int status;
-            //Get a demangled string that represents the current type
-            char *demangled = abi::__cxa_demangle( typeid(value).name(), nullptr, nullptr, &status );
+            std::string ret = "";
 
-            if( std::is_pointer<T>::value ){
-                //We check for pointers here just so that const char* gets favored in the
-                //list of specializations.
-                return StringFormat( "%s: %p",    demangled, value );
+            if( is_same<const char*, decltype(value)>::value ){
+                ret = value;
             }
             else{
-                if( HasStringCast<T>::Has || HasCStringCast<T>::Has ){
-                    return CastString( value );
-                }
-                //If the object doesn't have a cast for std::string or const char*, print the
-                //demangled name.
-                return StringFormat( "%s",    demangled );
-
+                ret = CastString( value );
             }
+            return ret;
         }
 
         //A list of specializations for the template that will spit out std::string versions of various types.

@@ -66,11 +66,14 @@ HTTPd::HTTPResponse my404( HTTPd::HTTPResponse headers, HTTPd& parent ){
     return response;
 }
 
-
+int testfunc(int a){
+    Print("\n\nWOAH ", a, "\n\n\n");
+    return 1337;
+}
 
 int main(){
-    Lua l;
-    l.Load( "                               \
+    Lua::Script script;
+    //script.LoadString( "                    \
             Player = {                      \
                 name = \"Mister Awesome\",  \
                 hp = 450,                   \
@@ -87,11 +90,18 @@ int main(){
                         \"Poison immunity\" \
                     }                       \
             }                               \
-           ", "main", 0 );
+            io.write(Test.Poot)\
+            io.write(Test.Funky(9))\
+           ", "main" );
 
+    script.LoadFile( "TestCampaign/campaign.lua", "Campaign" );
+
+    Lua l(script);
     l.Run();
-    Lua::Value table = l.Get<Lua::Value>("Player");
-    PrintFormat(    "Name: %s\nHP: %f\nMP: %f\nFatigue: %f\n...\n\n"
+    Lua::Value table = l.Get<Lua::Value>("Campaign");
+    Print( table );
+
+    /*PrintFormat(    "Name: %s\nHP: %f\nMP: %f\nFatigue: %f\n...\n\n"
                     "Attributes: {\n%s,\n%s\n}\n",
             table["name"].GetString(),
             table["hp"].GetNumber(),
@@ -99,7 +109,7 @@ int main(){
             table["fatigue"].GetNumber(),
             table["attributes"][1].GetString(),
             table["attributes"][2].GetString()
-            );
+            );*/
     //table.iterate<char>();
 
     /*for( size_t i = 1; i < table.Length(); ++i ){

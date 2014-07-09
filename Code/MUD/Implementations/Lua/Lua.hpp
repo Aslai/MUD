@@ -22,6 +22,7 @@ class Lua{
     private:
     struct Stack{
         friend Value;
+        friend Lua;
         lua_State *L;int position;
         Stack();
         int trythrow(int idx);
@@ -43,6 +44,7 @@ class Lua{
         Table lua_ret( Table, int pos = -100000 );
         Value lua_ret( Value, int pos = -100000 );
     };
+    friend Stack;
 
     template <class RetType, class...args>
     struct LuaWrap{
@@ -69,15 +71,18 @@ class Lua{
 
 public:
     class Value{
+        friend Lua;
         friend Stack;
         std::vector<Value> TableIndex;
         std::map<std::string, Value> TableKeys;
         std::string StringValue;
+        lua_CFunction FunctionValue;
         double NumberValue;
         enum class Type{
             Table,
             String,
             Number,
+            Function,
             Nil
         }myType;
         friend Table;
@@ -101,7 +106,9 @@ public:
         Value& operator=(std::string value);
         Value& operator=(const Value value);
         Value& operator=(Table value);
+        operator std::string();
     };
+    friend Value;
 
     class Table{
         std::string globalname;
@@ -207,20 +214,44 @@ public:
             }
             return;
         }
-
     };
+
+    class Script{
+        friend Lua;
+        std::vector<char> Data;
+        std::string Title;
+    public:
+        Script();
+        ~Script();
+        void LoadFile( std::string fname, std::string title = "" );
+        void LoadString( std::string script, std::string title = "" );
+        void SetTitle( std::string title );
+        std::string GetTitle();
+    };
+    friend Script;
 
     template<class T, T f, class ReturnType, class... arg0>
     void funcreg(const char* name, ReturnType (*function)(arg0...)){
         lua_CFunction func = Lua::LuaWrap<ReturnType, arg0...>::template luawrap<f>;
         lua_register(L, name, func);
     }
+    template<class T, T f, class ReturnType, class... arg0>
+    void funcreg(Value& luaval, ReturnType (*function)(arg0...)){
+        lua_CFunction func = Lua::LuaWrap<ReturnType, arg0...>::template luawrap<f>;
+        luaval.FunctionValue = func;
+        luaval.myType = Value::Type::Function;
+    }
+
 
 
     void Load(std::string block, std::string name, int flags);
     void Load(std::vector<char> block, std::string name, int flags);
+    void Load( std::string name );
+    void Load( Script script );
     Lua( std::string block, std::string name, int flags );
+    Lua( std::string fname );
     Lua( std::vector<char> block, std::string name, int flags );
+    Lua( Script script );
     Lua();
     ~Lua();
     std::vector<char> Dump() const;

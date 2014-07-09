@@ -4,6 +4,7 @@
 
 #ifdef _WIN32
     #include <windows.h>
+    #undef LoadString
 #else
     #include <pthread.h>
 #endif

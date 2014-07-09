@@ -6,6 +6,7 @@
     #include <windows.h>
     #define THREADCallFunction __attribute__((__stdcall__))
     #define THREADRETURN long unsigned int
+    #undef LoadString
 #else
     #include <pthread.h>
     #define THREADCallFunction

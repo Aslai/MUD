@@ -24,8 +24,10 @@ namespace GlobalMUD{
         class Realm{
             std::map<std::string, Zone> Zones;
             Lua::Value Properties;
-            std::string Name;
             std::string id;
+            Lua::Script RealmScript;
+        public:
+            static Realm& GetRealmByID( std::string ID );
         };
     }
 }

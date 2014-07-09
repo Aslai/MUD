@@ -62,7 +62,24 @@ int Lua::Stack::lua_push( Lua::Value s ){
         lua_push(s.GetNumber()); break;
     case Lua::Value::Type::String:
         lua_push( s.GetString() ); break;
-    case Lua::Value::Type::Table:
+    case Lua::Value::Type::Function:
+        lua_pushcfunction( L, s.FunctionValue ); break;
+    case Lua::Value::Type::Table:{
+            //lua_createtable(L, s.TableIndex.size(), s.TableKeys.size());      // create new table
+            lua_newtable( L );
+            for( unsigned int i = 1; i < s.TableIndex.size(); ++i ){
+                lua_push( i );
+                lua_push( s.TableIndex[i] );
+                lua_settable(L, -3);               // add key-value pair to table
+            }
+            auto iter = s.TableKeys.begin();
+            while( iter != s.TableKeys.end() ){
+                lua_push( (*iter).first );
+                lua_push( (*iter).second );
+                lua_settable(L, -3);               // add key-value pair to table
+                iter ++;
+            }
+        }
         break;
         default: break;
     }

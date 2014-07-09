@@ -10,13 +10,12 @@ extern "C"{
 
 void Lua::Table::FillValue( Value& toFill ){
     if( GetValueToStack( L, globalname, ref ) ){
-        if (lua_istable(L, -1))
+        if (lua_istable(L, -1)) //-1 = TABLE
         {
-            lua_pushvalue(L, -1);
-            lua_pushnil(L);
-            while (lua_next(L, -2))
+            lua_pushnil(L); //-1 = NIL, -2 = TABLE
+            while (lua_next(L, -2)) //-1 = VALUE, -2 = KEY, -3 = TABLE
             {
-                lua_pushvalue(L, -2);
+                lua_pushvalue(L, -2);//-1 = KEY, -2 = VALUE, -3 = KEY, -4 = TABLE
 
                 Lua::Value value;
 
@@ -24,13 +23,12 @@ void Lua::Table::FillValue( Value& toFill ){
                     value = p.lua_ret( Lua::Table(), -2 );
                 } else{
                     double num = lua_tonumber( L, -2 );
-                    std::string str = p.lua_ret( std::string(), -2 );
 
                     if( num > .0000001 || num < -.000000001 ){
                         value = num;
                     }
                     else{
-                        value = str;
+                        value =  p.lua_ret( std::string(), -2 );
                     }
                 }
 
@@ -45,11 +43,11 @@ void Lua::Table::FillValue( Value& toFill ){
                 else{
                     toFill.TableKeys[p.lua_ret( std::string(), -1 )] = value;
                 }
-                lua_pop(L, 2);
+                lua_pop(L, 2); //-1 = KEY, -2 = TABLE
             }
-            lua_pop(L, 1);
+            //-1 = TABLE
         }
-        lua_pop(L, 1);
+        lua_pop(L, 1);//
     }
 
 }

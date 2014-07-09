@@ -25,7 +25,7 @@ void *Lua::l_alloc (void *ud, void *ptr, size_t osize, size_t nsize) {
         return NULL;
     }
     else
-        return realloc(ptr, nsize);
+        return osize < nsize ? realloc(ptr, nsize) : ptr;
 }
 
 
@@ -84,6 +84,12 @@ void Lua::Load(std::vector<char> block, std::string name, int flags){
     size_t pos = block.size();
     errorlevel = luaL_loadbuffer( L, &(block[0]), pos, name.c_str() );
 }
+void Lua::Load( std::string fname ){
+    errorlevel = luaL_loadfile(L, fname.c_str() );
+}
+void Lua::Load( Lua::Script script ){
+    Load( script.Data, script.Title, 0 );
+}
 
 Lua::Lua( std::string block, std::string name, int flags ){
     Init();
@@ -93,6 +99,15 @@ Lua::Lua( std::vector<char> block, std::string name, int flags ){
     Init();
     Load( block, name, flags );
 }
+Lua::Lua( std::string fname ){
+    Init();
+    Load( fname );
+}
+Lua::Lua( Lua::Script script ){
+    Init();
+    Load( script );
+}
+
 Lua::Lua(){
     Init();
 }
