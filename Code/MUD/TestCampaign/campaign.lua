@@ -117,7 +117,7 @@ Campaign = {
 								Script = "scripts/realms/earth/town/townsquare.lua"
 							}
 						}
-					},
+					}
 					
 				}
 			},

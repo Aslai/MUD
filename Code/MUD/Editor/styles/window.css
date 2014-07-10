@@ -1,0 +1,96 @@
+div.window{
+	z-index: 0;
+	position: absolute;
+	border: 1px solid black;
+	border-radius: 4px;
+	display: inline-block;
+	background: linear-gradient(160deg, #A8A8A8, #484848);
+	left: 50%;
+	top: 50%;
+	min-width: 200px;
+}
+div.windowtitle{
+	position: relative;
+	padding: 4px;
+	border: 1px solid black;
+	background: linear-gradient(160deg, rgba(250,201,5,1), rgba(235,133,20,1));
+	left: -1px;
+	top: -1px;
+	margin-right: -2px;
+	margin-bottom: -1px;
+	
+}
+div.windowinner{
+	position: relative;
+	border: 0px solid black;
+	border-radius: 4px;
+	display: inline-block;
+	padding: 4px;
+	margin-right: 0px;
+	width: calc( 100% - 8px );
+	background-color: #A8A8A8;
+	height: 100%;
+	
+	-webkit-touch-callout: text;
+	-webkit-user-select: text;
+	-khtml-user-select: text;
+	-moz-user-select: text;
+	-ms-user-select: text;
+	user-select: text;
+}
+div.close{
+	padding: 0px;
+	border: 1px solid rgba(0,0,0,.5);
+	float: right;
+	width: 15px;
+	height: 15px;
+	vertical-align: middle;
+	text-align:center;
+	color: #202020;
+	background-color: #C8C8C8;
+}
+div.maximize{
+	padding: 0px;
+	border: 1px solid rgba(0,0,0,.5);
+	margin-right: 3px;
+	float: right;
+	width: 15px;
+	height: 15px;
+	vertical-align: middle;
+	
+	text-align:center;
+	color: #202020;
+	background-color: #C8C8C8;
+}
+div.close:hover{
+	border: 1px solid rgba(0,0,0,1);
+	color: #C8C8C8;
+	background-color: #222222;
+}
+div.maximize:hover{
+	border: 1px solid rgba(0,0,0,1);
+	color: #C8C8C8;
+	background-color: #222222;
+}
+div.close:active{
+	border: 1px solid rgba(0,0,0,1);
+	background-color: #C8C8C8;
+	color: #222222;
+}
+div.maximize:active{
+	border: 1px solid rgba(0,0,0,1);
+	background-color: #C8C8C8;
+	color: #222222;
+}
+
+div.windowinput{
+	position: relative;
+	display: block;
+	height: 24px;
+}
+
+input.windowinput{
+	position: absolute;
+	right: 0;
+	width: 60%;
+}

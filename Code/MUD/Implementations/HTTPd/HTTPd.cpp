@@ -437,7 +437,7 @@ namespace GlobalMUD{
             return Error::None;
         }
 
-        Error HTTPd::MountFunction(std::string mountpath, HTTPResponse(*func)(HTTPResponse response, HTTPd& parent)){
+        Error HTTPd::MountFunction(std::string mountpath, std::function<HTTPResponse(HTTPResponse response, HTTPd& parent)> func ){
             MountPoint m;
             m.Type = MountPoint::FUNCTION;
             m.Func = func;

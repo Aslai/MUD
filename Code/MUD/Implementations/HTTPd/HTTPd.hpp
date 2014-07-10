@@ -31,7 +31,7 @@ namespace GlobalMUD{
             } Type;
             std::string Path;
             std::string MountPath;
-            HTTPResponse(*Func)(HTTPResponse response, HTTPd& parent);
+            std::function<HTTPResponse(HTTPResponse response, HTTPd& parent)> Func;
         };
     private:
         std::map<std::string, MountPoint> MountPoints;
@@ -47,7 +47,7 @@ namespace GlobalMUD{
         Error MountFolder(std::string mountpath, std::string folderpath);
         Error MountDirectory(std::string mountpath, std::string folderpath);
         Error MountFile(std::string mountpath, std::string filepath);
-        Error MountFunction(std::string mountpath, HTTPResponse(*func)(HTTPResponse response, HTTPd& parent));
+        Error MountFunction(std::string mountpath, std::function<HTTPResponse(HTTPResponse response, HTTPd& parent)> func );
         HTTPd(std::string address, int port);
         ~HTTPd();
         Error Run();

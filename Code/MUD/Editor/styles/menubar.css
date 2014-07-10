@@ -1,0 +1,68 @@
+div.menubar{
+	z-index:100000;
+	position: relative;
+	width: 100%;
+	background-color: #C8C8C8;
+	border-bottom: 1px solid black;
+	height: 20px;
+
+}
+div.menubarelement{
+	position: relative;
+	height: 20px;
+	padding-left: 10px;
+	padding-right:10px;
+	margin-left:-4px;
+	left:4px;
+	border-right: 1px solid rgba(0,0,0,.1);
+	display: inline-block;
+	color: #202020;
+}
+div.menubarelement:hover{
+	background-color: #222222;
+	color: #AAAAAA;
+}
+div.menubarmenu{
+	position: absolute;
+	top: 100%;
+	float: left;
+	display: block;
+	background-color: #C8C8C8;
+	border: 1px solid black;
+	visibility: hidden;
+	margin-left: -10px;
+}
+div.menubarmenuelement{
+	display: block;
+	color: #202020;
+	min-width: 150px;
+	padding-right: 20px;
+}
+div.menubarmenuelement:hover{
+	background-color: #222222;
+	color: #AAAAAA;
+}
+
+a.menubar{
+	position: relative;
+	width: 100%;
+	padding: 1px;
+	padding-left: 10px;
+	padding-right: 10px;
+	display: inline-block;
+	text-decoration:none;
+	color: inherit;
+}
+a.menubar:link{
+	color: inherit;
+}
+a.menubar:visited{
+	color: inherit;
+}
+a.menubar:hover{
+	color: inherit;
+}
+a.menubar:active{
+	color: inherit;
+}
+
