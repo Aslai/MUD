@@ -96,8 +96,9 @@ namespace GlobalMUD{
         void HTTPd::ConnectionHandlerThread(CommStream stream, void* parent){
             Stream data;
             HTTPd::HTTPResponse r;
-            const time_t timeout = 45;
+            const time_t timeout = 10;
             std::string verb;
+            int failpenalty = 1;
 
             Error myerror = Error::None;
 
@@ -114,11 +115,16 @@ namespace GlobalMUD{
                 Error e = Error::None;
                 while( true ){
                     //Fill the Stream with data from CommStream
-                    size_t mysize = 1000;
-                    e = stream.Receive( (char*)data.GetBuffer(mysize), mysize );
+                    size_t mysize = 1999;
+                    char* buffer = (char*)data.GetBuffer(mysize);
+                    e = stream.Receive( buffer, mysize );
+                    data.CommitBuffer( mysize );
+                    if( mysize == 0 ){
+                        Thread::Sleep(failpenalty);
+                        failpenalty *= 2;
+                    }
                     if( e == Error::NoData || e == Error::NotConnected )
                         break;
-                    data.CommitBuffer( mysize );
                 }
                 if( e == Error::NotConnected )
                     break;

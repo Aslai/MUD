@@ -5,7 +5,13 @@ div.menubar{
 	background-color: #C8C8C8;
 	border-bottom: 1px solid black;
 	height: 20px;
+	cursor: default;
 
+}
+div.menubarglobal{
+	z-index:100000;
+	position: relative;
+	box-shadow: 4px 4px 10px 4px rgba(10,10,27,.25);
 }
 div.menubarelement{
 	position: relative;
@@ -31,6 +37,7 @@ div.menubarmenu{
 	border: 1px solid black;
 	visibility: hidden;
 	margin-left: -10px;
+	box-shadow: 4px 4px 10px 4px rgba(10,10,27,.25);
 }
 div.menubarmenuelement{
 	display: block;
@@ -44,6 +51,8 @@ div.menubarmenuelement:hover{
 }
 
 a.menubar{
+
+	cursor: default;
 	position: relative;
 	width: 100%;
 	padding: 1px;

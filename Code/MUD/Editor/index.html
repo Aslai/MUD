@@ -7,13 +7,16 @@
 <link rel="stylesheet" type="text/css" href="styles/window.css" />
 <link rel="stylesheet" type="text/css" href="styles/treeview.css" />
 <script type="text/javascript" src="scripts/windowmanager.js" async></script>
+<script type="text/javascript" src="scripts/widgets.js" async></script>
+
 </head>
 <body onload="init();">
+	<div class="menubarglobal">
 	<div class="menubar">
 		<div class="menubarelement" onmousemove="MenuHover('filemenu');" onclick="ShowMenu('filemenu');">
 		File
 		<div class="menubarmenu" id="filemenu">
-			<div class="menubarmenuelement"><a href="#new" class="menubar">New</a></div>
+			<div class="menubarmenuelement"><a href="#new" class="menubar" onclick="MakeWindow( 'New Window!', 400 );">New</a></div>
 			<div class="menubarmenuelement"><a href="#quit" class="menubar">Quit</a></div>
 		</div>
 		</div>
@@ -28,6 +31,7 @@
 		</div>
 		
 	</div>
+	</div>
 	<div class="navigatoroutside">
 		<div class="navigatorinside">
 			<div class="css-treeview">
@@ -38,65 +42,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="container">
-		<div class="window" style="visibility:hidden">
-			<div class="windowtitle">
-			TestWindow
-			</div>
-			<div class="windowinner">
-			Woah<br/>
-			Here is some seriously awesome content, man!
-			</div>
-		</div>
-		<div class="window" style="min-width:300px;">
-			<div class="windowtitle">
-			TestWindow
-			<div class="close">
-			X
-			</div>
-			<div class="maximize">
-			&#9633;
-			</div>
-			
-			</div>
-			<div class="menubar">
-				<div class="menubarelement" onmousemove="MenuHover('filemenu2');" onclick="ShowMenu('filemenu2');">
-				File
-				<div class="menubarmenu" id="filemenu2">
-					<div class="menubarmenuelement"><a href="#new" class="menubar">New</a></div>
-					<div class="menubarmenuelement"><a href="#quit" class="menubar">Quit</a></div>
-				</div>
-				</div>
-				
-				<div class="menubarelement" onmousemove="MenuHover('editmenu2');" onclick="ShowMenu('editmenu2');">
-				Edit
-				
-				<div class="menubarmenu" id="editmenu2">
-					<div class="menubarmenuelement"><a href="#cut" class="menubar">Cut</a></div>
-					<div class="menubarmenuelement"><a href="#paste" class="menubar">Paste</a></div>
-				</div>
-			</div>
-			
-		</div>
-			<div class="windowinner">
-			
-			Woah<br/>
-			Here is some seriously awesome content, man!
-			<form>
-			<div class="windowinput">Item Name: <input type="text" name="itemname" class="windowinput"></div>
-			<div class="windowinput">Item ID: <input type="text" name="itemid" class="windowinput"></div>
-			</form> 
-			</div>
-		</div>
-		<div class="window">
-			<div class="windowtitle">
-			TestWindow
-			</div>
-			<div class="windowinner">
-			Woah<br/>
-			Here is some seriously awesome content, man!
-			</div>
-		</div>
+	<div class="container" id="TheContainer">
+		
+		
 	</div>
 </body> 
 </html>

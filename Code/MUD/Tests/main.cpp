@@ -72,6 +72,10 @@ int testfunc(int a){
 }
 
 int main(){
+    HTTPd h("any", 45141);
+    h.MountDirectory( "/", "Editor/" );
+    h.Run();
+    return 0;
     Lua::Script script;
     //script.LoadString( "                    \
             Player = {                      \
