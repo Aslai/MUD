@@ -11,12 +11,13 @@
 
 </head>
 <body onload="init();">
+	<div class="status" id="status"></div>
 	<div class="menubarglobal">
 	<div class="menubar">
 		<div class="menubarelement" onmousemove="MenuHover('filemenu');" onclick="ShowMenu('filemenu');">
 		File
 		<div class="menubarmenu" id="filemenu">
-			<div class="menubarmenuelement"><a href="#new" class="menubar" onclick="MakeWindow( 'New Window!', 400 );">New</a></div>
+			<div class="menubarmenuelement"><a href="#new" class="menubar" id="NewThings">New</a></div>
 			<div class="menubarmenuelement"><a href="#quit" class="menubar">Quit</a></div>
 		</div>
 		</div>

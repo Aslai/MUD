@@ -29,7 +29,7 @@ var Mouse = {
 
 function ResizeStart( e ){
 	
-	var win = e.target.parentNode;
+	var win = GetParentWindow( e.target );
 	Window.Target = win;
 	Window.Resizing = true;
 	var rect = Window.Target.getBoundingClientRect();
@@ -42,7 +42,7 @@ function ResizeStart( e ){
 }
 
 function WindowOnClose( e ){
-	var win = e.target.parentNode.parentNode;
+	var win = GetParentWindow( e.target )
 	win.parentNode.removeChild(win);
 }
 
@@ -51,7 +51,7 @@ function ToggleMaximize( win ){
 	win.style.zIndex = Window.LastZ++;
 	if( win.style.width != "100%" ){
 		var rect = win.getBoundingClientRect();
-		var rectcontainer = win.parentNode.getBoundingClientRect();
+		var rectcontainer = GetContainer().getBoundingClientRect();
 		
 		win.style.width = "100%";
 		win.style.height = "100%";
@@ -59,31 +59,43 @@ function ToggleMaximize( win ){
 		win.style.marginLeft = ( rectcontainer.left - rect.left ) + 'px';
 		win.style.marginTop = ( rectcontainer.top - rect.top ) + 'px';
 		
+		var resizer = win.getElementsByClassName("windowresizer");
+		for( var i = 0; i < resizer.length; ++i ){
+			resizer[i].style.visibility = "hidden";
+		}
+		
 	}
 	else{
 		win.style.width = "0";
 		win.style.height = "0";
 		win.style.marginLeft = "0";
 		win.style.marginTop = "0";
-		
+		var resizer = win.getElementsByClassName("windowresizer");
+		for( var i = 0; i < resizer.length; ++i ){
+			resizer[i].style.visibility = "visible";
+		}
 	}
 }
 
 function WindowOnMaximize( e ){
-	var win = e.target.parentNode.parentNode;
+	var win = GetParentWindow( e.target );
 	ToggleMaximize( win );
 }
 
 function WindowOnDoubleClick( e ){
-	if( e.target.className == "windowtitle" ){
-		ToggleMaximize(e.target.parentNode);
+	if( e.target.className == "windowtitle" || e.target.className == "windowtitlebartitle" ){
+		ToggleMaximize(GetParentWindow( e.target ));
 	}
 }
 
+function WindowBringToTop( win ){
+	win.style.zIndex = Window.LastZ++;
+}
+
 function WindowOnMouseDown( e ){
-	e.target.parentNode.style.zIndex = Window.LastZ++;
-	if( e.target.className == "windowtitle" ){
-		Window.Target = e.target.parentNode;
+	WindowBringToTop( GetParentWindow( e.target ) );
+	if( e.target.className == "windowtitle" || e.target.className == "windowtitlebartitle"){
+		Window.Target = GetParentWindow( e.target );
 		Window.Moving = true;
 		var rect = Window.Target.getBoundingClientRect();
 		Window.Offset.X = Mouse.X - rect.left;
@@ -91,11 +103,16 @@ function WindowOnMouseDown( e ){
 		
 		
 	}
+	if( Menus.Current != null && Menus.Preserve == false ){
+		Menus.Current.style.visibility = "hidden";
+		Menus.Current = null;
+	}
+	Menus.Preserve = false;
 }
 
 function HTMLOnMouseUp( e ){
 	if( Window.Target != null && Window.Moving == true && Window.Target.style.width != "100%"){
-		var rect = Window.Target.parentNode.getBoundingClientRect();
+		var rect = GetContainer().getBoundingClientRect();
 		var winrect = Window.Target.getBoundingClientRect();
 
 		if( Mouse.Y <= 20 )
@@ -138,7 +155,7 @@ function HTMLOnMouseUp( e ){
 		
 	}
 	if( Window.Target != null && Window.Resizing == true ){
-		var rect = Window.Target.parentNode.getBoundingClientRect();
+		var rect = GetContainer().getBoundingClientRect();
 		var winrect = Window.Target.getBoundingClientRect();
 		
 		if( winrect.right > rect.right - 10 && winrect.right < rect.right + 20  )
@@ -170,25 +187,25 @@ function HTMLOnMouseUp( e ){
 	Window.Resizing = false;
 	
 	
-	if( Menus.Current != null && Menus.Preserve == false ){
-		Menus.Current.style.visibility = "hidden";
-		Menus.Current = null;
-	}
-	Menus.Preserve = false;
+
 }
 
 function HTMLOnMouseMove( e ){
 	if( Window.Moving == true ){
 		if( Window.Target.style.width == "100%" ){
 			Window.Target.style.width = "0";
-			Window.Target.style.height = "auto";
+			Window.Target.style.height = "0";
 			Window.Target.style.marginLeft = "0";
 			Window.Target.style.marginTop = "0";
+			var resizer = Window.Target.getElementsByClassName("windowresizer");
+			for( var i = 0; i < resizer.length; ++i ){
+				resizer[i].style.visibility = "visible";
+			}
 			
 			var rect = Window.Target.getBoundingClientRect();
 			Window.Offset.X = (rect.right - rect.left ) / 2;
 		}
-		var rect = Window.Target.parentNode.getBoundingClientRect();
+		var rect = GetContainer().getBoundingClientRect();
 		
 		Window.Target.style.left = (e.clientX - Window.Offset.X - rect.left) + 'px';
 		Window.Target.style.top = (e.clientY - Window.Offset.Y - rect.top) + 'px';
@@ -196,7 +213,9 @@ function HTMLOnMouseMove( e ){
 	else if( Window.Resizing == true ){
 		var w = Window.Size.W + e.clientX - Window.Size.Start.X;
 		var h = Window.Size.H + e.clientY - Window.Size.Start.Y;
-		if( w < 150 ) w = 150;
+			
+		var minWidth = WindowGetMinWidth( Window.Target );
+		if( w < minWidth ) w = minWidth;
 		if( h < 100 ) h = 100;
 		
 		Window.Target.style.minWidth = (w) + 'px';
@@ -216,21 +235,23 @@ function ShowMenu( id ){
 		Menus.Current.style.visibility = "hidden";
 		Menus.Current = null;
 	}
-	
-	if( submenu.style.visibility != "visible" ){
-		submenu.style.visibility = "visible";
-		Menus.Current = submenu;
-		
+	if( submenu != null ){
+		if( submenu.style.visibility != "visible" ){
+			submenu.style.visibility = "visible";
+			Menus.Current = submenu;
+			
 
-	}
-	else{
-		submenu.style.visibility = "hidden";
-		Menus.Current = null;
+		}
+		else{
+			submenu.style.visibility = "hidden";
+			Menus.Current = null;
+		}
 	}
 	Menus.Preserve = true;
 }
 
 function MenuHover( id ){
+	Menus.Preserve = true;
 	if( Menus.Current != null ){
 		var submenu = document.getElementById( id );
 		if( Menus.Current != submenu ){
@@ -245,7 +266,16 @@ function MenuMouseLeave( e ){
 function MenuMouseEnter( e ){
 	Menus.Preserve = true;
 }
+function GetParentWindow( self ){
+	while( self != null && self.className != "window" ){
+		self = self.parentNode;
+	}
+	return self;
+}
 
+function GetContainer(){
+	return document.getElementById("TheContainer");
+}
 
 function init(){
 	var h=document.getElementsByClassName("html");
@@ -278,6 +308,7 @@ function init(){
 		h[i].onmousedown = ResizeStart;
 		
 	}
-	
+	h = document.getElementById("NewThings");
+	h.onclick = function(){MakeWindowFromContent('windows/testa.html');}
 }
 

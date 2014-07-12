@@ -1,0 +1,31 @@
+<script>
+WindowSetTitle( window, "This is a test window" );
+WindowSetDimensions( window, 40, 40);
+WindowAddMenuBar( window, MakeMenubar(
+		{
+			File: 
+			{ 
+				Test: function(){ alert("TEST!");},
+				Close: (function( win ){ return function(){ win.parentNode.removeChild(win); }; })(window)
+			},
+			This:
+			{
+				Has_Some: function(){ alert("Has Some!");},
+				Neat_Functionality: function(){ alert("Neat Functionality!");},
+			},
+			Is:
+			{
+				This_Awesome: function(){ alert("Yes it is!"); }
+			},
+			Cool_HAHAHAHAHA:
+			{
+				Beans: function(){ alert("Beans are a magical fruit."); }
+			}
+		}
+	)
+);
+</script>
+Test<br/>
+Woah</br/>
+Hello<br/>
+testing

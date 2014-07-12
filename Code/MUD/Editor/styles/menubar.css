@@ -6,12 +6,17 @@ div.menubar{
 	border-bottom: 1px solid black;
 	height: 20px;
 	cursor: default;
-
+    white-space: nowrap;
+	
 }
 div.menubarglobal{
+	padding-bottom: 0;
 	z-index:100000;
 	position: relative;
 	box-shadow: 4px 4px 10px 4px rgba(10,10,27,.25);
+}
+div.menubarelementcontainer{
+	display: inline-block;
 }
 div.menubarelement{
 	position: relative;
@@ -23,6 +28,7 @@ div.menubarelement{
 	border-right: 1px solid rgba(0,0,0,.1);
 	display: inline-block;
 	color: #202020;
+    white-space: nowrap;
 }
 div.menubarelement:hover{
 	background-color: #222222;

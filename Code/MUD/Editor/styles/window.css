@@ -4,7 +4,6 @@ div.window{
 	border: 1px solid black;
 	border-radius: 4px;
 	display: inline-block;
-	background: linear-gradient(160deg, #A8A8A8, #484848);
 	left: 50%;
 	top: 50%;
 
@@ -27,6 +26,18 @@ div.windowtitle{
 	overflow: hidden;
 	
 }
+div.windowtitlebartitle{
+	position:absolute;
+	display: inline-block;
+	z-index: 0;
+}
+div.windowtitlebarbuttons{
+	position:absolute;
+	display: block;
+	z-index: 1;
+	right: 4px;
+}
+
 div.windowinner{
 	z-index: -1;
 	position: absolute;
@@ -50,6 +61,7 @@ div.windowinner{
 	overflow: hidden;
 }
 div.close{
+	z-index: 10;
 	padding: 0px;
 	border: 1px solid rgba(0,0,0,.5);
 	float: right;
@@ -61,6 +73,7 @@ div.close{
 	background-color: #C8C8C8;
 }
 div.maximize{
+	z-index: 10;
 	padding: 0px;
 	border: 1px solid rgba(0,0,0,.5);
 	margin-right: 3px;
@@ -114,8 +127,8 @@ div.windowresizer{
 	bottom: 0;
 	width: 0;
 	height: 0;
-	border-bottom: 10px solid rgba( 255,255,255,.3);
-	border-left: 10px solid transparent;
+	border-bottom: 14px solid rgba( 255,255,255,.5);
+	border-left: 14px solid transparent;
 	border-top: 0px solid transparent;
 	
 	margin-top: -10px;

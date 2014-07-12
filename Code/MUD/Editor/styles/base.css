@@ -63,3 +63,21 @@ div.navigatorinside{
 	overflow-y: scroll;
 	margin-left: 13px;
 }
+
+div.status{
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	display: inline-block;
+	color: #222222;
+	background-color: #BBBBBB;
+	padding: 3px;
+	border: 1px solid #999999;
+	visibility: hidden;
+}
+div.status:enabled{
+	visibility: visible;
+}
+div.status:disabled{
+	visibility: hidden;
+}
