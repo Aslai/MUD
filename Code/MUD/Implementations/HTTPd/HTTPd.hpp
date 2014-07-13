@@ -21,6 +21,7 @@ namespace GlobalMUD{
             std::string filepath;
             std::vector<char> content;
             void SetContent(std::string value);
+            HTTPResponse& operator+=(HTTPResponse other);
         };
         struct MountPoint{
             enum Types{
@@ -33,21 +34,31 @@ namespace GlobalMUD{
             std::string MountPath;
             std::function<HTTPResponse(HTTPResponse response, HTTPd& parent)> Func;
         };
+        struct FileHandler{
+            std::string Extension;
+            std::function<HTTPResponse(HTTPResponse response, HTTPd& parent, std::string localpath)> Func;
+            bool Valid;
+        };
+
     private:
         std::map<std::string, MountPoint> MountPoints;
+        std::map<std::string, FileHandler> FileHandlers;
         std::string Address;
+        std::string DefaultIndex;
         int Port;
         CommStream *stream;
         Thread *MyThread;
         static void ConnectionHandler(CommStream stream, void* argument );
         static void ConnectionHandlerThread(CommStream stream, void* parent);
-        static std::string ParseRequest(Stream &data, HTTPResponse &r);
+        static std::string ParseRequest(Stream &data, HTTPResponse &r, std::string defaultIndex);
 
     public:
         Error MountFolder(std::string mountpath, std::string folderpath);
         Error MountDirectory(std::string mountpath, std::string folderpath);
         Error MountFile(std::string mountpath, std::string filepath);
         Error MountFunction(std::string mountpath, std::function<HTTPResponse(HTTPResponse response, HTTPd& parent)> func );
+        Error SetFileHandler( std::string extension, std::function<HTTPResponse(HTTPResponse response, HTTPd& parent, std::string localpath)> func );
+        Error SetDefaultIndex( std::string value );
         HTTPd(std::string address, int port);
         ~HTTPd();
         Error Run();

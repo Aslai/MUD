@@ -71,9 +71,85 @@ int testfunc(int a){
     return 1337;
 }
 
+HTTPd::HTTPResponse LuaHandler( HTTPd::HTTPResponse r, HTTPd &h, std::string path ){
+    HTTPd::HTTPResponse ret;
+    ret.status = 200;
+    Stream data;
+    FILE* f = fopen( path.c_str(), "r" );
+    if( f == nullptr ){
+        ret.status = 404;
+        return ret;
+    }
+    while( !feof( f ) ){
+        size_t len = 1000;
+        void* buffer = data.GetBuffer( len );
+        len = fread( buffer, 1, len, f );
+        data.CommitBuffer( len );
+    }
+
+    Lua::Value luagets;
+    {
+        auto iter = r.gets.begin();
+        while( iter != r.gets.end() ){
+            luagets.GetTable(StringToLower((*iter).first)) = (*iter).second;
+            iter++;
+        }
+    }
+
+    Lua::Value luaheaders;
+    {
+        auto iter = r.headers.begin();
+        while( iter != r.headers.end() ){
+            luaheaders.GetTable(StringToLower((*iter).first)) = (*iter).second;
+            iter++;
+        }
+        luaheaders.GetTable("status") = r.status;
+    }
+
+    std::string content = "";
+    while( data.HasByte() ){
+        if( data.HasToken( "<?lua" ) ){
+            content += data.GetToken( "<?lua" );
+            if( data.HasByte() ){
+                Lua interpreter;
+                std::string script = "";
+                if( data.HasToken( "?>" ) ){
+                    script = data.GetToken("?>");
+                }
+                else{
+                    script = data.GetString( data.End() );
+                }
+                try{
+                    interpreter.Load( script, "webpage", 0 );
+                    interpreter.Set( "Get", luagets );
+                    interpreter.Set( "Headers", luaheaders );
+                    interpreter.Set( "Output", "" );
+                    interpreter.Run();
+                    content+= interpreter.Get<std::string>("Output");
+                    luaheaders = interpreter.Get<Lua::Value>( "Headers" );
+                    ret.status = luaheaders.GetTable("status").GetNumber();
+                }
+                catch(...){
+                    ret.status = 500;
+                }
+            }
+        }
+        else{
+            content += data.GetString( data.End() );
+        }
+    }
+    ret.SetContent( content );
+    fclose( f );
+    return ret;
+}
+
+
 int main(){
+
     HTTPd h("any", 45141);
     h.MountDirectory( "/", "Editor/" );
+    h.SetFileHandler( "hlua", LuaHandler );
+    h.SetDefaultIndex( "index.hlua" );
     h.Run();
     return 0;
     Lua::Script script;

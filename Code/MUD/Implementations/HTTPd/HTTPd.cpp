@@ -139,7 +139,7 @@ namespace GlobalMUD{
                     case 1: state = 1;
                         //Parse GET parameters, unescape, and sanitize . and .. in the url
                         if( data.HasToken(" ", "\r\n") ){
-                            r.request = HTTPd::ParseRequest( data, r );
+                            r.request = HTTPd::ParseRequest( data, r, ((HTTPd*)parent)->DefaultIndex );
 
                         }
                         else break;
@@ -232,7 +232,7 @@ namespace GlobalMUD{
             return;
         }
 
-        std::string HTTPd::ParseRequest(Stream &data, HTTPResponse &r){
+        std::string HTTPd::ParseRequest(Stream &data, HTTPResponse &r, std::string defaultIndex){
             //Get the request string
             r.request = data.GetToken( " ", "\r\n" );
             size_t pos = r.request.find_first_of('?');
@@ -297,8 +297,8 @@ namespace GlobalMUD{
                     i--;
                     }
                     else{
-                        //If this is a request for an empty directory, point it at index.html
-                        dir[i] = "index.html";
+                        //If this is a request for an empty directory, point it at the default index
+                        dir[i] = defaultIndex;
                     }
                 }
 
@@ -310,8 +310,22 @@ namespace GlobalMUD{
                 r.request += "/"+dir[i];
             }
             if( r.request == "/" || r.request == "" )
-                r.request = "/index.html";
+                r.request = "/" + defaultIndex;
             return r.request;
+        }
+
+        Error HTTPd::SetFileHandler( std::string extension, std::function<HTTPResponse(HTTPResponse response, HTTPd& parent, std::string localpath)> func ){
+            FileHandler f;
+            f.Extension = StringToLower(extension);
+            f.Func = func;
+            f.Valid = true;
+            FileHandlers[StringToLower(extension)] = f;
+            return Error::None;
+        }
+
+        Error HTTPd::SetDefaultIndex( std::string value ){
+            DefaultIndex = value;
+            return Error::None;
         }
 
         void HTTPd::ConnectionHandler(CommStream stream, void* parent ){
@@ -327,6 +341,18 @@ namespace GlobalMUD{
             memcpy( &(content[0]), value.c_str(), value.length() );
         }
 
+        HTTPd::HTTPResponse& HTTPd::HTTPResponse::operator+=(HTTPd::HTTPResponse other){
+            status = other.status;
+            headers.insert( other.headers.begin(), other.headers.end() );
+            gets.insert( other.gets.begin(), other.gets.end() );
+            posts.insert( other.posts.begin(), other.posts.end() );
+            request = other.request;
+            filepath = other.filepath;
+            size_t oldsize = content.size();
+            content.resize( content.size() + other.content.size());
+            memcpy( &(content[oldsize]), &(other.content[0]), other.content.size() );
+            return *this;
+        }
 
         HTTPd::HTTPResponse HTTPd::DoError(HTTPResponse response, HTTPd& parent, int code){
             //Return an error page.
@@ -385,6 +411,7 @@ namespace GlobalMUD{
             }
 
             ret.status = 200;
+            r.status = 200;
             std::string path = MountPoints[mount].Path;
             switch( MountPoints[mount].Type ){
             //If the mount that we're working from is a folder, set path to the fully qualified
@@ -403,10 +430,32 @@ namespace GlobalMUD{
                 size_t pos = path.find_last_of('.');
 
                 if( path.find_first_of('.') != std::string::npos ){
-                    ret.headers["Content-Type"] = GetMimeFromExt(path.substr(pos==std::string::npos?pos:pos+1));
+                    std::string extension = StringToLower(path.substr(pos==std::string::npos?pos:pos+1));
+                    ret.headers["Content-Type"] = GetMimeFromExt(extension);
+                    if( FileHandlers[extension].Valid ){
+                        ret.filepath = "";
+                        ret.headers["Content-Type"] = GetMimeFromExt("html");
+                        ret += FileHandlers[extension].Func( r, *this, path );
+                    }
+                    else{
+                        //Save the file path for sending at a different point.
+                        ret.filepath = path;
+                    }
                 }
-                //Save the file path for sending at a different point.
-                ret.filepath = path;
+                else{
+                    if( FileHandlers[""].Valid ){
+                        ret.filepath = "";
+                        ret.headers["Content-Type"] = GetMimeFromExt("html");
+                        ret += FileHandlers[""].Func( r, *this, path );
+                    }
+                    else{
+                        //Save the file path for sending at a different point.
+                        ret.filepath = path;
+                    }
+                }
+                if( ret.status >= 400 )
+                    ret = HTTPd::DoError(r, *this, ret.status);
+
                 return ret;
             }
             break;
@@ -457,6 +506,7 @@ namespace GlobalMUD{
             Port = port;
             stream = nullptr;
             MyThread = nullptr;
+            DefaultIndex = "index.html";
         }
 
         HTTPd::~HTTPd(){

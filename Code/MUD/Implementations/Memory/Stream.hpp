@@ -107,6 +107,7 @@ namespace GlobalMUD{
         int GetChar();
         byte GetByte();
         void* GetData( Checkpoint end );
+        std::string GetString( Checkpoint end );
 
         Checkpoint SaveCheckpoint();
         Error LoadCheckpoint( Checkpoint point );

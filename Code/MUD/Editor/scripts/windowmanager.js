@@ -103,6 +103,9 @@ function WindowOnMouseDown( e ){
 		
 		
 	}
+
+}
+function HTMLOnMouseDown( e ){
 	if( Menus.Current != null && Menus.Preserve == false ){
 		Menus.Current.style.visibility = "hidden";
 		Menus.Current = null;
@@ -282,6 +285,7 @@ function init(){
 	for( i = 0; i < h.length; ++i ){
 		h[i].onmousemove=HTMLOnMouseMove;
 		h[i].onmouseup=HTMLOnMouseUp;
+		h[i].onmousedown=HTMLOnMouseDown;
 	}
 	h=document.getElementsByClassName("window");
 	for( i = 0; i < h.length; ++i ){
@@ -308,7 +312,21 @@ function init(){
 		h[i].onmousedown = ResizeStart;
 		
 	}
-	h = document.getElementById("NewThings");
-	h.onclick = function(){MakeWindowFromContent('windows/testa.html');}
+	h = document.getElementById("menubarglobal");
+	h.appendChild(
+		MakeMenubar(
+			{
+				File: {
+					New: function(){MakeWindowFromContent('windows/testa.html');},
+					Quit: function(){}
+				},
+				Edit: {
+					Copy: function(){},
+					Cut: function(){},
+					Paste: function(){}
+				}
+			}
+		)
+	);	
 }
 

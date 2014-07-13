@@ -129,6 +129,9 @@ function RequestURL( url, target, argumentName, argument, onComplete ){
 		{
 			var response = request.responseText;
 			target.innerHTML="";
+			/*var frame = document.createElement( 'iframe' );
+			target.appendChild( frame );
+			target = frame;*/
 			var start = 0;
 			var end = 0;
 			do{

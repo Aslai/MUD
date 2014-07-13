@@ -58,7 +58,7 @@ div.windowinner{
 	-ms-user-select: text;
 	user-select: text;
 	cursor: auto;
-	overflow: hidden;
+	overflow: auto;
 }
 div.close{
 	z-index: 10;

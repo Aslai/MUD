@@ -287,6 +287,11 @@ namespace GlobalMUD{
         return nullptr;
     }
 
+    std::string Stream::GetString( Checkpoint end ){
+        Checkpoint start = SaveCheckpoint();
+        return BufferToString( (const char*)GetData(end), end-start );
+    }
+
 
     Stream::Checkpoint Stream::SaveCheckpoint(){
         Checkpoint chk( this, readPosition );
