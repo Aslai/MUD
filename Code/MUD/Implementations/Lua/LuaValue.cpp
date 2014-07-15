@@ -36,9 +36,14 @@ Lua::Value::Value(const Lua::Value& value) : TableIndex(), TableKeys() {
     StringValue = value.StringValue;
     NumberValue = value.NumberValue;
     FunctionValue = value.FunctionValue;
+    LuaFunc = value.LuaFunc;
 }
 
 Lua::Value::Value(Lua::Table value) : TableIndex(), TableKeys() {
+    operator=(value);
+}
+
+Lua::Value::Value(Lua::Function value) : TableIndex(), TableKeys() {
     operator=(value);
 }
 
@@ -54,6 +59,10 @@ bool Lua::Value::IsTable(){
     return myType == Type::Table;
 }
 
+bool Lua::Value::IsFunction(){
+    return myType == Type::Function;
+}
+
 bool Lua::Value::IsNil(){
     return myType == Type::Nil;
 }
@@ -64,6 +73,10 @@ double& Lua::Value::GetNumber(){
 
 std::string& Lua::Value::GetString(){
     return StringValue;
+}
+
+Lua::Function Lua::Value::GetFunction(){
+    return LuaFunc;
 }
 
 Lua::Value& Lua::Value::GetTable(std::string key){
@@ -118,6 +131,7 @@ Lua::Value& Lua::Value::operator=(const Lua::Value value){
     StringValue = value.StringValue;
     NumberValue = value.NumberValue;
     FunctionValue = value.FunctionValue;
+    LuaFunc = value.LuaFunc;
     return *this;
 }
 
@@ -130,6 +144,18 @@ Lua::Value& Lua::Value::operator=(Lua::Table value){
     FunctionValue = nullptr;
 
     value.FillValue( *this );
+    return *this;
+}
+
+Lua::Value& Lua::Value::operator=(Lua::Function value){
+    myType = Type::Function;
+    TableIndex.clear();
+    TableKeys.clear();
+    StringValue = "";
+    NumberValue = 0;
+    FunctionValue = nullptr;
+    LuaFunc = value;
+    printf("\nVALUE.REF = %d\n\n", value.ref );
     return *this;
 }
 

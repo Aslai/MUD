@@ -209,6 +209,9 @@ namespace GlobalMUD{
             //Begin responding with an HTTP response
             stream.Send("HTTP/1.1 " + StringFromUInt(tosend.status) + " " + GetMessageFromHTTPStatus(tosend.status) + "\r\n", false);
             tosend.headers["Connection"] = "Close";
+            if( tosend.filepath == "" ){
+                tosend.headers["Content-Length"] = tosend.content.size();
+            }
 
             std::map<std::string,std::string>::iterator iter = tosend.headers.begin();
 

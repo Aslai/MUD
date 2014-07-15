@@ -247,6 +247,12 @@ function MakeWindowFromContent( url ){
 	FillWindowWithContent( win, url, function(){ 
 										GetContainer().appendChild(win); 
 										WindowVerifyDimensions(win);
+										var h = win.getElementsByTagName("*");
+										for( i = 0; i < h.length; ++i ){
+											h[i].draggable = false;
+											h[i].ondragstart = function() { return false; };
+										}
 										ChangeStatus("Finished loading "+url);
+										
 										} );
 }

@@ -10,8 +10,8 @@
 <script type="text/javascript" src="scripts/widgets.js" async></script>
 <script>
 function Init(){
-	init();
 	<?lua if Get["url"] ~= nil then Output = Output .. "MakeWindowFromContent(\"windows/" .. Get["url"] .. "\");" end?>
+	init();
 }
 </script>
 </head>

@@ -21,7 +21,9 @@ void Lua::Table::FillValue( Value& toFill ){
 
                 if( lua_istable(L, -2) ){
                     value = p.lua_ret( Lua::Table(), -2 );
-                } else{
+                } else if( lua_isfunction(L, -2)){
+                    value = p.lua_ret( Lua::Function(), -2 );
+                } else {
                     double num = lua_tonumber( L, -2 );
 
                     if( num > .0000001 || num < -.000000001 ){
@@ -41,7 +43,9 @@ void Lua::Table::FillValue( Value& toFill ){
                     toFill.TableIndex[num] = value;
                 }
                 else{
-                    toFill.TableKeys[p.lua_ret( std::string(), -1 )] = value;
+                    std::string key = p.lua_ret( std::string(), -1 );
+                    printf("%s\n", key.c_str());
+                    toFill.TableKeys[key] = value;
                 }
                 lua_pop(L, 2); //-1 = KEY, -2 = TABLE
             }

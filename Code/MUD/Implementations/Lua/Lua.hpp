@@ -23,6 +23,7 @@ class Lua{
     struct Stack{
         friend Value;
         friend Lua;
+        friend Function;
         lua_State *L;int position;
         Stack();
         int trythrow(int idx);
@@ -70,13 +71,65 @@ class Lua{
     static bool GetValueToStack( lua_State *L, std::string globalid, int reference = -1 );
 
 public:
+    class Function{
+        public:
+        friend Stack;
+        std::string funcname;
+        Stack p;
+        int ref;
+        lua_State *L;
+    public:
+        Function( lua_State *Lua, const char* name );
+        Function( lua_State *Lua, int reference );
+        Function( );
+        Function& operator=(Function f);
+
+        template<typename... Args> inline void pass(Args...)  const {}
+
+        template<class ReturnType, class... Arguments>
+        ReturnType Call(Arguments... a){
+            printf("\n%d\n", ref );
+            p.position = 1; //Reset the position for calling another function
+            if( GetValueToStack( L, funcname, ref ) ){
+                if (!lua_isfunction(L, -1)){
+                    return ReturnType();
+                }
+                pass(p.lua_push(a)...);
+
+                 lua_pcall(L, sizeof...(Arguments), 1, 0);
+                ReturnType ret = p.lua_ret(ReturnType(), -1);
+
+                lua_pop(L,lua_gettop(L));
+                return ret;
+            }
+            return ReturnType();
+        }
+        template<class... Arguments>
+        void Call(Arguments... a){
+            p.position = 1; //Reset the position for calling another function
+            if( GetValueToStack( L, funcname, ref ) ){
+                if (!lua_isfunction(L, -1)){
+                    return;
+                }
+                pass(p.lua_push(a)...);
+
+                lua_pcall(L, sizeof...(Arguments), 1, 0);
+
+                lua_pop(L,lua_gettop(L));
+            }
+            return;
+        }
+    };
     class Value{
         friend Lua;
         friend Stack;
+        public:
         std::vector<Value> TableIndex;
         std::map<std::string, Value> TableKeys;
+        private:
         std::string StringValue;
         lua_CFunction FunctionValue;
+        Function LuaFunc;
         double NumberValue;
         enum class Type{
             Table,
@@ -92,12 +145,15 @@ public:
         Value(std::string value);
         Value(const Value& value);
         Value(Table value);
+        Value(Function value);
         bool IsNumber();
         bool IsString();
         bool IsTable();
+        bool IsFunction();
         bool IsNil();
         double& GetNumber();
         std::string& GetString();
+        Function GetFunction();
         Value& GetTable(std::string key);
         Value& GetTable(unsigned int index);
         Value& operator[](std::string key);
@@ -106,6 +162,7 @@ public:
         Value& operator=(std::string value);
         Value& operator=(const Value value);
         Value& operator=(Table value);
+        Value& operator=(Function value);
         operator std::string();
     };
     friend Value;
@@ -169,52 +226,7 @@ public:
         };
     };*/
 
-    class Function{
-        std::string funcname;
-        Stack p;
-        int ref;
-        lua_State *L;
-    public:
-        Function( lua_State *Lua, const char* name );
-        Function( lua_State *Lua, int reference );
-        Function( );
-        Function& operator=(Function f);
 
-        template<typename... Args> inline void pass(Args...)  const {}
-
-        template<class ReturnType, class... Arguments>
-        ReturnType Call(Arguments... a){
-            p.position = 1; //Reset the position for calling another function
-            if( GetValueToStack( L, funcname, ref ) ){
-                if (!lua_isfunction(L, -1)){
-                    return ReturnType();
-                }
-                pass(p.lua_push(a)...);
-
-                 lua_pcall(L, sizeof...(Arguments), 1, 0);
-                ReturnType ret = p.lua_ret(ReturnType(), -1);
-
-                lua_pop(L,lua_gettop(L));
-                return ret;
-            }
-            return ReturnType();
-        }
-        template<class... Arguments>
-        void Call(Arguments... a){
-            p.position = 1; //Reset the position for calling another function
-            if( GetValueToStack( L, funcname, ref ) ){
-                if (!lua_isfunction(L, -1)){
-                    return;
-                }
-                pass(p.lua_push(a)...);
-
-                lua_pcall(L, sizeof...(Arguments), 1, 0);
-
-                lua_pop(L,lua_gettop(L));
-            }
-            return;
-        }
-    };
 
     class Script{
         friend Lua;

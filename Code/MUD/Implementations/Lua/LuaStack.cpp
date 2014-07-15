@@ -63,7 +63,10 @@ int Lua::Stack::lua_push( Lua::Value s ){
     case Lua::Value::Type::String:
         lua_push( s.GetString() ); break;
     case Lua::Value::Type::Function:
-        lua_pushcfunction( L, s.FunctionValue ); break;
+        if( s.FunctionValue != nullptr )
+            lua_pushcfunction( L, s.FunctionValue );
+        else
+            Lua::GetValueToStack( L, "", s.LuaFunc.ref ); break;
     case Lua::Value::Type::Table:{
             //lua_createtable(L, s.TableIndex.size(), s.TableKeys.size());      // create new table
             lua_newtable( L );
@@ -144,7 +147,9 @@ void* Lua::Stack::lua_ret( void*, int pos ){
 Lua::Function Lua::Stack::lua_ret( Lua::Function, int pos ){
     if( pos == -100000 ) pos = position++;
     if( trythrow(pos) == 0 ){
+        lua_pushvalue( L, pos );
         int f = luaL_ref(L, LUA_REGISTRYINDEX);
+        printf("woao %d\n", f);
         Function ret(L, f);
         return ret;
     }
@@ -166,12 +171,19 @@ Lua::Value Lua::Stack::lua_ret( Lua::Value, int pos ){
     if( pos == -100000 ) pos = position++;
     if( trythrow(pos) == 0 ){
         if( lua_istable(L, pos ) ){
+            printf("d");
             return Lua::Value(lua_ret(Lua::Table(), pos));
         }
+        if( lua_isfunction(L, pos) ){
+            printf("a");
+            return Lua::Value(lua_ret(Lua::Function(), pos));
+        }
         try{
+            printf("b");
             return Lua::Value(luaL_checknumber( L, pos ));
         }
         catch( GlobalMUD::Error e ){
+            printf("c");
             return Lua::Value(lua_ret(std::string(), pos));
         }
     }

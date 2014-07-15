@@ -51,13 +51,13 @@ div.windowinner{
 	top: 24px;
 	bottom: 0px;
 	
-	-webkit-touch-callout: text;
+	/*-webkit-touch-callout: text;
 	-webkit-user-select: text;
 	-khtml-user-select: text;
 	-moz-user-select: text;
 	-ms-user-select: text;
 	user-select: text;
-	cursor: auto;
+	cursor: auto;*/
 	overflow: auto;
 }
 div.close{
