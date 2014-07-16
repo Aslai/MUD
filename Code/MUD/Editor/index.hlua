@@ -9,7 +9,7 @@
 <script type="text/javascript" src="scripts/windowmanager.js" async></script>
 <script type="text/javascript" src="scripts/widgets.js" async></script>
 <script>
-function Init(){
+function Init( ){
 	<?lua if Get["url"] ~= nil then Output = Output .. "MakeWindowFromContent(\"windows/" .. Get["url"] .. "\");" end?>
 	init();
 }
