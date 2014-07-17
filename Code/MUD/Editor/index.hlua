@@ -16,7 +16,7 @@ function Init( ){
 </script>
 </head>
 <body onload="Init();">
-	<div class="status" id="status"></div>
+	<div class="status" id="status"> </div>
 	<div class="menubarglobal" id="menubarglobal">
 
 	</div>

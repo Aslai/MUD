@@ -382,9 +382,9 @@ namespace GlobalMUD{
             return MountDirectory( mountpath, folderpath );
         }
 
-        HTTPd::HTTPResponse HTTPd::PushPage(HTTPd::HTTPResponse r, std::string mount2 ){
+        HTTPd::HTTPResponse HTTPd::PushPage( HTTPd::HTTPResponse r, std::string mount2 ){
             std::string mount = mount2;
-            //Find a mountpoint that forms part of the base directories for the request
+            //Find a mount point that forms part of the base directories for the request
             if( mount == "" ){
                 std::string test = StringToLower(r.request);
                 size_t pos = std::string::npos;
@@ -398,7 +398,7 @@ namespace GlobalMUD{
                     }
                     if( test == "/" )
                         break;
-                    pos = test.find_last_of('/');
+                    pos = test.find_last_of( '/' );
                 }
             }
             Print(mount);
