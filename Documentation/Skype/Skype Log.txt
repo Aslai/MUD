@@ -1,0 +1,1449 @@
+[4/2/2014 9:35:04 PM] Kaslai: Hello
+[4/2/2014 11:45:21 PM] Kjetil Hansen: Top of the morning to ya Kaslai... or, maby the best time to speak to you would be when I go home from the office as you should be in bed soon :)
+[4/2/2014 11:50:39 PM] Kaslai: Hehe
+[4/2/2014 11:51:06 PM] Kaslai: Yea. I have school on Tuesdays and Thursdays, so I'd best be off to bed. I'll be free for all of Friday though
+[4/2/2014 11:53:44 PM] Kjetil Hansen: N/p. I can just leave you messages here and you can answer them when you have time. Take care and stay safe.
+[4/2/2014 11:56:02 PM] Kaslai: Indeed. Thank you.
+[4/3/2014 12:01:40 AM] Kaslai: Actually, I'm going to be up for about another half hour if you want to have a brief chat now.
+[4/3/2014 12:02:07 AM] Kjetil Hansen: Sure Andrew
+[4/3/2014 12:03:18 AM] Kjetil Hansen: Well, I can start by explaining what this project of mine are, give you an example of the design I've made and tell you what I want done and how I would like it done.
+[4/3/2014 12:03:28 AM] Kaslai: Okay.
+[4/3/2014 12:04:22 AM] Kjetil Hansen: 1'st of.... I'm from Norway and my english might be somewhat lacking grammar from time to time. Be patient with me! hehe
+[4/3/2014 12:05:01 AM] Kaslai: That's fine of course :)
+[4/3/2014 12:05:59 AM] Kjetil Hansen: This project is a "hobby" project of mine, mainly to try and learn how the game is programmed from the ground and up, so it's an investment for my learning as well as for the dream of creating this game I've missed for so many years.
+[4/3/2014 12:06:33 AM] Kaslai: Ah, okay.
+[4/3/2014 12:07:09 AM] Kjetil Hansen: It's important that the people I work with will and want to share his code with me. I know many programmer like to keep the code for themselves and or will take a huge amount to hand it out. What is your feelings about this?
+[4/3/2014 12:07:54 AM] Kaslai: I'm open to full disclosure of the source code.
+[4/3/2014 12:08:10 AM] Kaslai: In fact my preferred method of development is with a shared git repository.
+[4/3/2014 12:09:39 AM] Kjetil Hansen: Hold your horses! I'm just learning to program and started with python (was of the impression that this was the best language to start learning in). When you say shared git repository, you mean what exactly?
+[4/3/2014 12:10:01 AM] Kjetil Hansen: I have this feeling git is a file you want to send me and go over with me
+[4/3/2014 12:10:23 AM] Kaslai: git is what's called a source control system or version control system
+[4/3/2014 12:10:42 AM] Kaslai: The primary purpose for it is to make collaborating on code much easier
+[4/3/2014 12:11:42 AM] Kaslai: So instead of people having to ask others to email them the code, or make sure that they have the latest version, and other things like that, you can use git, which manages it all automatically
+[4/3/2014 12:12:09 AM] Kaslai: Here, this is a link to a git repository that I made not too long ago for an independent project
+[4/3/2014 12:12:19 AM] Kaslai: https://github.com/Aslai/Frog-Lies
+[4/3/2014 12:13:05 AM] Kaslai: If a person on the project wants to modify anything, they can easily get the latest version of the code, work on it, and put back an updated version
+[4/3/2014 12:13:31 AM] Kaslai: As you can see, everything is very easy to look at in the browser
+[4/3/2014 12:14:05 AM] Kaslai: There are also more complex features that git supports, but we can talk about that later if I ever use them.
+[4/3/2014 12:14:09 AM] Kjetil Hansen: Ok, this is exactly how I would love this project wor work out. Obviouly you're smart.! haha
+[4/3/2014 12:14:46 AM] Kaslai: Using git is probably the most streamlined method of working.
+[4/3/2014 12:15:12 AM] Kaslai: I even use it for projects that I'm working on alone, because it makes fixing some bugs a snap.
+[4/3/2014 12:15:38 AM] Kjetil Hansen: Yes, it almost close to what I use at work in project related issues.
+[4/3/2014 12:18:06 AM] Kaslai: Now, as far as the rights to the end code, I prefer co-ownership for projects like this.
+[4/3/2014 12:18:21 AM] Kjetil Hansen: Ok, as mentioned I'm pretty new at programming (all fresh) but I've had this idea for a game for over 10 years and started to write the design for the game just as many times. Mostly to get it as perfect as possible. I'm not 100% done with all of the design, but I have it roughly put down. I would love you to look over one of my files to see if this is something you could understand or if you would need a way more complex/ detailed design.
+[4/3/2014 12:18:41 AM] Kaslai: However, if you don't want me to retain rights to the original code, the bare minimum I want is the ability to use the code when applying for jobs.
+[4/3/2014 12:18:51 AM] Kjetil Hansen: Co-ownership is not a probleme as it is a hobby project Andrew.
+[4/3/2014 12:18:58 AM] Kaslai: Okay.
+[4/3/2014 12:19:36 AM] Kaslai: Okay I can have a look
+[4/3/2014 12:19:39 AM] Kjetil Hansen: In fact, If done correctly, I think this game could be a good seller aswel. thus giving both of us a 50/50 share on the project.
+[4/3/2014 12:20:20 AM] Kjetil Hansen: The reason for this is basicly cuz. this is going to be end-user friendly.
+[4/3/2014 12:20:35 AM] Kaslai: Okay
+[4/3/2014 12:20:46 AM] *** Kjetil Hansen sent Edit client.docx ***
+[4/3/2014 12:20:48 AM] Kaslai: So what kind of user interface were you thinking of using?
+[4/3/2014 12:21:50 AM] Kjetil Hansen: This is plain text based MUD, but I want a GUI looking something like this: as an stand alone .exe with it's own login screen and all
+[4/3/2014 12:21:58 AM] Kaslai: Also skype isn't letting me connect to your computer. Could you upload it to - nevermind it just connected
+[4/3/2014 12:22:41 AM] Kaslai: Alright
+[4/3/2014 12:22:56 AM] Kaslai: I'll scan over your document really quick.
+[4/3/2014 12:23:23 AM] *** Kjetil Hansen sent ziorus.booted.bmp ***
+[4/3/2014 12:25:23 AM] Kjetil Hansen: This is a similar game that closed down 10 years ago. Mark Jacobs and Rob Denton's first game on Mythic Entertainment and was the basic engine used for the later game Dark ages of Camelot. The game that made Mythic Entertainment big in the industry and agan was an object for Electronic Arts to buy them up. Now they're called EA Mythic.
+[4/3/2014 12:27:33 AM] Kaslai: Alright, this looks like a fairly straightforward MUD engine.
+[4/3/2014 12:27:48 AM] Kaslai: It looks like fun, too :)
+[4/3/2014 12:28:11 AM] Kaslai: Now you said that you're getting in to Python, did you want this to be written in Python as well?
+[4/3/2014 12:29:37 AM] Kjetil Hansen: The file I sent you was the design for "edit client". This is the part I think will sell. All the MUD's out there even today are not even close to have this great looking GUI or client attached to it. Having the ability to easy managing the game with creating rooms, items and NPC like this will also be a hot sell-point for non-programmers.
+[4/3/2014 12:30:52 AM] Kjetil Hansen: I'm not sure. They say python is a strong language, but that C++ is better in complexity etc. Most I've read about programming is that you want to build it up in C++ and add scripts programmed in python.
+[4/3/2014 12:31:19 AM] Kjetil Hansen: What do you think would be the best way for me to learn, and what do you think would be the best way for you to actually make this game/programe in?
+[4/3/2014 12:31:41 AM] Kaslai: I think the best way for you to learn is if I did it in a simpler language like Python
+[4/3/2014 12:31:53 AM] Kaslai: However, the best way to get it done would be with C++
+[4/3/2014 12:32:01 AM] Kaslai: There's a few reasons for this
+[4/3/2014 12:32:50 AM] Kaslai: I don't really know python at all, so I would have to learn it (Learning a new language isn't actually that hard, but it would take much longer for me to crank out the end game)
+[4/3/2014 12:33:32 AM] Kaslai: I am the most comfortable in C++, as that's what I have been using for the past 5-6 years
+[4/3/2014 12:33:53 AM] Kaslai: Python makes really gross end user experiences
+[4/3/2014 12:34:25 AM] Kaslai: Using cxFreeze on a python script usually generates a whole bunch of garbage in the folder of the program, and it just feels kind of weird to me
+[4/3/2014 12:34:27 AM] Kjetil Hansen: Then C++ is it. I think it might be "better" for me to learn c++ first anyway. That is the best language to work in anyways
+[4/3/2014 12:34:58 AM] Kaslai: I can't really say any one language is best for learning, but some are more forgiving.
+[4/3/2014 12:35:27 AM] Kaslai: There are some people who give up at the slightest appearance of trouble, and jump ship from even trying to learn.
+[4/3/2014 12:35:50 AM] Kaslai: But for the person who actually wants to learn, the more difficult languages are often better
+[4/3/2014 12:36:07 AM] Kaslai: Because they make their mistakes early, and don't get set in bad habits
+[4/3/2014 12:36:50 AM] Kaslai: So really it's kind of a crapshoot. Start by learning the language you want to learn, not the language others tell you to.
+[4/3/2014 12:38:07 AM] Kjetil Hansen: I always did want to learn C++ , till I read about programming languages and what people suggested lol.
+[4/3/2014 12:38:30 AM] Kjetil Hansen: When I went to school, all we had was qBasic, but I hardly remember that.
+[4/3/2014 12:39:07 AM] Kjetil Hansen: hell, we didn't even have internet back then and no DVD, CD-ROM or floppy... wait... I'm starting to sound old
+[4/3/2014 12:39:16 AM] Kaslai: Hehe
+[4/3/2014 12:39:34 AM] Kaslai: So that's why you weren't getting taught Java
+[4/3/2014 12:39:34 AM] Kjetil Hansen: Well, we had to use them HUGE flexible discs, I can't remember the name of them anymore
+[4/3/2014 12:39:51 AM] Kaslai: They were probably floppies
+[4/3/2014 12:40:06 AM] Kaslai: There are many types of floppies, but only the first ones were actually floppy
+[4/3/2014 12:40:22 AM] Kjetil Hansen: wasn't floppies the 5.4MB once? Our computers had 50MB storage space!
+[4/3/2014 12:40:46 AM] Kaslai: They were 5.4", with 700-something kb of storage
+[4/3/2014 12:41:04 AM] Kjetil Hansen: aye, they are the "new" small ones.
+[4/3/2014 12:41:05 AM] Kaslai: Or hm
+[4/3/2014 12:41:08 AM] Kaslai: I might be wrong
+[4/3/2014 12:41:30 AM | Edited 12:41:42 AM] Kaslai: But the latest iteration of the floppy were the 3.5 inch, 1.4MB floppies
+[4/3/2014 12:41:53 AM] Kaslai: http://i.frogbox.es/of.png from Wikipedia
+[4/3/2014 12:42:27 AM] Kjetil Hansen: ahh, I'm glad we don't use them anymore. Imagine you would want to copy a DVD file over ... You would need a huge stack of discs carrying with you! LOL
+[4/3/2014 12:42:33 AM] Kaslai: Hehe
+[4/3/2014 12:42:46 AM] Kaslai: I have a copy of AutoCAD somewhere on floppy
+[4/3/2014 12:42:55 AM] Kaslai: It's in a box of 15 or so floppies
+[4/3/2014 12:43:17 AM] Kjetil Hansen: I've played arround with AutoCAD alot. It's a great program.
+[4/3/2014 12:44:00 AM] Kaslai: I've never actually used it. I've only used Inventor, Solidworks and Rhino
+[4/3/2014 12:44:36 AM] Kaslai: AutoCAD belongs to my father, and was long outdated before I knew what CAD even was
+[4/3/2014 12:44:39 AM] Kjetil Hansen: Andrew! It's been 42 minutes now and I think you should go to bed. I just took another 15 min. extra of your time.
+[4/3/2014 12:44:49 AM] Kaslai: That's fine :)
+[4/3/2014 12:45:00 AM] Kaslai: I was aiming for a 1 o'clock bed time
+[4/3/2014 12:45:17 AM] Kaslai: The other half hour was for Youtube, but you proved to be too interesting
+[4/3/2014 12:45:29 AM] Kjetil Hansen: Hahaha
+[4/3/2014 12:47:18 AM] Kjetil Hansen: well, I'm not sure what I want to do with the game once it's completed, but what I know is that I'm a member of an old DFC fan-group on Facebook where we currently are 120-130 members. All are trying to get DFC back up trying to poke the former programmers and owners of the game.
+[4/3/2014 12:49:45 AM] Kjetil Hansen: They would for sure be interested in a "fan-game" of DFC. But due to copyright issues I think it would be bad to have the exact same game up and running and take a monthly fee. What would be interesting though, is if it would be possible to call it namingly a FAN-Game and thus staying away from FBI wanting to close you down for using copyrighted material. Cuz. in the end, we're not using theyr code. But I actually have all the old materials for doing so.
+[4/3/2014 12:49:51 AM] Kjetil Hansen: like this:
+[4/3/2014 12:50:21 AM] *** Kjetil Hansen sent menubuts.BMP ***
+[4/3/2014 12:50:30 AM] *** Kjetil Hansen sent butts.BMP ***
+[4/3/2014 12:50:39 AM] *** Kjetil Hansen sent gls_sprt.BMP ***
+[4/3/2014 12:51:25 AM] Kjetil Hansen: I probably have all the files on that game to make the exact same game, exept with different code.
+[4/3/2014 12:51:32 AM] Kaslai: So long as you don't use the same names or code, it's fine
+[4/3/2014 12:51:50 AM] Kjetil Hansen: Yeah, I would think so too
+[4/3/2014 12:51:54 AM] Kaslai: You could probably get away with having the exact same world layout, NPC locations, skills, spells, etc
+[4/3/2014 12:52:02 AM] Kaslai: So long as you change the names
+[4/3/2014 12:52:16 AM] stacomkjetil: yes
+[4/3/2014 12:52:56 AM | Edited 12:53:04 AM] Kaslai: And really, if it was a blatant (no changes at all) knockoff, you'd only get sued if EA wanted to sue you. Which I guess isn't totally out of the question, unfortunately.
+[4/3/2014 12:53:24 AM] stacomkjetil: aye
+[4/3/2014 12:55:59 AM] stacomkjetil: I also belive this could be a hot seller as a "package" for people who would want to create their own MUD/game.
+[4/3/2014 12:56:22 AM] Kaslai: That is true
+[4/3/2014 12:56:33 AM] Kaslai: Especially if it has a fully GUI driven client
+[4/3/2014 12:56:50 AM] Kaslai: Not anything too too fancy (like Runescape) but something simple like Netdragons
+[4/3/2014 12:57:03 AM] stacomkjetil: Maby have options to change the GUI in an easy way. What color boarder... what shape of the boarder, what type health-bars, what color health bars. upload your own logo etc.
+[4/3/2014 12:57:21 AM] Kaslai: Right
+[4/3/2014 12:57:35 AM] Kaslai: Also things like being able to turn on and off auto mapping
+[4/3/2014 12:57:50 AM] Kaslai: Or force the user to map with pen and paper
+[4/3/2014 12:58:12 AM] stacomkjetil: Gully GUI driven client is what I think is missing in the MUD games today... And always have been missing. There are several GUI's made, but it's the old "shitty" telnet bad coded engine running inside them all.
+[4/3/2014 12:58:19 AM] Kaslai: What would make it a super hot seller is if there was an iPhone and Andriod client
+[4/3/2014 12:59:01 AM] Kaslai: And yea, a GUI client running on top of a telnet server that isn't expecting it can do... weird things
+[4/3/2014 12:59:38 AM] stacomkjetil: yeah
+[4/3/2014 12:59:54 AM] stacomkjetil: Making it Web compatible would also be a nice feature.
+[4/3/2014 12:59:58 AM] Kaslai: Indeed
+[4/3/2014 1:00:06 AM] Kaslai: The server does most of the hard work anyways
+[4/3/2014 1:00:13 AM] stacomkjetil: That way, you could actually log in whereever you are and modify the game
+[4/3/2014 1:00:21 AM] Kaslai: The client doesn't actually need to be that complex
+[4/3/2014 1:00:21 AM] stacomkjetil: Exactly
+[4/3/2014 1:01:16 AM] stacomkjetil: The client is basicly just a program to send and recieve packages from the server, so making it compatible with the above should be faily easy for a guy like yourself
+[4/3/2014 1:01:33 AM] Kaslai: Yes
+[4/3/2014 1:01:50 AM] Kaslai: With the lone exception being that I don't have a Mac and I don't have an Android device
+[4/3/2014 1:02:02 AM] Kaslai: And the only Apple device in the house is my fathers iPad :/
+[4/3/2014 1:02:07 AM] Kaslai: Though
+[4/3/2014 1:02:14 AM] Kaslai: There are Android simulators
+[4/3/2014 1:02:29 AM] Kaslai: And if the game/engine does well enough, I could always use that to fund a mac
+[4/3/2014 1:02:51 AM] Kaslai: iOS is where things usually take off though
+[4/3/2014 1:02:58 AM] stacomkjetil: Hahaha, I have 1 x iPad, 3x iPad mini, 4xiPhone and 3xiPods in the house but I don't like MAC / apple computers
+[4/3/2014 1:03:10 AM] Kaslai: hehe
+[4/3/2014 1:03:30 AM] Kaslai: Unfortunately, having a Mac is a must for deploying iPod/iPhone/iPad apps :/
+[4/3/2014 1:03:49 AM] Kaslai: As in Apple just won't allow you to do it unless you have a Mac
+[4/3/2014 1:05:48 AM] Kaslai: Okay, I'm going to get to sleep now.
+[4/3/2014 1:06:05 AM] stacomkjetil: Well, worst case scenario, buying a apple mac mini is cheap and you can connect it to whatever keyboard and screen you have.
+[4/3/2014 1:06:06 AM] Kaslai: I'll see you tomorrow or on Friday.
+[4/3/2014 1:06:12 AM] Kaslai: Yes, that is true
+[4/3/2014 1:06:27 AM] stacomkjetil: Sure think, we'll talk more later Andrew. Good night and stay safe.
+[4/3/2014 1:06:40 AM] Kaslai: I will :) See you later.
+[4/3/2014 9:37:56 AM] Kaslai: Good morning
+[4/3/2014 5:58:57 PM] stacomkjetil: Good morning, or good middle of the night lol 2:58 where I'm at
+[4/3/2014 8:03:21 PM] Kaslai: :) hello
+[4/3/2014 8:03:30 PM] Kaslai: I was out at school, but I just got home
+[4/3/2014 8:04:01 PM] stacomkjetil: What school do you attend?
+[4/3/2014 8:04:26 PM | Edited 8:04:30 PM] Kaslai: Just a local community college
+[4/3/2014 8:04:42 PM] stacomkjetil: aye
+[4/3/2014 8:05:57 PM] stacomkjetil: Well, you do that college with top score as your main target in life, and when you're done with college then set a new target. :)
+[4/3/2014 8:06:16 PM] Kaslai: :)
+[4/3/2014 11:18:05 PM] stacomkjetil: Alright, I'm finally somewhat awake again. Did you have any thoughs about my project and if you would like to work on this?
+[4/4/2014 6:40:32 AM] Kaslai: Good morning.
+[4/4/2014 6:40:47 AM] Kaslai: Yes, I have given it some more thought, and I would love to work on it.
+[4/4/2014 11:43:05 AM] stacomkjetil: Perfekt. I think you have what it takes too. Have you given some more thought about what kind of deal we should make? Design / code partnership, budget etc.?
+[4/4/2014 11:44:21 AM] Kaslai: Yes. I'll write up a document that outlines the responsibilites and the rights that we'll both have. Nothing too restrictive or complex, but just something to clarify what we can do.
+[4/4/2014 12:18:00 PM] stacomkjetil: Perfect Andrew!
+[4/4/2014 12:38:07 PM] Kaslai: I think this should be fine. It covers the biggest possible grievances, while keeping things as free as possible.
+[4/4/2014 12:38:10 PM | Edited 12:43:39 PM] Kaslai: Through the acceptance of this job, both the freelancer (Andrew Story) and the client (Kjetil Hansen) are subject to the following:
+- All code and assets created specifically for this job belong to both the freelancer and the client during production.
+- Once production has ceased, the code and assets continue to belong to both the parties involved as they existed once the job was completed. Further changes to the code or assets by a given party does not need to be shared with the other.
+- Either party may use and exploit the code and assets in any way they see fit, even for commercial purposes, so long as it is without the intent to be a detriment to the other party's ability to profit from the code and assets.
+- In the event that either the freelancer or the client chooses to sell the resulting product, or some derivative thereof, then the other member of the party is entitled to no less than 20% of the gross profit.
+- If either the client or freelancer is unable to fulfill this contract, either through death, severe illness, or some other similar circumstance, then a member of their immediate family may take their stead.
+- In the event that this contract is willfully broken, then legal action may be taken.
+- If both the client and the freelancer agree in writing, clauses may be added to, removed from, or modified in this contract.
+[4/4/2014 12:38:25 PM] Kaslai: If you want to change anything, just ask
+[4/4/2014 12:42:09 PM] Kaslai: In much simpler and less technical English, it basically says: Both you and I will own the rights to the game as it is when the job completes. Either of us can sell it, but must give at least a 20% split to the other person. If one person is selling it, the other can't just start giving it away for free, as that is a blatant attempt to make it worth less.
+[4/4/2014 12:45:13 PM] Kaslai: Oh, that and if you change it after I'm done working on it, or hire someone to change it, you aren't required to share the changes. Likewise for myself.
+[4/4/2014 12:45:27 PM] Kaslai: That doesn't mean we can't continue to work on it if we start to sell it though
+[4/4/2014 12:45:44 PM] Kaslai: That's just there for if we decide to go our separate ways.
+[4/4/2014 1:08:19 PM] stacomkjetil: Easy and clear contract! I think this Will be fun :)
+[4/5/2014 5:47:44 PM] Kaslai: Well, I'm all ready to start whenever you accept the proposal. I'll get a private repository going and I'll start writing design documents. I'll also create a list of milestones that sound reasonable.
+[4/5/2014 10:34:22 PM] stacomkjetil: Sure thing Andrew. I'll head down to my office today and accept
+[4/5/2014 11:50:08 PM] stacomkjetil: Good evening Andrew, I've accepted your proposal. Now we're official partners hehe.
+[4/6/2014 12:33:32 AM] Kaslai: Okay. I've updated the terms with the contract. I'll get to work tomorrow evening after church :)
+[4/6/2014 12:50:21 AM] stacomkjetil: Accepted the terms. Have a great weekend Andrew.
+[4/6/2014 1:00:36 AM] Kaslai: Okay :)
+[4/6/2014 1:01:18 AM] Kaslai: I've created a private github repo now. I can let you see it if you create an account on github
+[4/6/2014 2:24:34 AM] stacomkjetil: Username: Sprixus
+[4/6/2014 2:24:43 AM] stacomkjetil: On github
+[4/6/2014 2:28:32 AM] Kaslai: Okay I have added you
+[4/6/2014 2:28:45 AM] Kaslai: You should be able to see it at https://github.com/Aslai/MUD
+[4/6/2014 2:28:52 AM] Kaslai: I'm headed to sleep now
+[4/6/2014 2:28:53 AM] Kaslai: Goodnight
+[4/6/2014 2:31:46 AM] stacomkjetil: Stay safe bud.
+[4/6/2014 11:17:55 PM] stacomkjetil: What version of C++ are you using Andrew?
+[4/6/2014 11:29:44 PM] Kaslai: MinGW on Windows, GCC on Linux
+[4/7/2014 8:09:40 AM] stacomkjetil: I'm working on the design 4-8 hours each day. I want it to be easy to read and understand so that you can understand how things should be working better. By the time you need information about something, you should just yell out here.
+[4/7/2014 3:33:56 PM] Kaslai: Okay
+[4/9/2014 1:38:32 PM] stacomkjetil: Hi Andrew, noticed your new flowchart for client launch prosess. Look's great.
+[4/9/2014 1:38:51 PM] Kaslai: :)
+[4/9/2014 1:39:09 PM] Kaslai: I just rolled out of bed (woops) but I think I'll get started on some code today.
+[4/9/2014 1:39:32 PM] stacomkjetil: Rolled out of bed at 1:39?
+[4/9/2014 1:39:38 PM] Kaslai: Yep :/
+[4/9/2014 1:40:12 PM] stacomkjetil: haha, I can hardly stay in bed now days.
+[4/9/2014 1:41:25 PM] stacomkjetil: About that chart though. There are 3 "if's". New character, Quit and Login. You mean the login is if they select an already made character, right?
+[4/9/2014 1:41:29 PM] stacomkjetil: just to be sure.
+[4/9/2014 1:41:42 PM] Kaslai: Right
+[4/9/2014 1:41:59 PM] stacomkjetil: aye, perfect!
+[4/9/2014 2:07:12 PM] Kaslai: Okay, so here's a quick scoop. I leave my computer on overnight mostly so that I can seed torrents.
+[4/9/2014 2:07:45 PM] Kaslai: However this morning, I woke up to a screen resolution of 1024x768, all my firefox history is gone, and there is a new user account on my system
+[4/9/2014 2:07:52 PM] Kaslai: So I believe I got hit with a RAT
+[4/9/2014 2:08:07 PM] Kaslai: I'm going to reinstall windows, I'll be back on my desktop in a couple of hours
+[4/9/2014 2:08:13 PM] Kaslai: I'll be working on my laptop though
+[4/9/2014 2:08:23 PM] stacomkjetil: sure thing.
+[4/9/2014 11:26:20 PM] Kjetil Hansen: Would that be manga torrents you're seeding? lol Nice picture!
+[4/9/2014 11:44:52 PM] Kaslai: Anime torrents :p
+[4/11/2014 1:29:27 PM] Kjetil Hansen: Give me a yell when avaliable Andrew. I want to check something with you. Thanks
+[4/11/2014 2:33:06 PM] Kaslai: I'm briefly available
+[4/11/2014 2:33:13 PM] Kaslai: What'd you want to talk about?
+[4/11/2014 3:43:30 PM] *** Kjetil Hansen sent Select.docx Player.client.flowchart.png Manual.docx Create New.docx ***
+[4/11/2014 3:45:12 PM] Kjetil Hansen: This is how I setup the design. I choose this one cuz it's the lesser complex of them all LOL. Need to know if this is ok for you, or if you would need a more in depth flowchart for everything.
+[4/11/2014 3:47:31 PM] Kaslai: Okay, for realms, are they going to be separate instances of the game world, or are they going to be different areas of a single world that you can travel between?
+[4/11/2014 3:48:00 PM] Kjetil Hansen: sec. I'll show you
+[4/11/2014 3:55:18 PM] *** Kjetil Hansen sent world design.png ***
+[4/11/2014 3:55:29 PM] Kjetil Hansen: Let me know if this makes any sense. :)
+[4/11/2014 3:55:53 PM] Kaslai: Yes, that makes perfect sense
+[4/11/2014 3:56:30 PM] Kjetil Hansen: Making charts usually does that. Good way to clear things up
+[4/11/2014 3:56:37 PM] Kaslai: Alright, so while each character isn't limited to being in a single realm, they have a single home realm that they respawn in?
+[4/11/2014 3:56:59 PM] Kaslai: And perhaps see benefits, such as friendlier NPCs
+[4/11/2014 3:59:25 PM] Kjetil Hansen: Ok, the world or MUD contains several realms. Each realm is connected to eachother true "boats". the traveling to another realm is defined in a document. It's basicly just a timed exit. An exit that takes .... min to show up and you can go abord and have to wait .... min. to reach your destination and it's on a time-clipse
+[4/11/2014 3:59:50 PM] Kjetil Hansen: If you die, and you "release" your corpse you end up in your own realm again.
+[4/11/2014 3:59:59 PM] Kaslai: Alright
+[4/11/2014 4:00:29 PM] Kaslai: And each realm owns a set of zones, which in turn own a set of rooms
+[4/11/2014 4:00:44 PM] Kjetil Hansen: yes
+[4/11/2014 4:02:00 PM] Kjetil Hansen: This is done to make it easy to define places. Example if you want several citys, etc. you can name the "zones" differently.
+[4/11/2014 4:02:19 PM] Kaslai: Exactly
+[4/11/2014 4:02:54 PM] Kjetil Hansen: The realm is a kind of "faction" if you like. It's the zones and rooms that build up the world in reality
+[4/11/2014 4:04:12 PM] *** Kjetil Hansen sent look.jpg ***
+[4/11/2014 4:04:51 PM] Kjetil Hansen: in this pic. you'll see [Greenmist Crypts]. This is the zone name
+[4/11/2014 4:05:04 PM] Kjetil Hansen: The text under zone name is room description.
+[4/11/2014 4:05:26 PM] Kaslai: So rooms don't get their own names?
+[4/11/2014 4:05:33 PM] Kjetil Hansen: no
+[4/11/2014 4:05:40 PM] Kjetil Hansen: just a ID#
+[4/11/2014 4:05:42 PM] Kaslai: Ok
+[4/11/2014 4:05:49 PM] Kjetil Hansen: But this is not something players will see
+[4/11/2014 4:05:55 PM] Kaslai: Right
+[4/11/2014 4:06:18 PM] Kjetil Hansen: I want the "player" client / gui to be as smooth and easy to read as possible.
+[4/11/2014 4:06:30 PM] Kjetil Hansen: This is the major issues with 99.5% of all MUDS out there
+[4/11/2014 4:06:41 PM] Kjetil Hansen: They have way too much information.
+[4/11/2014 4:08:03 PM] Kjetil Hansen: Room ID# also helps when creating "teleport" spells. But this is in the more complex spell/skills list.
+[4/11/2014 4:08:51 PM] Kjetil Hansen: Also, how do I upload all the files I make to git, so you can see them?
+[4/11/2014 4:08:58 PM] Kaslai: Get the git client
+[4/11/2014 4:09:24 PM] Kaslai: One thing for teleport spells is that you can teleport to a zone, and then you get presented with a list of possible teleport areas
+[4/11/2014 4:09:35 PM] Kaslai: such as "Greenmist Crypts North"
+[4/11/2014 4:09:52 PM] Kaslai: Rather than use the actual room number or name each individual rooms
+[4/11/2014 4:10:04 PM] Kjetil Hansen: no, none of the above
+[4/11/2014 4:10:07 PM] Kaslai: Ok
+[4/11/2014 4:10:31 PM] Kjetil Hansen: some players will get a spell list that contains a "teleport" spell. The same will offcourse staff/moderators have.
+[4/11/2014 4:11:16 PM] Kjetil Hansen: Staff's can use the *tele <playername> or *tele <1.1.1> (room ID#)
+[4/11/2014 4:11:51 PM] Kjetil Hansen: Players that get teleport get "wards". These wards can be put down wherever you like
+[4/11/2014 4:12:07 PM] Kaslai: Okay
+[4/11/2014 4:12:13 PM] Kjetil Hansen: Then they can type: teleport #1
+[4/11/2014 4:12:20 PM] Kaslai: Okay
+[4/11/2014 4:12:53 PM] Kjetil Hansen: they can only have one ward up at any given time, so if they want to change teleport destination, they have to put down a new ward.
+[4/11/2014 4:13:11 PM] Kaslai: What about predetermined teleports? Such as teleport spells called "Teleport to Valhala" which just teleports you to a predefined location in the valhala zone?
+[4/11/2014 4:13:18 PM] Kaslai: They could be consumable scrolls
+[4/11/2014 4:13:39 PM] Kjetil Hansen: yes
+[4/11/2014 4:13:59 PM] Kjetil Hansen: More about that in the "item object" list
+[4/11/2014 4:14:23 PM] Kaslai: Alright
+[4/11/2014 4:14:23 PM] Kjetil Hansen: there I will explain when parameters for when creating objects.
+[4/11/2014 4:14:42 PM] Kjetil Hansen: like you want different drinkable, eatable, usable items do different things
+[4/11/2014 4:14:46 PM] Kjetil Hansen: like teleport
+[4/11/2014 4:15:09 PM] Kaslai: Well yes, I suppose "Teleport to Valhala" could just be a "consumable" "scroll" that casts "Teleport <163>" on use
+[4/11/2014 4:15:31 PM] Kjetil Hansen: aye
+[4/11/2014 4:15:33 PM] Kaslai: But I'm thinking of higher level mechanics
+[4/11/2014 4:15:43 PM] Kaslai: I really need to get a good idea for everything
+[4/11/2014 4:16:00 PM] Kjetil Hansen: Ahhh, then you've come to the right person!
+[4/11/2014 4:16:07 PM] Kaslai: Hehe
+[4/11/2014 4:16:09 PM] Kjetil Hansen: lol
+[4/11/2014 4:16:30 PM] Kaslai: One thing that I would really like to implement is a multidimensional faction system
+[4/11/2014 4:16:40 PM] Kjetil Hansen: Look at this flowchart
+[4/11/2014 4:16:46 PM] Kjetil Hansen: Ok, I'll show you that one
+[4/11/2014 4:17:11 PM] *** Kjetil Hansen sent Admin.client.flowchart.png ***
+[4/11/2014 4:17:35 PM] Kjetil Hansen: Look at this chart, All the red text = there is a document explaining every detail
+[4/11/2014 4:18:22 PM] Kaslai: Nice
+[4/11/2014 4:18:57 PM] Kaslai: I'll do a git writeup for you in a few minutes, once I no longer have a sister occuping one of my arms
+[4/11/2014 4:19:19 PM] Kaslai: I have to babysit her until her friends arrive
+[4/11/2014 4:19:48 PM] Kaslai: so, of course you have final say, but I was thinking that each faction would have 2 dimensions of interaction with other factions and the player
+[4/11/2014 4:20:26 PM] Kaslai: Plus the player has a weighted relationship to each faction
+[4/11/2014 4:21:21 PM] Kjetil Hansen: Well, let's just say that we want as little communication between factions/realms as possible. This is basicly a PVP and RVR (realm vs realm) game.
+[4/11/2014 4:21:34 PM] Kaslai: Ah, okay
+[4/11/2014 4:21:42 PM] Kaslai: So not a place for thoughtful NPC interaction
+[4/11/2014 4:22:09 PM] Kjetil Hansen: Nope, but that is also described in the NPC section of creating NPC :)
+[4/11/2014 4:22:33 PM] Kaslai: I'll work this faction system into another game then :p
+[4/11/2014 4:22:41 PM] Kjetil Hansen: I really think I need to send all what I got on this MUD, so you can get a better understanding hahaha
+[4/11/2014 4:22:55 PM] Kaslai: Alright
+[4/11/2014 4:23:06 PM] Kaslai: So a quick guide to using git
+[4/11/2014 4:23:20 PM] Kjetil Hansen: yes, I have GIT, but don't know how to add documents
+[4/11/2014 4:23:34 PM] Kaslai: I assume you aren't afraid of commandline since you're all for MUDs
+[4/11/2014 4:23:43 PM] Kaslai: Are you on Windows?
+[4/11/2014 4:23:43 PM] Kjetil Hansen: ;-)
+[4/11/2014 4:23:50 PM] Kjetil Hansen: yes
+[4/11/2014 4:23:55 PM] Kjetil Hansen: Git Shell or git Hub?
+[4/11/2014 4:24:12 PM] Kaslai: I always use the standard distro for git
+[4/11/2014 4:24:13 PM] Kaslai: One second
+[4/11/2014 4:24:28 PM] Kaslai: http://git-scm.com/download/win
+[4/11/2014 4:24:47 PM] Kaslai: Once you have it installed, open up git bash
+[4/11/2014 4:25:16 PM] Kaslai: There are gui tools, but they aren't cross platform and I never bothered to use them
+[4/11/2014 4:25:29 PM] Kaslai: The commandline isn't that hard though
+[4/11/2014 4:26:51 PM] Kaslai: So I see that you forked the repository
+[4/11/2014 4:27:16 PM] Kjetil Hansen: Whatever that did! lol
+[4/11/2014 4:27:22 PM] Kaslai: What forking does is create a copy of the repository that you yourself own, instead of me owning it
+[4/11/2014 4:27:32 PM] Kjetil Hansen: ahhh
+[4/11/2014 4:27:38 PM] Kaslai: It's just a copy though, so and changes made to the original won't move over
+[4/11/2014 4:28:01 PM] Kaslai: The point is mainly for people to make changes to the code when they don't have permission to change the original repository
+[4/11/2014 4:28:24 PM] Kjetil Hansen: ahh, but I have permission to change the original?
+[4/11/2014 4:28:29 PM] Kaslai: You do
+[4/11/2014 4:28:50 PM] Kaslai: And if it's a really good change, they can then submit a pull request to the original repository, and the original owners can choose to merge the changes into the original repository
+[4/11/2014 4:29:00 PM] Kjetil Hansen: Downloaded and installed git bash,
+[4/11/2014 4:29:14 PM] Kjetil Hansen: ahh
+[4/11/2014 4:29:27 PM] Kjetil Hansen: Pc@PC-PC ~
+$
+[4/11/2014 4:29:34 PM] Kaslai: :)
+[4/11/2014 4:29:57 PM] Kaslai: So since this is a new install of windows, I get to go through the same process you have to go through
+[4/11/2014 4:30:13 PM] Kjetil Hansen: Right, hehe
+[4/11/2014 4:30:16 PM] Kaslai: Let's see if I remember the steps by heart
+[4/11/2014 4:30:49 PM] Kaslai: Okay
+[4/11/2014 4:31:02 PM] Kaslai: In git bash, you want to cd to ~/.ssh
+[4/11/2014 4:31:25 PM] Kaslai: If it doesn't exist, make it with mkdir ~/.ssh
+[4/11/2014 4:31:58 PM] Kjetil Hansen: done
+[4/11/2014 4:32:14 PM] Kaslai: ssh-keygen -t rsa -C "kaslai@kaslai.com"
+[4/11/2014 4:32:19 PM] Kaslai: Replace my email with yours
+[4/11/2014 4:32:34 PM] Kaslai: Just press enter until finished
+[4/11/2014 4:33:23 PM] Kaslai: When that's done, clip < ~/.ssh/id_rsa.pub
+[4/11/2014 4:33:34 PM] Kaslai: That will copy the key to your clipboard
+[4/11/2014 4:33:49 PM] Kjetil Hansen: Enter file in which to save the key (/c/users/Pc/.ssh/id_rsa):
+[4/11/2014 4:33:55 PM] Kaslai: press enter
+[4/11/2014 4:34:01 PM] Kaslai: Leave it blank
+[4/11/2014 4:34:14 PM] Kaslai: The default directory is where it ought to be
+[4/11/2014 4:34:25 PM] Kaslai: You can enter a passphrase if you want
+[4/11/2014 4:34:41 PM] Kaslai: This key will be used to identify you
+[4/11/2014 4:34:59 PM] Kaslai: So if the key is stollen, then they can pretend to be you, unless there's a passcode on it
+[4/11/2014 4:35:16 PM] Kaslai: The passcode will need to be entered whenever you use the key for the first time in an application though
+[4/11/2014 4:35:57 PM] Kjetil Hansen: ok, I typed: clip < ~/.ssh/id_rsa.pub
+[4/11/2014 4:35:59 PM] Kaslai: For github I don't bother with a passphrase as it only gives you push and pull rights
+[4/11/2014 4:36:06 PM | Edited 4:36:11 PM] Kaslai: You can't login to your account with an ssh key
+[4/11/2014 4:36:19 PM] Kaslai: So if it gets stolen I can generate a new one
+[4/11/2014 4:36:25 PM] Kaslai: (And revoke the old one)
+[4/11/2014 4:36:27 PM] Kaslai: Okay
+[4/11/2014 4:36:32 PM] Kaslai: Now go to github.com
+[4/11/2014 4:36:47 PM] Kjetil Hansen: There
+[4/11/2014 4:36:50 PM] Kaslai: In the upper right, there is the options button, click it
+[4/11/2014 4:37:00 PM] Kaslai: (The screwdriver and spanner)
+[4/11/2014 4:37:10 PM] Kaslai: Click SSH keys
+[4/11/2014 4:37:15 PM] Kaslai: Click Add Key
+[4/11/2014 4:37:47 PM] Kaslai: Paste the key into the big textbox
+[4/11/2014 4:37:53 PM] Kaslai: Give it whatever title you wish
+[4/11/2014 4:38:12 PM] Kaslai: Then hit save
+[4/11/2014 4:38:22 PM] Kjetil Hansen: what key? lolol
+[4/11/2014 4:38:22 PM] Kaslai: or add key, rather
+[4/11/2014 4:38:50 PM] Kaslai: The one on your clipboard
+[4/11/2014 4:39:09 PM] Kaslai: Just try pasting into the big textbox
+[4/11/2014 4:39:25 PM] Kaslai: If you copied something, just do "clip < ~/.ssh/id_rsa.pub" again
+[4/11/2014 4:40:18 PM] Kjetil Hansen: yeah, got it
+[4/11/2014 4:40:26 PM] Kjetil Hansen: but then it asks for a password
+[4/11/2014 4:40:31 PM] Kjetil Hansen: I didn't enter a password
+[4/11/2014 4:41:13 PM] Kaslai: Generate a new key then
+[4/11/2014 4:41:46 PM] Kjetil Hansen: ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAo445cxqIfhMrYQCYPuSaK2ZXguhjYr/jruRM4i2cCixLCz8VVFuGzvGRxRw4pN5HF9/Vufk2wUY1/akhjf4n42CgOKvgt8d3zqzAKhKkPW9Ntm4JRNHfvq7GGFQzcg4PSm1iWaq8ViY1ZhnX4g0/FZxA6sI2DtplFUffOJum+G8uWXPLgiGXsaKZvAtnlp0WeVZSCb3Txlc4kU/QdcX0h73QLQgIoTRD6BqkcvPH7ghO+4BZFCeo9QUr2SZJX1gQHL/6rDyZjWkbcOisTe2SwoZ6Vs13NZidCKgtH1Z1TtLpIQJmzpZXKfs8AqKY1dskwFGs0ENoW/CQKVt8165cYQ== sprixus@century-gate.com
+[4/11/2014 4:41:59 PM] Kjetil Hansen: that's what I clip, right?
+[4/11/2014 4:42:08 PM] Kjetil Hansen: I all the steps over again and add password?
+[4/11/2014 4:42:22 PM] Kaslai: Yes, that's what you should see
+[4/11/2014 4:42:32 PM] Kaslai: (Though generate a new key now that you gave me yours heh)
+[4/11/2014 4:42:42 PM] Kaslai: So do ssh-keygen again
+[4/11/2014 4:42:46 PM] Kjetil Hansen: LOL
+[4/11/2014 4:42:47 PM] Kjetil Hansen: aye
+[4/11/2014 4:44:30 PM] Kaslai: I'll be right back
+[4/11/2014 4:46:03 PM] Kjetil Hansen: kk.
+[4/11/2014 4:46:13 PM] Kjetil Hansen: Add SSH key      -      Done
+[4/11/2014 4:46:38 PM] Kjetil Hansen: Title: Sprixus           -     Done
+[4/11/2014 4:47:04 PM] Kjetil Hansen: Key: copy from clipboard        -      Done
+[4/11/2014 4:47:25 PM] Kjetil Hansen: Add key:                  -       Done
+[4/11/2014 4:47:43 PM] Kjetil Hansen: Confirm password to continue:             -    FAIL
+[4/11/2014 4:47:49 PM] Kaslai: Wait
+[4/11/2014 4:47:55 PM] Kaslai: Confirm your github password?
+[4/11/2014 4:48:03 PM | Edited 4:48:04 PM] Kaslai: You might just have to re-logon to github
+[4/11/2014 4:48:04 PM] Kjetil Hansen: aye
+[4/11/2014 4:48:22 PM] Kjetil Hansen: It says Sprixus at the top too, log out and then log back in?
+[4/11/2014 4:48:36 PM] Kaslai: Yes, try that
+[4/11/2014 4:48:42 PM] Kaslai: It probably just wants a fresh logon
+[4/11/2014 4:50:12 PM | Edited 4:55:29 PM] Kaslai: Once you get the key added, in git bash you should go to the location where you want the project to be
+[4/11/2014 4:50:19 PM] Kaslai: I just did cd ~/
+[4/11/2014 4:50:28 PM] Kaslai: That would be C:\Users\Pc\
+[4/11/2014 4:50:34 PM] Kaslai: And then I run git clone git@github.com:Aslai/MUD.git
+[4/11/2014 4:50:49 PM] Kaslai: That puts everything into C:\Users\Kaslai\MUD\ for me
+[4/11/2014 4:51:09 PM] Kjetil Hansen: ..... you've reached the maximum number of login attempts. LOL
+[4/11/2014 4:51:12 PM] Kjetil Hansen: crazy
+[4/11/2014 4:51:15 PM] Kaslai: :s
+[4/11/2014 4:51:28 PM] Kjetil Hansen: Think I used the wrong password. lol
+[4/11/2014 4:51:44 PM] Kaslai: Do you not have your browser set to remember the password?
+[4/11/2014 4:52:19 PM] Kaslai: I can understand why you wouldn't
+[4/11/2014 4:52:29 PM] Kaslai: It's kind of a large security hole heh
+[4/11/2014 4:53:36 PM] Kjetil Hansen: Done
+[4/11/2014 4:53:51 PM] Kjetil Hansen: Now I've added that new ssh-thingy
+[4/11/2014 4:54:11 PM] Kjetil Hansen: now I have 2. One that says GitHub for windows and a 2'nd one that says Sprixus (the new one I made)
+[4/11/2014 4:54:19 PM] Kjetil Hansen: Should I delete the 1'st one?
+[4/11/2014 4:54:31 PM] Kaslai: yes
+[4/11/2014 4:54:47 PM] Kjetil Hansen: Done
+[4/11/2014 4:54:52 PM] Kjetil Hansen: Now I'm set
+[4/11/2014 4:54:58 PM] Kaslai: Yep
+[4/11/2014 4:55:09 PM | Removed 4:55:44 PM] Kaslai: This message has been removed.
+[4/11/2014 4:55:38 PM] Kaslai: [Friday, April 11, 2014 4:50 PM] Kaslai: 
+
+<<< Once you get the key added, in git bash you should go to the location where you want the project to be
+I just did cd ~/
+That would be C:\Users\Pc\
+And then I run git clone git@github.com:Aslai/MUD.git
+That puts everything into C:\Users\Kaslai\MUD\ for me
+[4/11/2014 4:55:52 PM] Kaslai: Fixed a typo :p
+[4/11/2014 4:57:05 PM | Edited 4:57:12 PM] Kaslai: [Friday, April 11, 2014 4:55 PM] Kaslai: 
+
+<<< git clone git@github.com:Aslai/MUD.gitMake sure you run that. git clone git@github.com:Sprixus/MUD.git would clone your fork of it.
+[4/11/2014 5:00:46 PM] Kjetil Hansen: Ok, lost
+[4/11/2014 5:00:47 PM] Kjetil Hansen: lol
+[4/11/2014 5:01:15 PM] Kaslai: Okay, in the command line, navigate to where you want all the project files to be
+[4/11/2014 5:01:20 PM] Kjetil Hansen: where do I do that git clone git@github.com:aslai/mud.git again?
+[4/11/2014 5:01:33 PM] Kaslai: Wherever you want the project files to be
+[4/11/2014 5:01:34 PM] Kjetil Hansen: there
+[4/11/2014 5:01:53 PM] Kaslai: It will automatically create a folder named "MUD"
+[4/11/2014 5:02:23 PM] Kjetil Hansen: Cloning into 'MUD'...
+[4/11/2014 5:02:41 PM] Kaslai: Say yes
+[4/11/2014 5:02:42 PM] Kjetil Hansen: The authenticity of host can't be established.
+[4/11/2014 5:02:55 PM] Kaslai: That's just because they use self signed certs
+[4/11/2014 5:03:08 PM] Kaslai: It has no real security implications
+[4/11/2014 5:03:11 PM] Kjetil Hansen: ahh, done
+[4/11/2014 5:04:12 PM] Kaslai: Okay, now run these two commands
+[4/11/2014 5:04:13 PM] Kaslai:   git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+[4/11/2014 5:05:03 PM] Kjetil Hansen: done
+[4/11/2014 5:05:21 PM] Kaslai: Okay
+[4/11/2014 5:05:35 PM] Kaslai: Now add files to the MUD directory
+[4/11/2014 5:06:01 PM | Edited 5:06:03 PM] Kaslai: Once they're added, in git bash run the commands:
+[4/11/2014 5:06:11 PM | Edited 5:06:41 PM] Kaslai: git add -A
+[4/11/2014 5:06:28 PM] Kaslai: This stages all new and changed files for commit
+[4/11/2014 5:06:56 PM] Kaslai: followed by git commit
+[4/11/2014 5:07:12 PM] Kaslai: This will open a text editor, probably vim
+[4/11/2014 5:07:33 PM] Kaslai: You can change the text editor it uses, but I don't recall how. I like vim
+[4/11/2014 5:08:16 PM] Kaslai: In vim, press 'a' to enable edit mode. Write the commit message on the first line of the text file
+[4/11/2014 5:08:47 PM | Edited 5:08:51 PM] Kaslai: Then save the file. In vim you do this by pressing escape to exit edit mode, then typing :s
+[4/11/2014 5:09:10 PM] Kaslai: colon to start typing a command, s is the save command
+[4/11/2014 5:09:16 PM] Kaslai: Then type :q to quit
+[4/11/2014 5:09:31 PM] Kaslai: You can always change it to use notepad instead, as Vim is needlessly complex
+[4/11/2014 5:09:50 PM] Kaslai: but at that point, the files are in your local copy of the repository
+[4/11/2014 5:10:03 PM] Kaslai: You can then upload them to github with git push
+[4/11/2014 5:11:07 PM] Kjetil Hansen: fatal: Not a git repository (or any of the parent directories): .git
+[4/11/2014 5:11:11 PM] Kjetil Hansen: muahaha
+[4/11/2014 5:11:20 PM] Kaslai: oh
+[4/11/2014 5:11:24 PM] Kaslai: cd MUD
+[4/11/2014 5:11:26 PM] Kaslai: :p
+[4/11/2014 5:12:31 PM] Kjetil Hansen: there you go!
+[4/11/2014 5:12:40 PM] Kjetil Hansen: ~/MUD (master)
+[4/11/2014 5:12:48 PM] Kaslai: yep
+[4/11/2014 5:13:18 PM] Kaslai: Just dump your files into ~/MUD/documentation/
+[4/11/2014 5:15:05 PM] Kjetil Hansen: ok, added two folders in ducumentation
+[4/11/2014 5:15:22 PM] Kjetil Hansen: then: git add -A in CMD
+[4/11/2014 5:15:34 PM] Kaslai: yes
+[4/11/2014 5:16:29 PM] Kaslai: git config --global core.editor notepad
+[4/11/2014 5:16:37 PM] Kaslai: that should set the default editor to notepad
+[4/11/2014 5:16:53 PM] Kaslai: Oh
+[4/11/2014 5:16:56 PM] Kaslai: Here's a much simpler way
+[4/11/2014 5:17:04 PM] Kaslai: git commit -m "Here's my message"
+[4/11/2014 5:17:10 PM] Kaslai: Type that
+[4/11/2014 5:18:06 PM] Kjetil Hansen: 19 files changed, 0 insertions(+), 0 deletions(-)
+[4/11/2014 5:18:16 PM] Kaslai: now git push
+[4/11/2014 5:18:39 PM] Kaslai: So just for quick reference
+[4/11/2014 5:18:43 PM] Kaslai: git add -A
+[4/11/2014 5:18:51 PM] Kaslai: git commit -m "Commit Message"
+[4/11/2014 5:18:53 PM] Kaslai: git push
+[4/11/2014 5:19:03 PM] Kaslai: That's all you have to do in the future on that computer
+[4/11/2014 5:19:19 PM] Kjetil Hansen: sweet, that makes things alot better for sure
+[4/11/2014 5:19:31 PM] Kjetil Hansen: how to delete them?
+[4/11/2014 5:19:31 PM] Kjetil Hansen: LOL
+[4/11/2014 5:19:50 PM] Kaslai: git rm "filename"
+[4/11/2014 5:20:49 PM] Kaslai: Once you remove what you want, commit and push
+[4/11/2014 5:21:09 PM] Kjetil Hansen: git rm "Here's my message"
+[4/11/2014 5:21:22 PM] Kaslai: oh, no
+[4/11/2014 5:21:28 PM] Kjetil Hansen: fatal: pathspec ..... did not match any files
+[4/11/2014 5:21:31 PM] Kaslai: That commit message is there forever!
+[4/11/2014 5:21:41 PM] Kaslai: It's just the name for the commit
+[4/11/2014 5:21:53 PM] Kaslai: There might be a way to change it, but I'm not sure
+[4/11/2014 5:22:10 PM] Kaslai: git rm is for removing specific files, not a whole commit
+[4/11/2014 5:22:26 PM] Kjetil Hansen: Ok, no probleme, I'll just have to make sure not to put in too much shit then. The cleaner the better
+[4/11/2014 5:22:40 PM] Kaslai: Well
+[4/11/2014 5:22:48 PM] Kaslai: You might be able to remove a whole directory
+[4/11/2014 5:22:54 PM] Kaslai: Let me look it up
+[4/11/2014 5:23:19 PM | Edited 5:23:21 PM] Kaslai: (I don't usually use any non-basic git features)
+[4/11/2014 5:24:44 PM] Kaslai: git rm -r -f DirectoryName
+[4/11/2014 5:24:46 PM] Kaslai: looks promising
+[4/11/2014 5:27:23 PM] Kjetil Hansen: didn't work
+[4/11/2014 5:27:36 PM] Kaslai: Commit the changes
+[4/11/2014 5:32:47 PM] Kjetil Hansen: removed them
+[4/11/2014 5:37:00 PM] Kjetil Hansen: Made a new folder in MUD but when I do the:
+git add -A
+git commit -m "Sprixus input"
+git push
+
+it does not work, gives me a wierd message
+[4/11/2014 5:38:25 PM] Kjetil Hansen: $ git commit -m "Sprixus input"
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+nothing to commit, working directory clean
+[4/11/2014 5:41:30 PM] Kaslai: Sorry, my family called
+[4/11/2014 5:41:46 PM] Kjetil Hansen: you're allowed to have a life!
+[4/11/2014 5:41:49 PM] Kaslai: Git doesn't have any notion of directories
+[4/11/2014 5:41:51 PM] Kaslai: hehe
+[4/11/2014 5:41:58 PM] Kaslai: The only thing git stores is files
+[4/11/2014 5:42:20 PM] Kaslai: But you can store a file as /Docs/Myfile.file
+[4/11/2014 5:42:35 PM] Kjetil Hansen: alright
+[4/11/2014 5:42:37 PM] Kaslai: That's how you can get "directories"
+[4/11/2014 5:42:47 PM] Kaslai: But empty directories cannot be committed
+[4/11/2014 5:45:59 PM] Kjetil Hansen: Fixed it
+[4/11/2014 5:46:32 PM] Kjetil Hansen: I'll post all my input under "Sprixus input" in the Documentation section
+[4/11/2014 5:46:48 PM] Kaslai: Alright
+[4/11/2014 5:53:52 PM] Kjetil Hansen: One last thing. Now that I've uploaded a file. say a text document. If I want to "edit" this document. Would this be possible without having to delete it all and upload everything again?
+[4/11/2014 5:54:29 PM] Kaslai: Just edit it on your computer, save it, and re commit it
+[4/11/2014 5:54:42 PM] Kaslai: Edit and save document
+[4/11/2014 5:54:44 PM] Kaslai: git add -A
+[4/11/2014 5:54:48 PM] Kjetil Hansen: with the: git commit -m "message" and the same message?
+[4/11/2014 5:54:57 PM] Kaslai: git commit -m "Modified file.txt"
+[4/11/2014 5:55:01 PM] Kaslai: git push
+[4/11/2014 5:55:01 PM] Kaslai: Done
+[4/11/2014 5:55:07 PM] Kjetil Hansen: Ahh, offcourse
+[4/11/2014 5:55:24 PM] Kaslai: It's meant for easy code modification
+[4/11/2014 5:55:33 PM] Kaslai: So everything is geared towards speed of changing files
+[4/11/2014 5:56:28 PM] Kjetil Hansen: aye
+[4/11/2014 5:56:36 PM] Kjetil Hansen: then I'm all settled :-D
+[4/11/2014 5:56:43 PM] Kaslai: :)
+[4/11/2014 5:56:58 PM | Edited 5:57:06 PM] Kaslai: I'll read everything tonight
+[4/14/2014 12:22:44 PM] Kjetil Hansen: Hi Kaslai, I've set up a little list to make it better for you to undstand what I want for the MUD. IM me when you're avaliable. I'll be sitting here for another 5-7 hours.
+[4/14/2014 2:16:50 PM] Kaslai: Okay, I am here
+[4/14/2014 2:17:04 PM] Kjetil Hansen: Hi, just woke up? :-D
+[4/14/2014 2:19:41 PM] Kaslai: Yep ;_;
+[4/14/2014 2:20:08 PM] Kjetil Hansen: What I did, was to make a list of keywords for you. Keep in mind that I don't think you're DUMB... But I wrote it like this for you to get the bigger picture
+[4/14/2014 2:20:09 PM] Kjetil Hansen: LOL
+[4/14/2014 2:20:36 PM] Kaslai: Okay
+[4/14/2014 2:20:51 PM] Kaslai: Well, commit it to the repo so I can see it :)
+[4/14/2014 2:20:54 PM] Kaslai: git add -A
+[4/14/2014 2:20:58 PM] Kaslai: git commit -m "Message"
+[4/14/2014 2:21:00 PM] Kaslai: git push
+[4/14/2014 2:21:50 PM] Kjetil Hansen: doh, smart
+[4/14/2014 2:21:52 PM] Kjetil Hansen: sec.
+[4/14/2014 2:27:56 PM] Kjetil Hansen: I MADE IT!
+[4/14/2014 2:29:22 PM] Kjetil Hansen: The list isn't 100% complete yet, but when I'm done, you'll have a way better undsterstanding of how I would like things to work out.
+[4/14/2014 2:29:39 PM] Kjetil Hansen: The two first pages says alot though!
+[4/14/2014 2:29:55 PM] Kjetil Hansen: questions?
+[4/14/2014 2:38:12 PM] Kaslai: Ok, got my toast
+[4/14/2014 2:38:14 PM] Kaslai: pulling
+[4/14/2014 2:39:48 PM] Kaslai: "Spells would be …. Damn! That was a hard one to explain hahaha,"
+[4/14/2014 2:39:50 PM] Kaslai: :)
+[4/14/2014 2:40:00 PM] Kjetil Hansen: HAHAHAHA
+[4/14/2014 2:40:13 PM] Kjetil Hansen: Had real issues trying to explain that in "real world"
+[4/14/2014 2:44:08 PM] Kaslai: "we can make 500 rooms and 2000 exits in an hour " A little ambitious, but I get your point. Making rooms the standard way is quite tedious
+[4/14/2014 2:44:28 PM] Kjetil Hansen: my point exactly
+[4/14/2014 2:45:06 PM] Kaslai: Should different races get different perks?
+[4/14/2014 2:45:23 PM] Kjetil Hansen: That said, with the room/grid/exit-special-tool-you-make It would all be depending on how many clicks you could make an hour :)
+[4/14/2014 2:45:35 PM] Kjetil Hansen: No. We'll keep that to classes
+[4/14/2014 2:45:48 PM] Kaslai: Okay, so race is purely cosmetic?
+[4/14/2014 2:45:51 PM] Kjetil Hansen: If you would like to make a warewolf, you don't put that in the race, but in the class
+[4/14/2014 2:45:56 PM] Kjetil Hansen: yeah, purely
+[4/14/2014 2:46:00 PM] Kaslai: Alright
+[4/14/2014 2:47:33 PM] Kjetil Hansen: Again, sorry for keeping it way too simple, but I need both of us to know exactly what the goal are.
+[4/14/2014 2:47:38 PM] Kjetil Hansen: this is the best way
+[4/14/2014 2:47:49 PM] Kjetil Hansen: or... if you have a better way
+[4/14/2014 2:48:09 PM] Kaslai: The way you're doing it is good
+[4/14/2014 2:48:51 PM] Kaslai: I have only ever played one text only MUD, so I don't really know what all the possibilites are for the ways things work
+[4/14/2014 2:49:27 PM] Kaslai: The more precise information you can give me, the better the final product will be
+[4/14/2014 2:49:41 PM] Kaslai: Or rather, it'll be closer to what you originally envisioned
+[4/14/2014 2:49:47 PM] Kjetil Hansen: aye
+[4/14/2014 2:50:03 PM] Kjetil Hansen: Well, it all comes down to "input and output" of text
+[4/14/2014 2:50:39 PM] Kjetil Hansen: just as any other program you type a command and you'll get an answer
+[4/14/2014 2:50:53 PM] Kaslai: One thing I was thinking of, but I should run it past you
+[4/14/2014 2:50:57 PM] Kjetil Hansen: It's lining them up to form the game that's hard
+[4/14/2014 2:51:23 PM] Kaslai: I was thinking of having the server just spew out a standard Telnet type interface when you first connect
+[4/14/2014 2:51:40 PM] Kjetil Hansen: Questions = progress... Keep shooting them at me as much as you like :-)
+[4/14/2014 2:51:57 PM] Kaslai: But if you send a magic command, it changes to a more streamlined format that is intended for a semigraphical client
+[4/14/2014 2:52:15 PM] Kaslai: So rather than sending a screen of information (Telnet style)
+[4/14/2014 2:52:45 PM] Kaslai: It sends simple commands, like "REALM: United Kingdom"
+[4/14/2014 2:53:15 PM] Kaslai: "DESCRIPTION: A quaint little villa in London. An old woman rocks gently in her rocking chair"
+[4/14/2014 2:53:33 PM] Kaslai: "EXITS: SOUTH UP"
+[4/14/2014 2:53:38 PM] Kaslai: etc etc
+[4/14/2014 2:54:05 PM] Kaslai: So not exactly pretty to look at, but bandwidth saving and allows me to add special features for a GUI client
+[4/14/2014 2:57:02 PM] Kjetil Hansen: Telnet is no probleme to use if you feel that's good enough. Telnet can put out ALOT of text in seconds anyway. But we would just need to build a nice GUI wrapped arround It I guess. But there is a command that's pretty important in this MUD. 0 on the num-pad. Also the "look" command. When looking, you will "refresh" the room showing the followign:
+[4/14/2014 2:57:28 PM] *** Kjetil Hansen sent look.jpg ***
+[4/14/2014 2:58:39 PM] Kjetil Hansen: All that text should pop up the sec. you type: look or push the 0-num-pad button.
+[4/14/2014 2:58:50 PM] Kaslai: Alright
+[4/14/2014 2:59:12 PM] Kjetil Hansen: Did I show you a GUI for the old Game yet?
+[4/14/2014 2:59:19 PM] Kaslai: Yes
+[4/14/2014 2:59:22 PM] Kjetil Hansen: aye
+[4/14/2014 2:59:32 PM] Kaslai: Er, though I lost it in the reformat
+[4/14/2014 2:59:37 PM] Kaslai: Can you resend it?
+[4/14/2014 3:00:14 PM] *** Kjetil Hansen sent con_char.BMP ***
+[4/14/2014 3:00:24 PM] Kjetil Hansen: character selection for creating new characters
+[4/14/2014 3:00:26 PM] Kaslai: Thanks
+[4/14/2014 3:00:34 PM] Kjetil Hansen: pictures can come later. not important at first
+[4/14/2014 3:00:44 PM] *** Kjetil Hansen sent menu.BMP ***
+[4/14/2014 3:00:50 PM] Kjetil Hansen: login screen
+[4/14/2014 3:01:06 PM] *** Kjetil Hansen sent ziorus.booted.bmp ***
+[4/14/2014 3:01:23 PM] Kjetil Hansen: how the game used to look like with that nice GUI wrapped arround it
+[4/14/2014 3:05:01 PM] Kjetil Hansen: Also space between 2 part action is important to make it look sweet. If you hit a player and he doesn hit back.. you don't need that extra space between text, but if you hit him and he hits you back, you want an empty line to make it look better. Also auto-update on screen for any action in room is importan. You don't want to type "look" and suddenley there is 3 NPC's in that room. You want to see the NPC's entering the room. Eg.
+
+The greater obsidian basiliks enter the room.
+
+You attack the greater obsidian basiliks and hit for 50 damage!
+You attack the greater obsidian basiliks and hit for 47 damage!
+
+The greater obsidian basiliks attacks you! It missed!
+[4/14/2014 3:05:28 PM] Kjetil Hansen: Understandable?
+[4/14/2014 3:05:57 PM | Edited 3:06:00 PM] Kaslai: Yep
+[4/14/2014 3:06:08 PM] Kjetil Hansen: Perfect.
+[4/14/2014 3:07:16 PM] Kaslai: On this compass, I noticed some diagonal arrows http://i.frogbox.es/td
+[4/14/2014 3:07:44 PM] Kaslai: Are they employed when there is actually a diagonal passage? Or were they used in large open areas
+[4/14/2014 3:08:20 PM] Kjetil Hansen: Hehe, in that compass there is an exit south and east. That's why they are red.
+[4/14/2014 3:08:27 PM] Kjetil Hansen: or highligted.
+[4/14/2014 3:08:39 PM] Kaslai: Well right, but I'm talking about the non highlighted ones
+[4/14/2014 3:08:42 PM] Kjetil Hansen: The diagonal = Northeast, northwest, southeast etc.
+[4/14/2014 3:09:00 PM] Kaslai: Right
+[4/14/2014 3:09:37 PM] Kjetil Hansen: The Red, Green and Blue 3 tots in the lower part are somthing called "idols". That's something that old MUD had.
+[4/14/2014 3:10:19 PM] Kjetil Hansen: Square was Strenght, Triangle was Power and last one was Power
+[4/14/2014 3:11:12 PM] Kjetil Hansen: There was 3 realms and 3 Idols. If your realm got the strenght Idol, all players in that realm got a strength bonus of 3% of your original strength
+[4/14/2014 3:12:34 PM] Kjetil Hansen: Was actually a pretty nice thing for gameplay. The idols were "hidden" once a month and players would have to find the place (a shrine) where the idol was located on a pedestal.
+[4/14/2014 3:13:23 PM] Kjetil Hansen: That made players go wild in finding the shrines each month and you could travel to other realms to find and "steal" their idol too
+[4/21/2014 5:38:33 AM] Kaslai: Hello
+[4/21/2014 5:38:47 AM] Kaslai: So I've started some work on benchmarks and things for the game
+[4/21/2014 5:38:54 AM] Kaslai: I have a few questions though
+[4/21/2014 5:39:17 AM] Kaslai: How should things like skills, attributes, and other persistent stats be handled within the game?
+[4/21/2014 5:39:43 AM] Kaslai: I'm looking for insight as to what skills there will be, how they will affect the game, how you build them, etc
+[4/21/2014 5:40:01 AM] Kaslai: In addition, I would like to hear from you how combat should work
+[4/21/2014 5:40:33 AM] Kaslai: I guess I'm looking for a sample battle, how the user interface changes, things you can do in battle, and other such things
+[4/21/2014 5:41:04 AM | Edited 5:41:16 AM] Kaslai: I am open to just basing the entire battle and attribute system off of pen and paper D&D if that's fine with you
+[4/21/2014 5:42:23 AM | Edited 5:42:38 AM] Kaslai: (I've been away an awful lot as of late for Church celebrations and doing school work. I've been carrying around a pad of paper where I've been brainstorming things though. I'll type things in and get them up to the Github repo soon)
+[4/21/2014 10:54:25 AM] Kjetil Hansen: Hey Andrew, No problem at all. Im in Madrid, Spain right now as i was pulled away from my eastern holidays at my cabin in the mountains with the kids. Some friends wanted me to come and watch the Champions league match starring Atlethico Madrid. Who can turn down an offer like that? Shopping/fun trip to Spain for 4 days = recreation for all its worth.
+[4/21/2014 10:56:16 AM] Kjetil Hansen: I'll send you more off the stats and skills when i get home, on thursday.
+[4/21/2014 12:47:07 PM] Kaslai: That sounds fantastic :)
+[4/21/2014 12:47:10 PM] Kaslai: Have fun!
+[4/29/2014 5:18:28 AM] *** Kjetil Hansen sent FEDC30BB-9F29-4E00-A68C-35FA0547EC5A.jpg ***
+[4/29/2014 5:19:44 AM] Kjetil Hansen: New Graphical card! My PC just collapsed last week! Hopefulle i didnt lose too much... Lol
+[4/30/2014 3:31:12 PM] Kjetil Hansen: Hi Andrew, are you avaliable?
+[4/30/2014 4:42:30 PM] Kaslai: I am now
+[4/30/2014 4:42:45 PM] Kaslai: Sorry, yesterday was full of school, and today was full of gardening
+[4/30/2014 4:42:58 PM] Kaslai: But I should be free for the forseeable future
+[5/5/2014 3:54:10 AM] Kjetil Hansen: N/m I lost it all. Had to build a brand New PC. Now I have a super gaming computer.... for playing text based game! lol That GUI have to be awsome If I'm not going to handle it With Perfect fps now. hehe
+[5/5/2014 7:42:09 AM] Kaslai: :(
+[5/5/2014 7:42:18 AM] Kaslai: Do you know what happened to it?
+[5/5/2014 7:42:29 AM] Kaslai: Was it a power surge or something?
+[5/5/2014 11:55:08 PM] Kjetil Hansen: Nae, I think it just got burned out... Staying at full Power for 3 years does that.
+[5/5/2014 11:55:31 PM] Kjetil Hansen: I hate when a PC goes into sleeping-mode, so I always put it on NO POWER SAVER! hehe
+[5/9/2014 6:52:42 AM] Kjetil Hansen: Alright Bud, It's been a month since anything happend. Do we want to progress? :) Give me a yell when you can be avaliable for a chat so this Project don't just end up in sleep-mode.
+[5/9/2014 6:53:22 AM] Kaslai: I've just been procrastinating :(
+[5/9/2014 6:53:27 AM] Kaslai: I'll start kicking my butt
+[5/9/2014 6:53:43 AM] Kaslai: What did you want to talk about in particular?
+[5/9/2014 6:54:25 AM] Kaslai: One thing I have been thinking about is the editor UI
+[5/9/2014 6:54:42 AM] Kjetil Hansen: Yeah?
+[5/9/2014 6:54:52 AM] Kaslai: I was thinking that it could be a HTML/Javascript frontend regardless of where you're using it
+[5/9/2014 6:55:04 AM] Kaslai: This would make the editor fully cross-platform
+[5/9/2014 6:55:29 AM] Kaslai: As I wouldn't have to use a system specific widgets framework
+[5/9/2014 6:55:58 AM] Kjetil Hansen: So you could edit content on a URL?
+[5/9/2014 6:56:06 AM] Kaslai: Yes
+[5/9/2014 6:56:22 AM] Kaslai: You'd basically go to http://localhost:5346/ or whatever port you chose
+[5/9/2014 6:56:35 AM] Kjetil Hansen: Would be helpfull, as you wouldn't need the softwere With you at all times
+[5/9/2014 6:56:46 AM] Kaslai: You could also forward it to other IPs so you can access the page remotely
+[5/9/2014 6:56:51 AM] Kjetil Hansen: as long as Security is good enough
+[5/9/2014 6:56:54 AM] Kaslai: It would have to have a password on it of course
+[5/9/2014 6:56:57 AM] Kaslai: Aye
+[5/9/2014 6:57:51 AM] Kjetil Hansen: Yeah, HTML/Java would be agreat way to do that.
+[5/9/2014 6:58:18 AM] Kaslai: Also for rooms, let me find my pad of paper
+[5/9/2014 6:58:59 AM] Kaslai: I was thinking that they could basically be scripts that get run when an entity enters them
+[5/9/2014 6:59:33 AM] Kaslai: I did some Lua benchmarking, and it would require some clever interop with the interpreter to use Lua files efficiently
+[5/9/2014 7:00:08 AM] Kaslai: There would be the obvious things, like setting the room title, setting the exits, etc
+[5/9/2014 7:00:25 AM] Kaslai: however the script can query the users state for conditionals
+[5/9/2014 7:02:32 AM] Kaslai: Like, 
+room.description = "A large castle stands before you. A guard blocks your path further"
+room.exits = exit.south
+if( user.hasHolyGrail ) then 
+room.description = "The guard sees that you have obtained a holy grail, and steps aside to let you through"
+room.exits = exit.south | exit.north
+end
+[5/9/2014 7:03:00 AM] Kaslai: That's just an oversimplification of course
+[5/9/2014 7:03:21 AM] Kaslai: There would also be time delay actions, too
+[5/9/2014 7:03:52 AM] Kaslai: So when an entity enters a room for the first time (or every time, depending on the trigger type) an event is fired after n ticks
+[5/9/2014 7:03:56 AM] Kjetil Hansen: That will make the game having a more complex "AI" room description kind of. Sounds sweet
+[5/9/2014 7:04:27 AM] Kaslai: Oh, also there will be different execution privledges of course
+[5/9/2014 7:04:53 AM | Edited 7:05:28 AM] Kaslai: The admin can modify them, but basically guest, npc, user, moderator, room, admin
+[5/9/2014 7:05:07 AM] Kaslai: guest can move around but not do anything
+[5/9/2014 7:05:51 AM] Kaslai: npc can move around but is limited in what it can do
+[5/9/2014 7:06:01 AM] Kaslai: user can do what a user ought to be able to do
+[5/9/2014 7:06:15 AM] Kaslai: room would have access to a subset of admin commands
+[5/9/2014 7:06:33 AM] Kaslai: Basically, it can teleport people, modify inventories, etc
+[5/9/2014 7:06:57 AM] Kaslai: Though room privledges do have some limits on them
+[5/9/2014 7:07:10 AM] Kaslai: Like you can't steal everyones items, or anything harmful like that
+[5/9/2014 7:07:32 AM] Kaslai: The purpose is to allow in-game builders without letting them grief the game
+[5/9/2014 7:07:45 AM] Kjetil Hansen: Aye
+[5/9/2014 7:08:01 AM] Kaslai: For actual proper campaign building, you can always bump the permission for a single room up to admin if that's really what you want to do
+[5/9/2014 7:08:37 AM] Kjetil Hansen: Listnen, I have to run pick up my kid from Kindergarden. I'll be back later to look over this.
+[5/9/2014 7:08:42 AM] Kaslai: Alright
+[5/9/2014 7:08:53 AM] Kaslai: I have to do my papers in a few minutes too
+[5/9/2014 7:09:13 AM] Kaslai: I'll finish writing the general things I have and I'll be back in 90-120 minutes
+[5/9/2014 7:09:31 AM] Kaslai: I was also thinking that there would be a few basic scriptable things
+[5/9/2014 7:09:45 AM] Kaslai: All using more or less the same mechanism that rooms do
+[5/9/2014 7:10:01 AM] Kaslai: Rooms, obviously, but also items, spells, status effects, and NPCs
+[5/9/2014 7:10:58 AM] Kaslai: status effects would basically just be a name, flavor text, and some effect, such as "remove X damage every Y ticks for Z ticks"
+[5/9/2014 7:11:22 AM] Kaslai: Or "player.currentMaxHealth = player.maxHealth / 2"
+[5/9/2014 7:12:03 AM] Kaslai: Or "After X ticks, player.kill()"
+[5/9/2014 7:13:13 AM] Kaslai: Spells have flavor text as well, for a successful cast, for an unsuccessful cast, misses, etc
+[5/9/2014 7:14:04 AM] Kaslai: They can also run a few one-off commands, however such a command could be "Apply this status effect to affected unit"
+[5/9/2014 7:14:37 AM] Kaslai: So the venom spell could apply corrosion
+[5/9/2014 7:15:23 AM] Kaslai: And the corrosion status effect removes 5 health a tick for 20 ticks, and sets player.damageMultiplier to 1.5
+[5/9/2014 7:17:21 AM] Kaslai: Or ice blast could apply freeze, which sets player.fatigueMultiplier to 10 and decreases fire and physical defense by a factor of 2
+[5/9/2014 7:17:49 AM] Kaslai: Spells aren't allowed to modify attributes, only status effects are
+[5/9/2014 7:18:14 AM] Kaslai: Since statue effects are, by nature, an effect over time, where spells are a one time thing
+[5/9/2014 7:18:32 AM] Kaslai: It might also be neat to allow you to apply status effects to a room
+[5/9/2014 7:19:16 AM] Kaslai: Obviously you can't apply things like corrosion to a room, however you could have an ignition status effect that deals damage over time to all units in the room
+[5/9/2014 7:19:33 AM] Kaslai: or perhaps all hostile units or all units other than yourself
+[5/9/2014 7:20:44 AM] Kaslai: Items would have relevant flavor text, though with additional things, like what happens if you decide to equip it and hit people with it
+[5/9/2014 7:20:57 AM] Kaslai: If you try hitting someone with a potion, it's going to shatter :)
+[5/9/2014 7:22:02 AM] Kaslai: This would also contain attributes of the item, such as where it can be equipped (It's held if such is unspecified)
+[5/9/2014 7:22:10 AM] Kaslai: how much damage it does
+[5/9/2014 7:22:27 AM] Kaslai: How durable it is, how much slash, crush, magical, fire, etc damage it does
+[5/9/2014 7:22:36 AM] Kaslai: How many ticks it takes to attack with
+[5/9/2014 7:22:47 AM] Kaslai: How much armor it applies when attacking, idle, or blocking
+[5/9/2014 7:23:42 AM] Kaslai: NPCs wil lbe scripted for dialog and AI
+[5/9/2014 7:24:04 AM] Kaslai: NPCs encompasses both things that you can talk to, like shop keepers, and things you can slaughter, like dragons
+[5/9/2014 7:25:16 AM] Kaslai: NPC scripting will be provided with a few tools, such as a "home" that is a reference to a room, and at any given point you can calculate how far the NPC has strayed from its home room and can react accordingly.
+[5/9/2014 7:25:44 AM] Kaslai: For the most part, shop keepers won't do much moving around, but citizens might make their way around a city
+[5/9/2014 7:25:52 AM] Kaslai: And guards need to patrol
+[5/9/2014 7:26:18 AM] Kaslai: Monsters out in dungeons can also look for the player in adjacent rooms
+[5/9/2014 7:27:15 AM] Kaslai: And can follow perfectly for up to two rooms, though iff the player manages to put three rooms between them and a monster within a single tick, then the monster might wander in the players general direction for 10 ticks
+[5/9/2014 7:27:47 AM] Kaslai: I would definitely create a way to inherit AI from other things
+[5/9/2014 7:27:59 AM] Kaslai: So there can just be a standard AI that applies to most monsters
+[5/9/2014 7:28:24 AM] Kaslai: Also scriptable would be item interactions
+[5/9/2014 7:28:47 AM] Kaslai: The script is fired when you use item X on item Y (or item Y on item X)
+[5/9/2014 7:29:22 AM] Kaslai: So if you use a needle on a bolt of cloth, then the script for "Needle and Cloth" is run
+[5/9/2014 7:30:30 AM] Kaslai: This can do obvious things, such as verifying that you also have a spool of thread on your person, then prompting for what you want to make, then consuming the cloth and thread to give you that item
+[5/9/2014 7:30:35 AM] Kjetil Hansen: All this sounds just great!
+[5/9/2014 7:30:55 AM] Kaslai: Oh, items will also have the ability to define synonyms for actions
+[5/9/2014 7:31:39 AM] Kjetil Hansen: It might also be neat to allow you to apply status effects to a room... This one i LOVE
+[5/9/2014 7:31:44 AM] Kaslai: So for a bolt of cloth, you could define "sew cloth" as a synonym for "use needle with cloth"
+[5/9/2014 7:31:57 AM] Kjetil Hansen: Aye
+[5/9/2014 7:32:57 AM] Kaslai: I'm going to take a look at what sort of homework is due and on monday, and then I'll say what I will definitely have done by the end of this weekend
+[5/9/2014 7:33:15 AM] Kaslai: Because I feel oddly motivated now
+[5/9/2014 7:33:58 AM] Kaslai: Okay, I have about an hour of economics work to do and that's about it
+[5/9/2014 7:34:05 AM] Kjetil Hansen: My main issue is; Will this affect lag? I'd like moving say 10 rooms just as fast as you can type it
+[5/9/2014 7:34:17 AM] Kjetil Hansen: Perfect Andrew!
+[5/9/2014 7:34:42 AM] Kaslai: Well, I did a test with Lua, and I could run about 20,000 scripts in one second on my computer within a single thread
+[5/9/2014 7:35:11 AM] Kjetil Hansen: Hmmm, sounds slow! I'm a fast typer!
+[5/9/2014 7:35:15 AM] Kjetil Hansen: Lol
+[5/9/2014 7:35:19 AM] Kaslai: Hehe
+[5/9/2014 7:35:37 AM] Kaslai: I was thinking that NPCs would only have their scripts run if they are currently active (pursuing a player or so) or within 5 rooms of a player
+[5/9/2014 7:36:18 AM] Kaslai: I think that 10 rooms in a second is plenty, and it might actually be useful to rate-limit room changes
+[5/9/2014 7:36:45 AM] Kaslai: So let's say there are 3 active NPCs for every user
+[5/9/2014 7:36:51 AM] Kjetil Hansen: Yeah, the AI npc would be awsome! AS long AS you can turn on/off "aggressive" mode
+[5/9/2014 7:37:12 AM] Kaslai: :p
+[5/9/2014 7:37:29 AM] Kjetil Hansen: Aye
+[5/9/2014 7:37:49 AM] Kaslai: Let's say that each player is running through 10 rooms and each NPC is running through 3 rooms in a given second
+[5/9/2014 7:38:07 AM] Kjetil Hansen: Aye
+[5/9/2014 7:38:19 AM] Kaslai: That's x*3*3+x*10=20000, where x is number of players
+[5/9/2014 7:39:04 AM] Kaslai: x(9+10)=20000  x=20000/19
+[5/9/2014 7:39:35 AM] Kaslai: That would give support for 1052 players all being very active simultaneously
+[5/9/2014 7:40:20 AM] Kaslai: While that is a very nice number, I do definitely think that I am just going to write my own script parser
+[5/9/2014 7:40:36 AM] Kjetil Hansen: Lol, aye
+[5/9/2014 7:40:44 AM] Kaslai: We don't really need very complex scripting, and interfacing with Lua is fairly slow
+[5/9/2014 7:41:04 AM] Kaslai: With a built-in interpreter, there would be no need for marshalling between Lua and C++
+[5/9/2014 7:41:54 AM] Kaslai: Especially if the scripts just get compiled to a simple internal representation on-load
+[5/9/2014 7:42:18 AM] Kaslai: So rather than having to run through the whole script every time, there would just be a structure with the relevant things already prepared
+[5/9/2014 7:42:35 AM] Kaslai: The only things that would have to be done is checking conditionals and running loops
+[5/9/2014 7:42:42 AM] Kjetil Hansen: I'll just say OK to that! This is something you know better than me! ;)
+[5/9/2014 7:43:08 AM] Kjetil Hansen: Ahhhh, yeah! Now i see
+[5/9/2014 7:43:36 AM] Kjetil Hansen: Aye, that would be great.
+[5/9/2014 7:44:14 AM] Kaslai: Okay, so I'm just going to start out with the basic game structure. I'll probably have a simple command parser working by tonight
+[5/9/2014 7:44:31 AM] Kaslai: I'll also work on designing the internal representation of scripted objects
+[5/9/2014 7:44:54 AM] Kjetil Hansen: Sweet.
+[5/9/2014 7:45:27 AM] Kaslai: I'll do my best to have a server you can telnet into by monday :p
+[5/9/2014 7:45:37 AM] Kjetil Hansen: Having the basic up would be awsome.
+[5/9/2014 7:46:12 AM] Kaslai: I think next weekend I'll have the framework for the editors done, and I'll start working on the editor interfaces themselves
+[5/9/2014 7:46:35 AM] Kaslai: So this will be fun
+[5/9/2014 7:46:39 AM] Kjetil Hansen: Woah, now we're talking
+[5/9/2014 7:46:50 AM] Kaslai: It's going to be an interesting mix of C++ and HTML and Javascript
+[5/9/2014 7:47:16 AM] Kaslai: The editors will not be finished any time soon, but that's because it's a UI thing
+[5/9/2014 7:47:29 AM] Kaslai: they'll likely be operational, but not very pretty or intuitive at first hehe
+[5/9/2014 7:48:30 AM] Kaslai: My target is to be able to scale to at least 2000 players per server instance
+[5/9/2014 7:49:14 AM] Kaslai: One possible solution to scalability would be to make the servers linkable
+[5/9/2014 7:49:41 AM] Kaslai: As in, while each server instance can only handle up to 2000 players, you can run 10 servers on the same LAN that are all connected
+[5/9/2014 7:49:49 AM | Edited 7:50:01 AM] Kaslai: So it's like the server is holding 20000 people
+[5/9/2014 7:50:24 AM] Kaslai: You probably wouldn't want to host them on opposite sides of the country though, because that would cause lag
+[5/9/2014 7:50:45 AM] Kaslai: Hm
+[5/9/2014 7:51:02 AM] Kaslai: Yea, those will be low-priority, though planned features
+[5/9/2014 7:51:13 AM] Kaslai: Active and passive server linking
+[5/9/2014 7:51:33 AM] Kaslai: Active server linking is: The servers are joined in such a way that it seems like one huge server
+[5/9/2014 7:51:59 AM] Kjetil Hansen: Aye. And about gui, if you need artwork done for UI,, yell out
+[5/9/2014 7:52:10 AM] Kaslai: Passive server linking: you can change servers, and the new server will have a different set of players on it
+[5/9/2014 7:52:28 AM] Kaslai: The new server will fetch your profile from the other server though
+[5/9/2014 7:52:41 AM] Kaslai: And alright
+[5/9/2014 7:53:04 AM] Kaslai: I need to go do my papers now. I'll be back in a little bit
+[5/9/2014 7:53:21 AM] Kjetil Hansen: Sure Andrew! Stay safe
+[5/9/2014 7:53:29 AM] Kaslai: I will. Thanks :)
+[5/9/2014 7:54:12 AM] Kaslai: Oh, one last thing: I was items, NPCs, status effects, and so on will also be able to have icons
+[5/9/2014 7:54:32 AM] Kaslai: It's not necessary for all MUDs that use the engine to add them
+[5/9/2014 7:54:46 AM] Kaslai: However it would be cute to have a little flame on the client when you're burned
+[5/9/2014 7:54:55 AM] Kaslai: Or a little icon of a bat when you're slaughtering it
+[5/9/2014 7:54:56 AM] Kaslai: :)
+[5/9/2014 7:55:17 AM] Kjetil Hansen: YES! I was thinking about that myself
+[5/9/2014 7:55:21 AM] Kaslai: Sounds too, perhaps
+[5/9/2014 7:55:38 AM | Edited 7:56:04 AM] Kaslai: Just little squeals, sword clangs, whooshes
+[5/9/2014 7:55:48 AM] Kaslai: Perhaps BGM if you're particularly ambitious
+[5/9/2014 7:56:23 AM] Kjetil Hansen: Remember that part of the DFC UI where exits are? I was thinking of adding effect icons there too
+[5/9/2014 7:56:33 AM] Kaslai: Yep
+[5/9/2014 7:57:05 AM] Kjetil Hansen: So if you're poisoned, the poison icon is activated
+[5/9/2014 7:57:17 AM] Kaslai: Alright, I'm off for real this time. I'll summarize this conversation for a feature list when I return.
+[5/9/2014 7:57:21 AM] Kjetil Hansen: Do your homework now! Lol
+[5/9/2014 7:57:37 AM] Kaslai: Well, not homework. Delivering newspapers :p
+[5/9/2014 7:57:45 AM] Kaslai: Then homework
+[5/9/2014 11:04:18 AM] Kaslai: Leave it to a mother to turn an hour long outing into a 3 hour long outing and counting :/
+[5/9/2014 11:04:26 AM] Kaslai: She's having me run all over town heh
+[5/9/2014 11:04:40 AM] Kjetil Hansen: Hahaha
+[5/9/2014 11:04:48 AM] Kjetil Hansen: That's what Mothers are for Andrew!
+[5/9/2014 11:06:01 AM] Kaslai: Unfortunately :(
+[5/9/2014 11:06:36 AM] Kaslai: I guess I won't get around to programming until later this evening, as she wants me to do yard work now, owever while I was out, I was thinking of things
+[5/9/2014 11:07:24 AM] Kaslai: For one, I decided that the communications will just be encrypted rather simply, using a diffie-helman key derivation function, which will then be used to seed a stream cipher
+[5/9/2014 11:07:33 AM] Kaslai: And I was thinking about the command parsing engine
+[5/9/2014 11:07:57 AM] Kaslai: I'll probably build a dictionary of words with the elements of speech that they relate to.
+[5/9/2014 11:08:09 AM] Kjetil Hansen: LMAO
+[5/9/2014 11:08:18 AM] Kjetil Hansen: HAHAHA, I was just thinking about that!
+[5/9/2014 11:08:19 AM] Kaslai: So "throw" would be a verb, which is usually followed by a noun
+[5/9/2014 11:08:22 AM] Kaslai: Hehe
+[5/9/2014 11:08:46 AM] Kaslai: There would be a list of standard verbs and nouns, and things can be added and removed from the parser on the fly, based on context
+[5/9/2014 11:09:03 AM] Kaslai: It'll be kind of sort of a natural language parser
+[5/9/2014 11:09:07 AM] Kjetil Hansen: exactl... "a" "an" "the" etc.
+[5/9/2014 11:09:08 AM] Kaslai: Nothing too robust
+[5/9/2014 11:09:14 AM] Kaslai: Yep, articles
+[5/9/2014 11:09:20 AM] Kaslai: I need to head out to the store again
+[5/9/2014 11:09:23 AM] Kaslai: I'll be back in a bit
+[5/9/2014 11:09:25 AM] Kjetil Hansen: sure thing bud
+[5/9/2014 11:35:53 PM] Kjetil Hansen: I was hi-jacked yesterday!
+[5/10/2014 10:02:20 AM] Kaslai: :o
+[5/10/2014 10:02:26 AM] Kaslai: How so?
+[5/10/2014 10:03:39 AM] Kjetil Hansen: For a new job! Lol
+[5/10/2014 10:04:22 AM] Kjetil Hansen: 160k salary + bonus did it
+[5/10/2014 10:05:55 AM] Kaslai: I'm confused
+[5/10/2014 10:06:04 AM] Kaslai: Who hi-jacked you?
+[5/10/2014 10:24:52 AM] Kjetil Hansen: Hehe, a big company wanted to hire me. They came up with a contract i couldnt refuse.
+[5/11/2014 8:37:44 AM] Kjetil Hansen: Sorry for being short yesterday. I was out celebrating my new job. :D
+[5/13/2014 5:50:54 AM] Kjetil Hansen: Alright Andrew, How did you weekend og? Did you manage to get any work done? I think this will be awsome when done. Have a good feeling :)
+[5/16/2014 6:26:10 PM] Kaslai: Well, I've started actually writing code.
+[5/16/2014 6:26:40 PM] Kaslai: Sorry it so long for me to get around to actually starting - I don't have any excuses. I have the motivation to continue now though.
+[5/16/2014 6:27:33 PM] Kaslai: Feel free to look through the code and ask any questions as I work on it
+[5/18/2014 2:06:44 AM] Kjetil Hansen: Hi Andrew, No probleme at all! The code have a huge amount of lines in it, so I'm assuming you've been busy! :)
+[5/19/2014 6:07:52 PM] Kjetil Hansen: Been Reading Your New codes. Looking good :)
+[5/26/2014 12:38:50 PM] Kjetil Hansen: Give me a yell when avaliable Andrew. I havent talked to you in a while haha
+[5/26/2014 12:39:06 PM] Kaslai: Hiya
+[5/26/2014 12:39:19 PM] Kjetil Hansen: ahhh, you're alive!
+[5/26/2014 12:39:25 PM] Kjetil Hansen: How are you bud?
+[5/26/2014 12:39:26 PM] Kaslai: I am alive indeed
+[5/26/2014 12:40:24 PM] Kjetil Hansen: Finally the good weather have come to Norway even if it's just for a short visit.
+[5/26/2014 12:40:44 PM] Kaslai: I'm pretty good.
+[5/26/2014 12:40:56 PM] Kaslai: I'm working on my English final at the moment.
+[5/26/2014 12:41:21 PM] Kaslai: It's not due for another week, but I figure I'd try to get it out of the way
+[5/26/2014 12:41:33 PM] Kaslai: Only two more weeks before school's over for the year :)
+[5/26/2014 12:41:37 PM] Kjetil Hansen: Ok.... I'm asuming I could use some of that knowlege lol
+[5/26/2014 12:42:09 PM] Kaslai: Eh, it's nothing that special
+[5/26/2014 12:42:21 PM] Kaslai: We didn't actually learn anything all quarter
+[5/26/2014 12:42:32 PM] Kaslai: We just wrote papers about our opinions all quarter long
+[5/26/2014 12:43:00 PM] Kjetil Hansen: lol, well it beats checking off for No and Yes answers
+[5/26/2014 12:43:11 PM] Kaslai: I suppose that's true
+[5/26/2014 12:44:00 PM] Kjetil Hansen: What's Your grades like from a scale 1-10 where 10 is best... overall?
+[5/26/2014 12:44:28 PM] Kaslai: For this quarter, I'm sitting at about a 9
+[5/26/2014 12:44:57 PM] Kjetil Hansen: Great work buddy!!!! Keep it up...
+[5/26/2014 12:45:09 PM] Kaslai: I have a 94% in economics, a 83% in English, and a 95% in Piano
+[5/26/2014 12:45:24 PM] Kaslai: My grade in English is low because I missed a due date ;_;
+[5/26/2014 12:45:43 PM] Kjetil Hansen: aye
+[5/26/2014 12:46:11 PM] Kjetil Hansen: Piano? You into Music aswell?
+[5/26/2014 12:46:32 PM] Kaslai: somewhat
+[5/26/2014 12:46:42 PM] Kaslai: This is my first time taking formal classes
+[5/26/2014 12:46:53 PM] Kjetil Hansen: Or is it Your mother that's into it? :P
+[5/26/2014 12:47:04 PM] Kjetil Hansen: aye hehe
+[5/26/2014 12:47:27 PM] Kaslai: My mother isn't into music at all, actually
+[5/26/2014 12:47:47 PM] Kaslai: I bought myself a piano keyboard 3 years ago and figured I would learn to play it properly
+[5/26/2014 12:49:28 PM] Kaslai: So I don't know if I talked to you about this yet, but I'm going to implement the editors in the form of webpages
+[5/26/2014 12:49:58 PM] Kaslai: The server will serve webpages for editing levels and such
+[5/26/2014 12:50:03 PM] Kaslai: This is for a few reasons
+[5/26/2014 12:50:37 PM] Kaslai: 1: It's actually very secure as it will only allow people and programs to access it from the machine the server is running on
+[5/26/2014 12:50:48 PM] Kjetil Hansen: Sounds interesting. That way you can edit from any PC
+[5/26/2014 12:51:08 PM] Kaslai: If you want to make it remote accessible, you would just need to make a PHP script to handle authentication and forward the page to the remote user
+[5/26/2014 12:51:24 PM] Kaslai: 2: This way it will only need to be written once
+[5/26/2014 12:51:35 PM] Kjetil Hansen: ahhh, I see...
+[5/26/2014 12:51:39 PM] Kaslai: I won't have to rewrite the interface for mac, Linux, and Windows
+[5/26/2014 12:52:04 PM] Kjetil Hansen: Woah... Having it work With all 3 would be a huge lift
+[5/26/2014 12:52:18 PM] Kaslai: 3: it will make changes to the UI very easy to implement
+[5/26/2014 12:52:18 PM] Kjetil Hansen: Sounds great bud...
+[5/26/2014 12:52:36 PM] Kaslai: I spent some time earlier this week getting the underlying code to run on Linux
+[5/26/2014 12:52:43 PM] Kjetil Hansen: Noticed
+[5/26/2014 12:53:00 PM] Kaslai: I don't have a Mac to test the code on though, but if it's running on a server it's likely going to be Linux
+[5/26/2014 12:53:13 PM] Kjetil Hansen: aye
+[5/26/2014 12:54:06 PM] Kjetil Hansen: on 3'rd step, does that mean administrators can change Things like logo and names/icons too?
+[5/26/2014 12:54:14 PM] Kaslai: Yes!
+[5/26/2014 12:54:26 PM] Kaslai: It will be very easy for end users of the software to change things
+[5/26/2014 12:54:31 PM] Kjetil Hansen: ....... you're Reading my mind! Sounds exellent
+[5/26/2014 12:54:33 PM] Kaslai: Since everything will be stored in HTML
+[5/26/2014 12:54:38 PM] Kjetil Hansen: aye
+[5/26/2014 12:56:40 PM] Kaslai: For the start, I'm going to make the server only serve telnet
+[5/26/2014 12:56:47 PM] Kaslai: (For players to use)
+[5/26/2014 12:57:11 PM] Kjetil Hansen: aye, GUI can be put in later on.
+[5/26/2014 12:57:25 PM] Kaslai: However I'm thinking that I might end up making HTTP bindings and IRC bindings at some point
+[5/26/2014 12:57:38 PM] Kaslai: So you can connect via a web page or an IRC client
+[5/26/2014 12:57:56 PM] Kaslai: Not really important features, but that could be neat
+[5/26/2014 12:58:05 PM] Kjetil Hansen: aye
+[5/26/2014 12:58:40 PM] Kaslai: For the GUI, I was thinking that I would write a simple SDL application rather than making a special version for each platform
+[5/26/2014 12:59:02 PM] Kjetil Hansen: SDL =?
+[5/26/2014 12:59:25 PM] Kaslai: It's basically a simple cross-platform graphics and keyboard library
+[5/26/2014 12:59:47 PM] Kaslai: The only real downside to using SDL is that users wouldn't be able to select text in the client
+[5/26/2014 1:00:21 PM] Kaslai: As in clicking on the text, dragging to highlight it, and then copying it
+[5/26/2014 1:00:25 PM] Kjetil Hansen: that's a downside?
+[5/26/2014 1:00:34 PM] Kaslai: Well, in some cases yes
+[5/26/2014 1:00:50 PM] Kjetil Hansen: Not this case! That's actually something I'd rather not have
+[5/26/2014 1:00:54 PM] Kaslai: Hehe okay
+[5/26/2014 1:01:02 PM] Kaslai: That's the primary reason why I wanted to use webpages for the editors
+[5/26/2014 1:01:20 PM] Kaslai: Because copying, selecting and editing text are all very integral to the editing experience
+[5/26/2014 1:01:27 PM] Kaslai: And SDL wouldn't cut it
+[5/26/2014 1:02:02 PM] Kaslai: Webpages provide a very trivial way to achieve what I want in a cross-platform manner though
+[5/26/2014 1:02:15 PM] Kjetil Hansen: BUT.... What would be Nice, is the posibility to "log" both the "action" and "social" screens. Just cap them to a regular Word file. Would something like this be possible?
+[5/26/2014 1:02:27 PM] Kaslai: Yes, that is trivial
+[5/26/2014 1:02:45 PM] Kjetil Hansen: sweet
+[5/26/2014 1:03:51 PM] Kaslai: FILE* logfile=fopen("actionlog.txt","a");
+fputs(logfile,"This was just written to actionlog.txt!");
+fclose(logfile);
+[5/26/2014 1:03:59 PM] Kaslai: That's all you need to do to add a line to a file
+[5/26/2014 1:04:17 PM] Kaslai: In this case, it just adds "This was just written to actionlog.txt!" to the file actionlog.txt
+[5/26/2014 1:04:36 PM] Kjetil Hansen: ahhh, awsome
+[5/26/2014 1:08:24 PM] Kjetil Hansen: I can't wait to see the end result here. This will be awsome.
+[5/26/2014 1:09:06 PM] Kjetil Hansen: Shoot out if you need any help bud and when you have something to test, I'll be ready :-D
+[5/26/2014 1:09:15 PM] Kaslai: Okay :)
+[5/26/2014 1:10:18 PM] Kaslai: Once I have user tests (rather than unit tests) I'll send you an executable or telnet directions.
+[5/26/2014 1:10:50 PM] Kjetil Hansen: .....I WANT IN....  LET ME INNNNN
+[5/26/2014 1:10:53 PM] Kjetil Hansen: hehe, sure thing bud
+[5/26/2014 1:10:58 PM] Kaslai: :p
+[5/27/2014 6:36:45 AM] Kaslai: Well, I just finished up the HTTP server (for the most part)
+[5/27/2014 6:37:24 AM] Kaslai: I just need to write unit tests for that (I was doing manual testing for speed sake tonight) and a Telnet object
+[5/27/2014 6:37:24 AM] Kjetil Hansen: sweeeeet
+[5/27/2014 6:37:39 AM] Kaslai: Then I feel like I can actually get working on proper game related things
+[5/27/2014 6:38:09 AM] Kjetil Hansen: That's when the fun starts? hehe
+[5/27/2014 6:38:13 AM] Kaslai: If you want to try it out, http://67.160.91.142:45141/
+[5/27/2014 6:38:32 AM] Kaslai: And indeed
+[5/27/2014 6:39:25 AM] Kaslai: I'm really happy with the way the http server turned out
+[5/27/2014 6:39:40 AM] Kaslai: I accomplished everything I set out to do in less time than I thought it would take
+[5/27/2014 6:40:15 AM] Kjetil Hansen: Nice one. :)
+[5/27/2014 6:40:24 AM] Kaslai: Now I'm debating as to whether or not I want to stay up and go to school, or skip school and sleep...
+[5/27/2014 6:40:25 AM] Kaslai: hmmm
+[5/27/2014 6:41:19 AM] Kjetil Hansen: what do you  mean stay up? It's 06:41 where you're at... You should just have woke up! lol
+[5/27/2014 6:42:44 AM] Kaslai: Hehe...
+[5/31/2014 7:56:33 AM] Kjetil Hansen: Hi Andrew, I was woundering if you could do me a huge favor. Make a quick flowchart of the following modules the "package" will contain.
+[5/31/2014 7:57:17 AM] Kjetil Hansen: To start With, I was aiming for engine, server and a gui (.exe) But I know we're wandered a bit off that road haha
+[5/31/2014 10:53:32 AM] Kaslai: Okay I can do that
+[5/31/2014 10:54:10 AM] Kaslai: Right now I'm focusing most of my time on schoolwork as there's only two weeks left, and my English final is due this week
+[5/31/2014 10:55:07 AM] Kaslai: I'll make a high level overview of program execution today sometime
+[6/2/2014 8:07:49 AM] Kjetil Hansen: Hey, Don't rush it.... You know I want you to do Your best at School before anything else. We can do this when you have summer holidays :-)
+[6/12/2014 4:56:39 PM] Kaslai: Okay, school is done!
+[6/14/2014 11:26:27 AM] Kjetil Hansen: WooHoo
+[6/14/2014 11:26:36 AM] Kjetil Hansen: How did Your tests og bud?
+[6/17/2014 6:01:04 PM] Kjetil Hansen: Give me a yell when you're done celebrating Your school's out ;) We can sit Down and talk progress when you're ready.  (y)
+[6/17/2014 8:49:40 PM] Kaslai: Hello
+[6/17/2014 8:49:44 PM] Kaslai: I'm ready to talk
+[6/19/2014 1:47:57 AM] Kaslai: This is useful http://tintin.sourceforge.net/mtts/
+[6/19/2014 2:03:51 AM] Kaslai: Okay so for telnet I think I'll query the client for terminal types.
+[6/19/2014 2:04:00 AM] Kaslai: It will prioritize something I make up (Perhaps MUDEngine or something) over all
+[6/19/2014 2:04:32 AM] Kaslai: Basically some string that represents the client that will be written specifically for the engine
+[6/19/2014 2:05:05 AM] Kaslai: If it is indeed a MUDEngine, then it can change modes into something that makes the data easier to process on the client side.
+[6/19/2014 2:05:51 AM] Kaslai: So instead of spitting out human readable text, it just sends what's needed. If you change the room, it sends the new room description, the new exits, etc.
+[6/19/2014 2:06:14 AM] Kaslai: If you get damaged or heal, it sends just the new HP and any status messages that might accompany it, etc
+[6/19/2014 2:06:46 AM] Kaslai: If however MUDEngine is not available, it will try to find a MTTS specification.
+[6/19/2014 2:07:37 AM] Kaslai: If that's not available, it will look for a few well known terminals (Such as VT-XXX) to determine whether or not it supports ANSI terminal manipulation
+[6/19/2014 2:08:00 AM] Kaslai: If it can't find that, it will default to no color or cursor manipulation
+[6/19/2014 7:20:11 AM] Kjetil Hansen: Yeah, sounds great
+[6/19/2014 7:20:28 AM] Kjetil Hansen: Sorry, I've been With customers all day
+[6/19/2014 7:20:38 AM] Kaslai: That's fine
+[6/19/2014 7:21:02 AM] Kaslai: How're you?
+[6/19/2014 7:21:47 AM] Kjetil Hansen: I'm great Andrew! Starting a New job is always demanding. Too much shit to put Your mind into
+[6/19/2014 7:21:58 AM] Kaslai: Ah hehe
+[6/19/2014 7:22:24 AM] Kaslai: Hopefully you'll get going with the flow soon enough :)
+[6/19/2014 7:23:01 AM] Kjetil Hansen: I'm in the flow now. Been there for two weeks now
+[6/19/2014 7:23:19 AM] Kjetil Hansen: It's so fun I hardly want to go home afther work! lol
+[6/19/2014 7:23:30 AM] Kaslai: Ah, well yea that's what I meant
+[6/19/2014 7:23:35 AM] Kaslai: Sounds fantastic!
+[6/19/2014 8:03:03 AM] Kaslai: What a rude cat
+[6/19/2014 8:03:19 AM] Kjetil Hansen: cat?
+[6/19/2014 8:03:29 AM] Kaslai: I went out to get a glass of water and she drew blood from my toe with her teeth
+[6/19/2014 8:03:44 AM] Kjetil Hansen: lol
+[6/26/2014 3:23:15 PM] Kjetil Hansen: Any news? (yn) Holidays are comming up. 3 weeks of total relaxing will be so sweet!
+[6/28/2014 4:17:50 AM] Kaslai: Okay I've made the Telnet object. It needs a little more work before I can call it finished, but it does exactly what it needs to. I just want to add some more syntax sugar to make it more fun to work with.
+[6/28/2014 4:18:43 AM] Kaslai: If you want to see the (rather dull) splash screen I made, you just need to telnet into 24.16.174.142:45141
+[6/28/2014 4:19:36 AM] Kaslai: I'm off to bed now.
+[6/28/2014 4:20:06 AM] Kaslai: See you later. I hope you have a lovely holiday :)
+[6/29/2014 3:34:26 AM] Kjetil Hansen: Great. Thank you, but it's still two weeks till I leave :)
+[6/29/2014 3:35:46 AM] Kaslai: Hehe. I was just saying that in case we didn't talk again beforehand.
+[6/29/2014 3:36:02 AM] Kjetil Hansen: ahh
+[6/29/2014 3:36:24 AM] Kjetil Hansen: How do you Connect to telnet again? I havent done that in years and back then it was in cmd
+[6/29/2014 3:36:43 AM | Edited 3:36:48 AM] Kaslai: Microsoft removed telnet from Windows 7 and up :(
+[6/29/2014 3:36:55 AM] Kaslai: You can use PuTTY to telnet though
+[6/29/2014 3:37:27 AM] Kaslai: PuTTY is just a general remote terminal emulator that supports telnet, ssh, etc
+[6/29/2014 3:37:28 AM] Kjetil Hansen: ahhh That explains alot when Using win 8.1
+[7/3/2014 7:50:25 AM] Kjetil Hansen: Hi bud. Anything special I need to do on pytto to Connect?
+[7/3/2014 7:50:36 AM] Kaslai: Nope
+[7/3/2014 7:50:41 AM] Kaslai: I just need to start the server again
+[7/3/2014 7:51:27 AM] Kjetil Hansen: explains alot! lol
+[7/3/2014 7:51:44 AM] Kaslai: Sorry, I was setting up a screencap
+[7/3/2014 7:51:45 AM] Kaslai: http://i.frogbox.es/20x
+[7/3/2014 7:52:00 AM] Kaslai: You don't need to change anything other than the first window
+[7/3/2014 7:52:05 AM] Kaslai: 24.16.174.142 / 45141
+[7/3/2014 7:52:28 AM] Kaslai: That should work for you
+[7/3/2014 7:53:22 AM] Kjetil Hansen: Nice, ty
+[7/3/2014 7:53:29 AM] Kjetil Hansen: "terminal test"
+[7/3/2014 7:53:39 AM] Kaslai: Try changing the window size
+[7/3/2014 7:53:44 AM] Kjetil Hansen: "telnet test" even*
+[7/3/2014 7:53:48 AM] Kaslai: To see the telnet protocol in action
+[7/3/2014 7:54:27 AM] Kaslai: Here's a quick status report: I've squashed all the bugs in my telnet object, I'm going to rewrite a small part of the HTTPd object, and probably tomorrow I'll begin work on the core MUD engine
+[7/3/2014 7:54:42 AM] Kaslai: Since all of the communication stuff is finally finished
+[7/3/2014 7:54:48 AM] Kjetil Hansen: awsome
+[7/3/2014 7:54:51 AM] Kjetil Hansen: look's great
+[7/3/2014 7:55:15 AM] Kaslai: Thanks :)
+[7/3/2014 7:55:36 AM | Edited 7:55:42 AM] Kaslai: It'll be finished some day :p
+[7/3/2014 7:55:45 AM] Kjetil Hansen: hahaha
+[7/3/2014 7:56:12 AM] Kjetil Hansen: You rock bud! I've been trying to og over all the codes so far. You Write exellent code!
+[7/3/2014 7:56:26 AM] Kaslai: I've set aside a 6 hour block each day in which I do nothing but work on it so it'll go pretty fast from now
+[7/3/2014 7:56:37 AM] Kjetil Hansen: wow
+[7/3/2014 7:56:43 AM] Kaslai: And thanks. I try my best to write professional code
+[7/3/2014 7:57:00 AM] Kaslai: (I set this in my schedule just 3 days ago)
+[7/3/2014 7:57:20 AM] Kaslai: I found I'd slack off if I didn't get into working on it
+[7/3/2014 7:57:30 AM] Kjetil Hansen: lol
+[7/3/2014 7:57:53 AM] Kaslai: Because my friends would start a Skype call and suddenly I'd find myself with no progress 5 hours later
+[7/3/2014 7:58:25 AM] Kaslai: So now I've set my client to ignore calls from them during these periods
+[7/3/2014 7:58:29 AM] Kjetil Hansen: hahaha,
+[7/3/2014 7:58:45 AM] Kaslai: It's done wonders for my productivity
+[7/3/2014 7:58:54 AM] Kjetil Hansen: I bet :)
+[7/3/2014 7:59:03 AM] Kaslai: I'm sorry it's taken so long though
+[7/3/2014 7:59:16 AM] Kaslai: I've far exceeded my time estimate due to minor incompetence
+[7/3/2014 7:59:36 AM] Kjetil Hansen: ? That was part of the deal bud. I told you to take Your time With School.
+[7/3/2014 7:59:47 AM] Kaslai: I suppose hehe
+[7/3/2014 7:59:54 AM] Kjetil Hansen: Glad you'll be Learning from this :D
+[7/3/2014 8:00:24 AM] Kaslai: I'm still relatively new to doing freelancing work and I'm getting better with my time management now
+[7/3/2014 8:00:59 AM] Kjetil Hansen: aye. managing time = better quotes for the future freelancing work
+[7/3/2014 8:01:03 AM] Kaslai: Yep
+[7/3/2014 8:02:44 AM] Kjetil Hansen: I think telnet is still a great tool for many Applications.
+[7/3/2014 8:03:02 AM] Kaslai: I agree, with one caveat
+[7/3/2014 8:03:22 AM] Kaslai: Secure Shell is superior, but it's essentially just secure telnet
+[7/3/2014 8:03:49 AM] Kaslai: But even unencrypted telnet is still quite nice
+[7/3/2014 8:03:51 AM] Kjetil Hansen: aye
+[7/3/2014 8:06:03 AM] Kaslai: So I've been wondering
+[7/3/2014 8:06:11 AM] Kjetil Hansen: shoot
+[7/3/2014 8:06:25 AM] Kaslai: I have a few options as far as how I can proceed
+[7/3/2014 8:06:49 AM] Kaslai: 1) I create all of the world development tools next and then implement the core game
+[7/3/2014 8:07:06 AM] Kaslai: 2) I can create the core game and then work on the world development tools
+[7/3/2014 8:07:37 AM] Kaslai: 3) I can create a development tool (say for one specific thing, like an item or spell) and then implement that thing in the game engine
+[7/3/2014 8:07:44 AM] Kaslai: 4) The reverse of 3
+[7/3/2014 8:08:19 AM] Kaslai: If I do option 1, then development for the campaign and gear can proceed sooner
+[7/3/2014 8:08:46 AM] Kaslai: However if I change something in the game code, then the items and rooms might need to all get updated
+[7/3/2014 8:09:23 AM] Kjetil Hansen: Yeah, I've been thinking of the order of that aswell. I belive a combination 1, 2 and 3 would be best.
+[7/3/2014 8:09:29 AM] Kaslai: If I do option 2, development of the campaign will be delayed even further, however there's less risk of having to update all the assets later
+[7/3/2014 8:09:53 AM] Kaslai: Option 3 is probably the best of 1 and 2
+[7/3/2014 8:10:09 AM] Kaslai: I create the development tool so work can begin on creating rooms and things
+[7/3/2014 8:10:16 AM] Kaslai: Then I start implementing it in the game engine
+[7/3/2014 8:10:28 AM] Kjetil Hansen: Creating a Development tool With minor editing features, like creating an item, then the core game to find out how to create a better tool.
+[7/3/2014 8:10:37 AM] Kjetil Hansen: Yeah... exactly what I think
+[7/3/2014 8:11:07 AM] Kaslai: If I find I need to change things, there will be very little work done so changes can be made easily
+[7/3/2014 8:11:22 AM] Kjetil Hansen: aye
+[7/3/2014 8:11:26 AM] Kaslai: In fact I could probably get things more or less finalized before work starts
+[7/3/2014 8:11:41 AM] Kaslai: Since it might only take a day or two to implement something fully in the engine
+[7/3/2014 8:11:48 AM] Kaslai: So work can just not start until it's finished
+[7/3/2014 8:12:00 AM] Kaslai: Alright
+[7/3/2014 8:12:05 AM] Kaslai: That's how I will proceed then
+[7/3/2014 8:12:58 AM] Kjetil Hansen: aye
+[7/3/2014 8:14:38 AM] Kaslai: I'm also doing my best to make the code as readable as possible so that future changes by someone who may or may not be me will be relatively easy
+[7/3/2014 8:15:03 AM] Kjetil Hansen: that will also help making changes later on way better
+[7/3/2014 8:15:17 AM] Kaslai: I don't know how close you pay attention to the code, but I've been annotating all the code I've written with comments
+[7/3/2014 8:15:33 AM] Kaslai: not just the Doxygen blocks, but also in the code itself
+[7/3/2014 8:15:41 AM] Kjetil Hansen: noticed
+[7/3/2014 8:15:43 AM] Kaslai: So that people will understand what the intentions are
+[7/3/2014 8:15:43 AM] Kjetil Hansen: I love it
+[7/3/2014 8:16:03 AM] Kaslai: Most of my projects are relatively small so I'm not in the habit of commenting
+[7/3/2014 8:16:16 AM] Kjetil Hansen: That's what a teacher would give you an "A" for... lol
+[7/3/2014 8:16:18 AM] Kaslai: However when I realized I was over 5k lines of code I figures it might be necessary
+[7/3/2014 8:16:37 AM] Kaslai: Eh, my teachers wouldn't give me full credit for these comments
+[7/3/2014 8:16:58 AM] Kaslai: My C++ teacher would freak out if it was anything less than (creating an example)
+[7/3/2014 8:17:08 AM] Kjetil Hansen: LOL
+[7/3/2014 8:17:32 AM] Kjetil Hansen: I'm assuming they know the basics and don't og far outside of the Box then.
+[7/3/2014 8:18:26 AM] Kjetil Hansen: But then again... they're there to make sure the pupils know what they're doing I Guess.
+[7/3/2014 8:22:26 AM] Kaslai: http://i.frogbox.es/20y there we go
+[7/3/2014 8:22:32 AM] Kaslai: That's along the lines of what he expected
+[7/3/2014 8:23:26 AM] Kaslai: Anything less than that and he'd take away up to 20% of the grade
+[7/3/2014 8:23:33 AM] Kaslai: It was awful
+[7/3/2014 8:23:42 AM] Kjetil Hansen: lol
+[7/3/2014 8:23:51 AM] Kjetil Hansen: but if you know C++.... nothing of that would matter
+[7/3/2014 8:24:07 AM] Kaslai: Right
+[7/3/2014 8:24:07 AM] Kjetil Hansen: you would know all of this.
+[7/3/2014 8:24:47 AM] Kaslai: The holy grail of good code is code that can be completely understood without the use of comments
+[7/3/2014 8:25:08 AM] Kaslai: Something like this hardly needs to be commented http://i.frogbox.es/20z
+[7/3/2014 8:25:09 AM] Kjetil Hansen: 10 lines of code turned into 29 lines. lolol
+[7/3/2014 8:25:25 AM] Kaslai: Gee, I wonder what the function StringToUpper() does?
+[7/3/2014 8:25:29 AM | Edited 8:25:31 AM] Kaslai: I can't even imagine
+[7/3/2014 8:25:34 AM] Kaslai: Hehe
+[7/3/2014 8:25:46 AM] Kjetil Hansen: lol
+[7/3/2014 8:26:45 AM] Kaslai: Well
+[7/3/2014 8:27:05 AM] Kaslai: Okay to be fair, my second year C++ teacher was the polar opposite
+[7/3/2014 8:27:29 AM] Kaslai: He only took points for lacking comments if you were doing really convoluted thigns
+[7/3/2014 8:27:38 AM] Kaslai: You just had to describe the code in a paragraph
+[7/3/2014 8:28:03 AM] Kjetil Hansen: aye
+[7/3/2014 8:30:46 AM] Kaslai: Oh cool, I still have some things from his class
+[7/3/2014 8:31:11 AM] Kaslai: http://i.frogbox.es/210 this got full marks from him
+[7/3/2014 8:32:40 AM] Kaslai: Alright my mom's awake now. I'm going to go have a cup of coffee with her
+[7/3/2014 8:32:45 AM] Kaslai: I'll be back in an hour or so
+[7/3/2014 8:32:56 AM] Kjetil Hansen: alright bud. see you soon :)
+[7/3/2014 10:30:53 AM] Kaslai: I'm back briefly.
+[7/3/2014 10:31:10 AM] Kaslai: I was wondering about how provate do you want to keep the code?
+[7/3/2014 10:32:09 AM] Kaslai: I reserve the right to use it for an example for potential employers, however do you mind if I show it to friends?
+[7/3/2014 10:32:26 AM] Kaslai: Or would you rather it stay completely private
+[7/3/2014 10:34:30 AM] Kjetil Hansen: Go ahead bud. :D
+[7/3/2014 10:48:50 AM] Kaslai: Alright, thanks
+[7/3/2014 10:48:54 AM] Kaslai: Some of them are interested and wanted to see
+[7/3/2014 10:49:06 AM | Edited 10:49:11 AM] Kaslai: And I'm also very happy with how it's turning out
+[7/5/2014 10:11:43 PM] Kaslai: http://i.frogbox.es/22k Am I missing anything?
+[7/5/2014 11:40:39 PM] Kjetil Hansen: Awsome, I'll look over it right away
+[7/5/2014 11:58:53 PM] Kjetil Hansen: Look's great
+[7/6/2014 1:13:26 PM] Kjetil Hansen: Did Your friends like the code?
+[7/6/2014 2:58:29 PM] Kaslai: Yea
+[7/6/2014 2:58:57 PM] Kaslai: So I was thinking more about my approach to the customizability of the engine
+[7/6/2014 2:59:13 PM] Kjetil Hansen: aye?
+[7/6/2014 2:59:23 PM] Kaslai: I'm thinking that I won't hard-code anything special in regards to players or entities in the game
+[7/6/2014 2:59:42 PM] Kaslai: The core engine has no notion of things like strength, luck, intelligence, etc
+[7/6/2014 2:59:43 PM] Kaslai: However
+[7/6/2014 2:59:55 PM] Kaslai: The designer of the campaign can define those stats
+[7/6/2014 2:59:58 PM] Kjetil Hansen: ....... a more complex coding of engine, but would make a way more customable one.
+[7/6/2014 3:00:10 PM] Kaslai: I was pondering it for quite a while
+[7/6/2014 3:00:20 PM | Edited 3:00:43 PM] Kaslai: And it wouldn't actually increase the complexity that much
+[7/6/2014 3:01:09 PM] Kaslai: All I need to do is have the campaign designer provide a file
+[7/6/2014 3:01:15 PM] Kaslai: Say... ActorStats
+[7/6/2014 3:01:30 PM] Kaslai: Which contains a list of stats that apply to living actors
+[7/6/2014 3:01:39 PM] Kaslai: The file would probably look like:
+[7/6/2014 3:02:06 PM] Kaslai: HP
+MP
+STR
+WIS
+INT
+LUK
+DEX
+[7/6/2014 3:02:20 PM] Kaslai: And that will tell the engine to keep track of those stats
+[7/6/2014 3:02:27 PM] Kaslai: And a spell script would look something like:
+[7/6/2014 3:03:09 PM | Edited 3:04:20 PM] Kaslai: //fireball spell
+target.HP -= caster.INT * 0.8 + 3
+flavortext = caster.name + " hurls a fireball at " + target.name
+[7/6/2014 3:04:45 PM] Kaslai: And I'll also include scriptable triggered events
+[7/6/2014 3:04:54 PM] Kaslai: Such as maybe...
+[7/6/2014 3:06:50 PM] Kaslai: player.event.add( player.HP, conditions.LessThanOrEqual, 0, {
+    player.moveto( player.spawn )
+    player.restorestats()
+} )
+[7/6/2014 3:07:23 PM] Kaslai: That would add an event to a player that causes them to move to their spawn area and restore their stats if their HP falls to 0 or below
+[7/6/2014 3:07:41 PM] Kaslai: Of course the scripter could do more complex things as well with such a system
+[7/6/2014 3:08:06 PM] Kaslai: Such as making the player unable to take any actions while they have 0 or less HP
+[7/6/2014 3:08:15 PM] Kaslai: And they lose 1 HP every 5 seconds
+[7/6/2014 3:08:25 PM] Kaslai: And they can't be healed or damaged
+[7/6/2014 3:08:43 PM] Kaslai: But an actor could cast revive on them so long as they have more than -20 HP
+[7/6/2014 3:08:43 PM] Kjetil Hansen: sounds sweet
+[7/6/2014 3:08:47 PM] Kaslai: So on and so forth
+[7/6/2014 3:08:59 PM] Kaslai: It would be up to the campaign designer as to what they want
+[7/6/2014 3:09:41 PM] Kaslai: Of course the syntax might end up being different, but I think this will be able to afford the most flexible system possible
+[7/6/2014 3:10:35 PM] Kaslai: Don't worry though; I won't dump a bare engine on you. I'll try to make a robust example campaign (30 rooms or so) that you can use as an example or even a base
+[7/6/2014 3:10:46 PM] Kaslai: It would demonstrate all the features of the engine
+[7/6/2014 3:10:58 PM] Kaslai: And of course I'll always be willing to help
+[7/6/2014 3:11:27 PM] Kjetil Hansen: hehe, :)
+[7/6/2014 3:11:29 PM] Kaslai: I was also thinking of another category of thing to add
+[7/6/2014 3:11:33 PM] Kaslai: "action"
+[7/6/2014 3:11:48 PM] Kaslai: This would basically be a script that defines an action an actor can take
+[7/6/2014 3:12:36 PM] Kaslai: You can attach an action to an actor or object, and if you have the object in your inventory or an actor is in the same room with you, you can perform the action
+[7/6/2014 3:12:46 PM] Kaslai: Actions are associated with a word of course
+[7/6/2014 3:12:56 PM] Kaslai: So say you have an InanimateObject actor
+[7/6/2014 3:13:14 PM] Kaslai: It's an anvil
+[7/6/2014 3:13:28 PM] Kaslai: You can attach a script to it and give it the "smith" keyword
+[7/6/2014 3:13:54 PM] Kaslai: So if you're in a room with the anvil, and a player tries to "smith", then the action associated with the anvil is used
+[7/6/2014 3:14:38 PM] Kaslai: However if there are two or more actions with the same keyword in the same room, and they lead to different action scripts being called, it would prompt the player with something along the lines of
+[7/6/2014 3:15:04 PM] Kaslai: "Upon what object do you want to smith on?"
+[7/6/2014 3:15:24 PM] Kaslai: And the player could either implicitly respond with "on anvil" or "on the anvil" or whatever
+[7/6/2014 3:15:42 PM] Kjetil Hansen: aye
+[7/6/2014 3:15:43 PM] Kaslai: And that would essentially paste the "smith" request with the "on anvil" request
+[7/6/2014 3:15:58 PM] Kaslai: Or they could respond explicitly with "smith on anvil"
+[7/6/2014 3:16:23 PM] Kaslai: The action would then likely want to know what the player would want to smith
+[7/6/2014 3:16:37 PM] Kaslai: As a shortcut, I think that if the player says something along the lines of:
+[7/6/2014 3:16:47 PM] Kaslai: smith steel sword on anvil
+[7/6/2014 3:16:59 PM] Kaslai: Then "smith" is the action
+[7/6/2014 3:17:18 PM] Kaslai: "on anvil" is the actor that receives the smith action
+[7/6/2014 3:17:32 PM] Kaslai: And "steel sword" is a parameter that gets given to the action script
+[7/6/2014 3:18:31 PM] Kjetil Hansen: sounds great. It would be a Nice feture, but we don't want to make it tooooo complex. We don't want to spend hours on making small Things inside the game.
+[7/6/2014 3:18:38 PM] Kaslai: Oh and before I forget, I also remembered about speed walking
+[7/6/2014 3:18:52 PM] Kaslai: Should measures be taken to limit speed walking?
+[7/6/2014 3:19:04 PM] Kaslai: Should a built-in method exist for speed walking?
+[7/6/2014 3:19:57 PM] Kaslai: As in, should I make it so you can only move once every 5 seconds, should I add a fatigue system, should I add "speedwalk w w n n e w n ..."
+[7/6/2014 3:20:21 PM] Kjetil Hansen: well, Depends if you want to use it for example to slow Down players With too much "fatigue" or players that's been poisoned With a slow-poison etc.
+[7/6/2014 3:21:21 PM] Kjetil Hansen: buf for healthy players, they should be able to move as fast as they can type really
+[7/6/2014 3:21:43 PM] Kaslai: But what if they use an auto typer? hehe
+[7/6/2014 3:21:59 PM] Kaslai: On one of the MUDs I played on for a bit, you had 300 fatigue points. Doing actions would reduce your fatigue points
+[7/6/2014 3:22:14 PM] Kjetil Hansen: Yeah, that would be right.
+[7/6/2014 3:22:19 PM] Kaslai: Walking to another room would reduce your fatigue by 1, unless it was a treacherous area
+[7/6/2014 3:22:23 PM] Kaslai: Like a swamp or desert
+[7/6/2014 3:22:35 PM] Kaslai: Moving in those would consume 3-10 fatigue
+[7/6/2014 3:22:44 PM] Kaslai: And you earn one point every 10 seconds
+[7/6/2014 3:23:03 PM] Kaslai: This prevented players from just spamming actions
+[7/6/2014 3:23:20 PM] Kaslai: You could also go to an inn and recover fatigue at 5x the rate
+[7/6/2014 3:24:02 PM] Kjetil Hansen: I think earning 2 Points every sec. would be better. Imagine having to wait for 500 Seconds to get a full Fatigue bar.
+[7/6/2014 3:24:18 PM] Kaslai: At an inn?
+[7/6/2014 3:24:25 PM] Kjetil Hansen: that's 8.33 min.
+[7/6/2014 3:24:31 PM] Kjetil Hansen: or "sit"
+[7/6/2014 3:24:43 PM] Kaslai: Yea that would work
+[7/6/2014 3:24:56 PM] Kjetil Hansen: sitting Down will make you og up 10 Points a sec. instead of two
+[7/6/2014 3:25:11 PM] Kjetil Hansen: "sit", "kneel", "lay"
+[7/6/2014 3:25:24 PM] Kaslai: Yea
+[7/6/2014 3:25:40 PM] Kaslai: Also if you're in combat, you can drop to -40 fatigue or something
+[7/6/2014 3:25:49 PM] Kaslai: It would need to be balanced of course
+[7/6/2014 3:26:00 PM] Kjetil Hansen: Yeah.
+[7/6/2014 3:26:04 PM] Kaslai: But the adrenaline in you will let you do things in spite of fatigue
+[7/6/2014 3:26:13 PM] Kaslai: But you'll become totally immobile at -40
+[7/6/2014 3:26:26 PM] Kaslai: And black out
+[7/6/2014 3:26:27 PM] Kjetil Hansen: If there was a way we could implement "fatigue burn" on weapons and spells casted. that would be nice
+[7/6/2014 3:26:43 PM] Kjetil Hansen: swinging a weapon will cost you X-fatigue
+[7/6/2014 3:26:54 PM] Kjetil Hansen: or casting a spell will burn you x fatigue
+[7/6/2014 3:26:56 PM] Kaslai: Well, fatigue could actually be another designer-definable stat
+[7/6/2014 3:27:06 PM] Kjetil Hansen: aye
+[7/6/2014 3:27:11 PM] Kaslai: So a spell script would include the line caster.fatigue -= 3
+[7/6/2014 3:27:21 PM] Kaslai: Oooh
+[7/6/2014 3:27:31 PM] Kaslai: That also means you can have spells that drain fatigue as well
+[7/6/2014 3:27:38 PM | Edited 3:27:41 PM] Kaslai: Evil >:3
+[7/6/2014 3:28:08 PM] Kjetil Hansen: that and a "pummel" attack that drains Fatigue instead of HP
+[7/6/2014 3:28:18 PM] Kaslai: I like it
+[7/6/2014 3:29:13 PM] Kaslai: Throwing a punch can burn 10 fatigue points in the attacker and 5 in the victim
+[7/6/2014 3:29:28 PM] Kaslai: That's kind of accurate since fist fighting is really draining
+[7/6/2014 3:29:42 PM] Kaslai: Much moreso than firing a bow and arrow
+[7/6/2014 3:30:03 PM] Kaslai: I don't know how it would compare to swinging a sword though
+[7/6/2014 3:30:06 PM] Kaslai: hmm
+[7/6/2014 3:30:34 PM] Kjetil Hansen: I think this would have to be configured in the "item creation" section.
+[7/6/2014 3:30:57 PM] Kaslai: yes, for sure
+[7/6/2014 3:32:31 PM] Kjetil Hansen: Fighting With Your fists would be an item aswell really. 
+punch <player>
+You punch <player> in the face and hits for 32 damge!
+You see Kaslai punch Kjetil in the face With his fist!
+
+Where "fist" is a weapon. Players would never notice.
+[7/6/2014 3:33:04 PM] Kjetil Hansen: same With "kick" where "feet" would be a "weapon"
+[7/6/2014 3:33:13 PM] Kaslai: Yes, that would be the best way about going about things
+[7/6/2014 3:33:39 PM] Kaslai: That also opens up the possibility for non-humanoid creatures
+[7/6/2014 3:34:00 PM] Kjetil Hansen: "tail", "snake-bite" etc.etc.
+[7/6/2014 3:34:01 PM] Kaslai: Crab-people would default to pinchers instead of hands
+[7/6/2014 3:34:06 PM] Kaslai: Yea
+[7/6/2014 3:34:44 PM] Kjetil Hansen: aye
+[7/6/2014 3:34:45 PM] Kaslai: So as far as item classifications go, there should be natural and artificial items
+[7/6/2014 3:34:53 PM] Kjetil Hansen: exactly
+[7/6/2014 3:34:59 PM] Kaslai: Natural items are not removable, and not explicitly visible
+[7/6/2014 3:35:05 PM] Kaslai: Well
+[7/6/2014 3:35:06 PM] Kjetil Hansen: where Natural = hands, stingers, claws, feets, etc. etc.
+[7/6/2014 3:35:16 PM] Kaslai: I suppose if you want to support amputations...
+[7/6/2014 3:35:17 PM] Kjetil Hansen: exactly
+[7/6/2014 3:35:23 PM] Kjetil Hansen: ROFLMFAO
+[7/6/2014 3:35:36 PM] Kjetil Hansen: No... that's probably making it a bit too complex lol
+[7/6/2014 3:35:42 PM] Kaslai: There would be no limit as to how many natural items a character is wearing
+[7/6/2014 3:35:47 PM] Kaslai: It's just up to the race designer
+[7/6/2014 3:35:52 PM] Kjetil Hansen: but I've seen MUD's where you could actually cut of players limbs
+[7/6/2014 3:36:05 PM] Kaslai: That would be a PvP balancing nightmare
+[7/6/2014 3:36:11 PM] Kjetil Hansen: hell yeah
+[7/6/2014 3:36:16 PM] Kjetil Hansen: lolol
+[7/6/2014 3:36:29 PM] Kaslai: Now as far as artificial items
+[7/6/2014 3:36:38 PM] Kaslai: Each race should have a list of slots
+[7/6/2014 3:36:51 PM] Kaslai: Each type of artificial item goes into a specific slot
+[7/6/2014 3:37:14 PM] Kjetil Hansen: Yeah, some races might have two hands, others might have 4
+[7/6/2014 3:37:14 PM] Kaslai: A crab-man would not be able to wear armor as he wouldn't be able to fit in it
+[7/6/2014 3:37:18 PM] Kaslai: So no armor slots
+[7/6/2014 3:37:34 PM] Kaslai: However it could still get away with two hand slots
+[7/6/2014 3:37:54 PM] Kaslai: But crab people would also have very low dexterity
+[7/6/2014 3:38:04 PM] Kaslai: So they could only use things like hammers
+[7/6/2014 3:38:06 PM] Kaslai: Not swords
+[7/6/2014 3:38:25 PM] Kjetil Hansen: aye
+[7/6/2014 3:38:47 PM] Kaslai: You might also have a race of rock people
+[7/6/2014 3:39:11 PM] Kaslai: They might be able to fit their giant lumpy hands and feet and heads into gloves, boots and helmets
+[7/6/2014 3:39:28 PM] Kaslai: But they probably won't be able to wear much in terms of body armor
+[7/6/2014 3:39:40 PM] Kaslai: Well
+[7/6/2014 3:40:01 PM] Kaslai: I suppose that's not fair, because the designed could make "rock-man armor"
+[7/6/2014 3:40:11 PM] Kaslai: Which a rock man could wear, but would be too big for a human
+[7/6/2014 3:41:24 PM] Kaslai: Alright, now I know what to do next
+[7/6/2014 3:41:58 PM] Kaslai: I'm going to start making things and I'll follow this order:
+[7/6/2014 3:43:33 PM] Kaslai: Realm
+Zone
+Room
+Actor
+InanimateActor
+NPCActor
+PlayerActor
+Object
+Ability
+Spell
+Effect
+Faction
+Behavior
+Dialogue
+Shop
+Quest
+[7/6/2014 3:43:51 PM] Kaslai: I might stray a little bit, but that seems like the most logical order
+[7/6/2014 3:45:05 PM] Kjetil Hansen: Yeah, I would agree.
+[7/8/2014 6:33:16 PM] Kaslai: I'm definitely going to have to think carefully about the balance between how much I have in C++ and how much will be in Lua
+[7/8/2014 6:33:42 PM] Kaslai: Because asking the world designer to write things like https://github.com/Aslai/MUD/blob/master/Code/MUD/TestCampaign/scripts/abilities/move.lua might be asking a little too much
+[7/9/2014 7:21:28 AM] Kjetil Hansen: LOL, yes
+[7/9/2014 7:22:24 AM] Kjetil Hansen: This is what will be different With this MUD engine. Easy for none-programmers to make game content
+[7/9/2014 11:44:55 AM] Kjetil Hansen: This is for sure where Your hardcore Programming skills will come in handy ;) This is where you can show the world how it's done! haha
+[7/9/2014 11:53:37 AM] Kaslai: Heh
+[7/9/2014 11:39:15 PM] Kaslai: Well I've started working on the admin client
+[7/9/2014 11:39:36 PM] Kjetil Hansen: Awsome!
+[7/9/2014 11:39:38 PM] Kaslai: Aesthetic things can always be changed, but you can see a snapshot of my progress at http://24.16.174.142:45141/
+[7/9/2014 11:39:58 PM] Kaslai: It's very bare-bones as it is
+[7/9/2014 11:40:16 PM] Kaslai: However most of the GUI related stuff is more or less complete
+[7/9/2014 11:40:27 PM] Kaslai: Well, the technical implementation aspects
+[7/9/2014 11:40:44 PM] Kaslai: Now I just need to start making dialogs for each editor
+[7/9/2014 11:41:01 PM] Kjetil Hansen: Lol, Awsome comtent! Looks great bud
+[7/9/2014 11:41:15 PM] Kaslai: The only one that might be a bit interesting to make is the map editor
+[7/9/2014 11:41:19 PM] Kaslai: And thanks
+[7/9/2014 11:47:09 PM] Kjetil Hansen: I have faith in you
+[7/10/2014 11:06:50 AM] Kjetil Hansen: I've been thinking about that map editor
+[7/10/2014 11:07:56 AM] Kjetil Hansen: The map should be a grid, and the grid is based of numbers. Each map should have 3 pointers.
+[7/10/2014 11:08:00 AM] Kjetil Hansen: 1-1-1
+[7/10/2014 11:09:06 AM] Kjetil Hansen: realm - zone - room
+[7/10/2014 11:09:43 AM] Kjetil Hansen: (Realm = 1) - (Zone = 1) - (Room = 1)
+[7/10/2014 11:10:27 AM] Kjetil Hansen: 1-1-1, 1-1-2, 1-1-3 = the 3 first rooms in realm 1 and zone 1.
+[7/10/2014 11:11:56 AM] Kjetil Hansen: If you could find a way to make a "grid" of squares, and if you left-click one of the squares, that will generate Room 1, the NeXT square you click will automatically be room 2.
+[7/10/2014 11:12:20 AM] Kjetil Hansen: That way you can actually define what realm and zone you want to "map".
+[7/10/2014 11:12:34 AM] Kjetil Hansen: and concentrate on the rooms alone.
+[7/10/2014 11:12:48 AM] Kjetil Hansen: makes sense?
+[7/10/2014 11:21:46 AM] Kaslai: Yep
+[7/10/2014 11:22:22 AM] Kaslai: That's probably best, to have realms, rooms, and zones be given numerical IDs
+[7/10/2014 11:22:43 AM] Kjetil Hansen: When that's done! Having right-clicking connecting them With "standard exits" eg: North, South, east, west, northeast etc.
+[7/10/2014 11:22:46 AM] Kaslai: I'll still let you define textual IDs, however they won't be generated automatically
+[7/10/2014 11:23:05 AM] Kjetil Hansen: aye,
+[7/10/2014 11:23:08 AM] Kaslai: Textual IDs will be mainly used for linking zones together
+[7/10/2014 11:23:17 AM] Kaslai: So you can have "castleentrance"
+[7/10/2014 11:23:23 AM] Kjetil Hansen: aye
+[7/10/2014 11:23:34 AM] Kaslai: Which has an exit to "fieldinfrontofcastle"
+[7/10/2014 11:23:43 AM] Kjetil Hansen: 2 type "exits"
+[7/10/2014 11:24:51 AM] Kjetil Hansen: wait.
+[7/10/2014 11:25:54 AM] Kjetil Hansen: All exits should just be standard:
+North
+East
+South
+West
+Northwest
+Southwest
+Northeast
+Southeast
+[7/10/2014 11:25:57 AM] Kjetil Hansen: That's it
+[7/10/2014 11:26:07 AM] Kjetil Hansen: And then make the exits "editable"
+[7/10/2014 11:26:32 AM] Kaslai: Up and Down too
+[7/10/2014 11:26:50 AM] Kjetil Hansen: then you can just name the "North" exit to "Your own text here" eg. "up" or "wooden gate"
+[7/10/2014 11:27:14 AM] Kjetil Hansen: wouldn't need up and Down really
+[7/10/2014 11:27:34 AM] Kaslai: I suppose I could roll that in to actors
+[7/10/2014 11:27:37 AM] Kjetil Hansen: cuz. you would need to make a room on the grid...
+[7/10/2014 11:27:53 AM] Kaslai: A stairs actor would add an action to the potential actions
+[7/10/2014 11:27:55 AM] Kaslai: "climb"
+[7/10/2014 11:28:05 AM] Kaslai: Which would teleport you to another area
+[7/10/2014 11:28:31 AM] Kjetil Hansen: I think being able to edit the exit names would be so much better really
+[7/10/2014 11:28:39 AM] Kaslai: I suppose
+[7/10/2014 11:28:45 AM] Kaslai: Yea that makes sense
+[7/10/2014 11:29:01 AM] Kaslai: Oh! Now I understand what you were saying
+[7/10/2014 11:29:08 AM] Kaslai: Yes, that is probably the best
+[7/10/2014 11:30:29 AM] Kjetil Hansen: If an exit could be editable in the following Fields:
+Example 1:
+
+Name: up
+Action: go
+Lockable: No
+Closable: No
+Key: "add item" to "use"
+[7/10/2014 11:30:36 AM] Kjetil Hansen: Example 2:
+[7/10/2014 11:32:10 AM] Kjetil Hansen: Name: Wooden gate
+Action: go, open, Close, picklock, use key eg..
+Lockable: yes
+Closable: yes
+key: "add item" golden key
+[7/10/2014 11:32:12 AM] Kjetil Hansen: or something
+[7/10/2014 11:32:44 AM] Kjetil Hansen: I imagine that would be a lot of Programming to define exits, but would make creating rooms sooooo much faster.
+[7/10/2014 11:32:51 AM] Kaslai: Not really
+[7/10/2014 11:33:10 AM] Kjetil Hansen: Let me look up what I have on exits from beforehand
+[7/10/2014 11:36:43 AM] Kaslai: Room = {
+ Exits = {
+  {
+   Name = "Up",
+   Class = "open"
+  }
+  {
+   Name = "Wooden Gate",
+   Class = "door",
+   Bashable = true,
+   Lockable = true,
+   Pickable = true,
+   BashStrength = 10,
+   BashHealth = 5,
+   PickResist = 4,
+   Key = "woodengatekey"
+  }
+ }
+}
+[7/10/2014 11:36:50 AM] Kaslai: That would probably be how it looks
+[7/10/2014 11:37:11 AM] Kaslai: The Class specifier would indicate what the defaults are and what properties to look for
+[7/10/2014 11:37:41 AM] Kaslai: In the case of class = open, then by default it's not closable, openable, bashable, pickable, lockable, or blockable
+[7/10/2014 11:38:29 AM] Kaslai: door is closable, openable, and blockable by default
+[7/10/2014 11:39:20 AM] Kaslai: The class, in conjunction with the properties like "pickable," also dictates which actions can be used on it
+[7/10/2014 11:42:05 AM] Kjetil Hansen: Awsome!!!!
+[7/10/2014 11:43:26 AM] Kaslai: I was wondering, should things like doors and NPCs be globally the same, or should they be unique to each player
+[7/10/2014 11:43:27 AM] Kaslai: As in
+[7/10/2014 11:43:41 AM | Edited 11:43:50 AM] Kaslai: If player A unlocks a door, should player B be able to go through it (without first unlocking it)?
+[7/10/2014 11:44:14 AM] Kjetil Hansen: Offcourse
+[7/10/2014 11:44:22 AM] Kjetil Hansen: open world
+[7/10/2014 11:44:26 AM] Kaslai: Alright
+[7/10/2014 11:44:53 AM] Kaslai: The only thing that really changes is how things like quests would have to be designed
+[7/10/2014 11:46:09 AM] Kjetil Hansen: A MUD is really not so much about questing. It should mainly be a PVP "player vs player" battleground.
+[7/10/2014 11:46:41 AM] Kjetil Hansen: killing NPC's is mainly to get you up in Levels so you can kill higher Level players
+[7/10/2014 11:46:54 AM] Kaslai: Right, but I'd still like to leave room for certain things
+[7/10/2014 11:47:04 AM] Kaslai: Like perhaps becoming a merchants apprentice or something
+[7/10/2014 11:47:10 AM] Kaslai: Just for some extra wealth
+[7/10/2014 11:47:11 AM] Kjetil Hansen: Yes
+[7/10/2014 11:47:17 AM] Kjetil Hansen: I totally agree
+[7/10/2014 11:47:50 AM] Kjetil Hansen: To be able to choose professions like: blacksmith, tailor, etc. would be a great feature
+[7/10/2014 11:48:14 AM] Kaslai: "Hey, PC. I heard that there was a newly discovered gold mine in Dalesville. I can't leave my shop though, so could you perhaps see if you could collect some for me? There will be a wonderful reward in it for you."
+[7/10/2014 11:48:16 AM] Kjetil Hansen: And having NPC drop items needed in the different professions
+[7/10/2014 11:48:32 AM] Kjetil Hansen: or have "nodes" where you can mine metals that spawns just like an NPC
+[7/10/2014 11:48:41 AM] Kaslai: Yea
+[7/10/2014 11:49:10 AM] Kjetil Hansen: What you just said would be more of a quest-line
+[7/10/2014 11:50:18 AM] Kaslai: Well, right. I want to make quest lines a possible feature, as they wouldn't be that hard to add to the engine
+[7/10/2014 11:50:26 AM] Kaslai: But professions have always been top priority
+[7/10/2014 11:50:34 AM] Kaslai: Quests aren't so much
+[7/10/2014 11:50:48 AM] Kaslai: As you want a PvP centric game
+[7/10/2014 11:55:59 AM] Kjetil Hansen: :D
+[7/11/2014 2:34:24 PM] Kjetil Hansen: Improved the GUI have we? got scn.shot?
+[7/11/2014 5:49:00 PM] Kaslai: You can see the current version on my machine at pretty much any point by going to http://24.16.174.142:45141/
+[7/11/2014 5:49:18 PM] Kaslai: You can spawn windows by clicking file > new
+[7/11/2014 5:50:52 PM] Kjetil Hansen: I like it alot!
+[7/11/2014 5:50:55 PM] Kjetil Hansen: :)
+[7/11/2014 5:51:03 PM] Kaslai: :)
+[7/11/2014 5:51:16 PM] Kaslai: It's almost time to start making the actual editor features
+[7/11/2014 5:52:35 PM] Kjetil Hansen: what? So you mean "this has some cool feature" "cool beans" and the rest are just a test?
+[7/11/2014 5:52:40 PM] Kjetil Hansen: ;)
+[7/11/2014 5:52:44 PM] Kaslai: :p
+[7/11/2014 5:56:49 PM] Kjetil Hansen: I'm off to bed bud. It's 3:00 AM where I'm at now. I'm tired.
+[7/11/2014 5:56:56 PM] Kaslai: Alright
+[7/11/2014 5:57:00 PM | Edited 5:57:09 PM] Kaslai: Have a good night's sleep
+[7/11/2014 5:57:20 PM] Kjetil Hansen: thank you! Have a great 6:00 PM evening
+[7/11/2014 5:57:28 PM] Kaslai: :)
+[7/11/2014 5:57:32 PM] Kaslai: Thanks
