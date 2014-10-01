@@ -53,6 +53,7 @@ namespace GlobalMUD{
             NONE,                   ///<This placeholder is used for Telnet::TelnetSession::SendCommand()
                                     ///<if you do not wish to actually send a command in a given argument.\n
                                     ///<This is mainly used internally.
+            Backspace=0x7F,         ///
             //Begin RFC 854 commands//
             SE = 240,               ///<_0xF0_ - Subnegotiation end __RFC 854__
             NOP,                    ///<_0xF1_ - No Operation __RFC 854__

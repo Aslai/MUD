@@ -101,6 +101,7 @@
 		<Unit filename="Implementations/CommStream/CommStreamInternal.cpp" />
 		<Unit filename="Implementations/Error/Error.cpp" />
 		<Unit filename="Implementations/Error/Error.hpp" />
+		<Unit filename="Implementations/ExpressionParser/ExpressionParser.cpp" />
 		<Unit filename="Implementations/ExpressionParser/ExpressionParser.hpp" />
 		<Unit filename="Implementations/Filesystem/Filesystem.cpp" />
 		<Unit filename="Implementations/Filesystem/Filesystem.hpp" />

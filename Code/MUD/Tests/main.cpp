@@ -6,6 +6,7 @@
 #include "HTTPd/HTTPd.hpp"
 #include "Error/Error.hpp"
 #include "Memory/Stream.hpp"
+#include "ExpressionParser/ExpressionParser.hpp"
 
 #include <random>
 #include <cstdio>
@@ -41,6 +42,58 @@ void TNet(GlobalMUD::Telnet::TelnetSession t){
 
     }
 }
+
+std::vector<std::string> ReadWords( std::string file ){
+    std::vector<std::string> ret;
+    FILE* f = fopen( file.c_str(), "r" );
+    char buffer[1000];
+    while( !feof( f ) ){
+        fgets( buffer, 1000, f );
+        for( int i = 0; i < 1000 && buffer[i] != 0; ++i ){
+            if( buffer[i] == '\r' || buffer[i] == '\n' ){
+                buffer[i] = 0;
+                break;
+            }
+        }
+        if( buffer[0] != 0 ){
+            ret.push_back( buffer );
+        }
+    }
+    return ret;
+}
+
+void TNet2(GlobalMUD::Telnet::TelnetSession t){
+    t.SendLine("Enter in a command: ");
+    GlobalMUD::ExpressionParser p;
+    GlobalMUD::ExpressionParser::SetVerbs( ReadWords("expressionparser/verbs.txt") );
+    GlobalMUD::ExpressionParser::SetDelimiters( ReadWords("expressionparser/delimiters.txt") );
+    GlobalMUD::ExpressionParser::SetIrrelevant( ReadWords("expressionparser/irrelevant.txt") );
+    GlobalMUD::ExpressionParser::SetPronouns( ReadWords("expressionparser/pronouns.txt") );
+    GlobalMUD::ExpressionParser::SetPrepositions( ReadWords("expressionparser/prepositions.txt") );
+
+    while( t.Connected() ){
+        if( t.HasLine() ){
+            std::string command = t.ReadLine();
+            int actions = p.Parse( command );
+            if( actions > 0 ){
+                t.SendLine( "\r\n\r\nYou want to:\r\n" );
+                while( actions-- ){
+                    ExpressionParser::Action a = p.GetAction();
+                    t.SendLine( a.Verb + " -> " + a.Subject + " " );
+                    if( a.Preposition != "" ){
+                        t.SendLine( "-> " + a.Preposition + " -> " + a.Modifier );
+                    }
+                    t.SendLine( "\r\n" );
+                }
+            }
+            else{
+                t.SendLine( "Unknown verb.\r\n" );
+            }
+            t.SendLine("\r\nEnter in a command: ");
+        }
+    }
+}
+
 
 HTTPd::HTTPResponse func( HTTPd::HTTPResponse headers, HTTPd& parent ){
     HTTPd::HTTPResponse response;
@@ -145,9 +198,14 @@ HTTPd::HTTPResponse LuaHandler( HTTPd::HTTPResponse r, HTTPd &h, std::string pat
 
 
 int main(){
+    GlobalMUD::Telnet t2;
+    t2.ReadTerms( "terminals.txt" );
+    t2.Listen( 45141, TNet2 );
+    return 0;
 
     HTTPd h("any", 45141);
-    h.MountDirectory( "/", "Editor/" );
+    //h.MountDirectory( "/", "Editor/" );
+    h.MountDirectory( "/", "C:\\Users\\Kaslai\\Documents\\Projects\\select2\\" );
     h.SetFileHandler( "hlua", LuaHandler );
     h.SetDefaultIndex( "index.hlua" );
     h.Run();

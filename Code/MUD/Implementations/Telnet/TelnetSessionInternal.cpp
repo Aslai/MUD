@@ -40,9 +40,12 @@ namespace GlobalMUD{
                     auto end = buff.SaveCheckpoint();
                     buff.LoadCheckpoint( start );
                     //Copy the information between the start and end checkpoints and dump it into the buffer.
-                    buffer += BufferToString( (const char*) buff.GetData( end ), end-start );
+                    std::string s = BufferToString( (const char*) buff.GetData( end ), end-start );
+                    buffer += s;
                     start = buff.SaveCheckpoint();
                     buff.GetChar();
+                    if( echos == true )
+                        SendLine( s );
 
                     //If it turns out that the following character is another IAC, turn on escape mode.
                     if( buff.PeekByte() == (byte) Telnet::Commands::IAC ){
@@ -61,6 +64,22 @@ namespace GlobalMUD{
                         }
                     }
 
+                }
+                else if( (byte) buff.PeekChar() == (byte) Telnet::Commands::Backspace ){
+                    buff.GetChar();
+                    auto end = buff.SaveCheckpoint();
+                    buff.LoadCheckpoint( start );
+                    //Copy the information between the start and end checkpoints and dump it into the buffer.
+                    std::string s = BufferToString( (const char*) buff.GetData( end ), end-start );
+                    buffer += s;
+
+                    start = buff.SaveCheckpoint();
+
+                    if( buffer.size() > 1 ){
+                        buffer.resize( buffer.size() - 2 );
+                    }
+                    if( echos == true )
+                        SendLine( s );
                 }
                 else{
                     escaped = false;
