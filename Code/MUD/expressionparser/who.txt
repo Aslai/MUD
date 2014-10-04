@@ -1,0 +1,7 @@
+my	singular_1
+her	singular_3
+his	singular_3
+their	plural_3
+our	plural_1
+your	singular_2
+its	plural_3

@@ -46,6 +46,9 @@ void TNet(GlobalMUD::Telnet::TelnetSession t){
 std::vector<std::string> ReadWords( std::string file ){
     std::vector<std::string> ret;
     FILE* f = fopen( file.c_str(), "r" );
+    if( f == nullptr ){
+        fprintf( stderr, "Failed to open file %s\n", file.c_str() );
+    }
     char buffer[1000];
     while( !feof( f ) ){
         fgets( buffer, 1000, f );
@@ -62,16 +65,18 @@ std::vector<std::string> ReadWords( std::string file ){
     return ret;
 }
 
-void TNet2(GlobalMUD::Telnet::TelnetSession t){
+void TNet3(GlobalMUD::Telnet::TelnetSession t){
     t.SendLine("Enter in a command: ");
     GlobalMUD::ExpressionParser p;
     GlobalMUD::ExpressionParser::SetVerbs( ReadWords("expressionparser/verbs.txt") );
+    GlobalMUD::ExpressionParser::SetWho( ReadWords("expressionparser/who.txt") );
     GlobalMUD::ExpressionParser::SetDelimiters( ReadWords("expressionparser/delimiters.txt") );
-    GlobalMUD::ExpressionParser::SetIrrelevant( ReadWords("expressionparser/irrelevant.txt") );
+    GlobalMUD::ExpressionParser::SetArticles( ReadWords("expressionparser/articles.txt") );
     GlobalMUD::ExpressionParser::SetPronouns( ReadWords("expressionparser/pronouns.txt") );
     GlobalMUD::ExpressionParser::SetPrepositions( ReadWords("expressionparser/prepositions.txt") );
 
     while( t.Connected() ){
+        Thread::Sleep(100);
         if( t.HasLine() ){
             std::string command = t.ReadLine();
             int actions = p.Parse( command );
@@ -79,11 +84,43 @@ void TNet2(GlobalMUD::Telnet::TelnetSession t){
                 t.SendLine( "\r\n\r\nYou want to:\r\n" );
                 while( actions-- ){
                     ExpressionParser::Action a = p.GetAction();
-                    t.SendLine( a.Verb + " -> " + a.Subject + " " );
-                    if( a.Preposition != "" ){
-                        t.SendLine( "-> " + a.Preposition + " -> " + a.Modifier );
+                    if( a.Subject == "" ){
+                        t.SendLine( a.Verb + " what?" );
+                    }
+                    else{
+                        t.SendLine( "Perform " + a.Verb + " upon the " + a.Subject );
+                        if( a.Who != "" ){
+                            t.SendLine( " that belongs to " + a.Who );
+                        }
+                        if( a.Preposition != "" ){
+                            t.SendLine( " " + a.Preposition + " " );
+                        }
+                        if( a.Modifier != "" ){
+                            t.SendLine( "the " + a.Modifier + " " );
+                        }
+                        if( a.ModifierWho != "" ){
+                            t.SendLine( "which belongs to " + a.ModifierWho );
+                        }
+                        //t.SendLine( "\r\n" );
+
+                        /*t.SendLine( a.Verb + " (v) -> " );
+                        if( a.Who != "" ){
+                            t.SendLine( a.Who + " (w) -> " );
+                        }
+                        t.SendLine( a.Subject + " (s) " );
+                        if( a.Preposition != "" ){
+                            t.SendLine( "-> " + a.Preposition + " (p) " );
+                        }
+                        if( a.ModifierWho != "" ){
+                            t.SendLine( "-> " + a.ModifierWho + " (mw) " );
+                        }
+                        if( a.Modifier != "" ){
+                            t.SendLine( "-> " + a.Modifier + " (m) " );
+                        }*/
+
                     }
                     t.SendLine( "\r\n" );
+
                 }
             }
             else{
@@ -94,6 +131,11 @@ void TNet2(GlobalMUD::Telnet::TelnetSession t){
     }
 }
 
+void TNet2(GlobalMUD::Telnet::TelnetSession t){
+    GlobalMUD::Thread th(  std::bind( TNet3, t ));
+    th.Run();
+    th.Detach();
+}
 
 HTTPd::HTTPResponse func( HTTPd::HTTPResponse headers, HTTPd& parent ){
     HTTPd::HTTPResponse response;

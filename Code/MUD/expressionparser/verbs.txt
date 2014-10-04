@@ -874,6 +874,7 @@ sting
 stink
 stir
 stitch
+stomp
 stop
 store
 strap
