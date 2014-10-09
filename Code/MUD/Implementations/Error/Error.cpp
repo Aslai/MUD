@@ -38,6 +38,9 @@ namespace GlobalMUD{
                 case Error::Timeout:            return "Timeout period exceeded (Error::Timeout)";
                 case Error::Unsupported:        return "Unsupported operation (Error::Unsupported)";
                 case Error::LuaError:           return "Unspecified Lua runtime error. (Error::LuaError)";
+                case Error::AlreadyEnabled:     return "Feature is already enabled (Error::AlreadyEnabled)";
+                case Error::Bad:                return "Bad Error (Error::Bad)";
+                case Error::Fatal:              return "Fatal Error (Error::Fatal)";
                 default:    break;
             }
             return "Unknown Error";

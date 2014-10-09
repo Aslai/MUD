@@ -19,15 +19,6 @@ namespace GlobalMUD{
     void ExpressionParser::Word::SetType(Type::PossessiveType type){
         ttype = Types::Possessive;
         t.Possessive = type;
-        printf("Possessive: %s ", Text.c_str() );
-        switch( type ){
-            case Type::PossessiveType::singular_1: printf("singular_1\n"); break;
-            case Type::PossessiveType::singular_2: printf("singular_2\n"); break;
-            case Type::PossessiveType::singular_3: printf("singular_3\n"); break;
-            case Type::PossessiveType::plural_1: printf("plural_1\n"); break;
-            case Type::PossessiveType::plural_2: printf("plural_2\n"); break;
-            case Type::PossessiveType::plural_3: printf("plural_3\n"); break;
-        }
     }
 
     void ExpressionParser::Word::SetType(Type::GeneralType type){

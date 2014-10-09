@@ -76,7 +76,18 @@ namespace GlobalMUD{
                     start = buff.SaveCheckpoint();
 
                     if( buffer.size() > 1 ){
-                        buffer.resize( buffer.size() - 2 );
+                        size_t pos = buffer.find_last_of( "\n" );
+                        if( pos == std::string::npos || pos < buffer.size() - 2 ){
+                            buffer.resize( buffer.size() - 2 );
+                        }
+                        else{
+                            if( s.size() > 1 ){
+                                s.resize(s.size() - 2);
+                            }
+                            else{
+                                s = "";
+                            }
+                        }
                     }
                     if( echos == true )
                         SendLine( s );
@@ -190,15 +201,25 @@ namespace GlobalMUD{
                 SendCommand(Telnet::Commands::WILL, Telnet::Commands::NAWS );
             } break;
             case Telnet::Commands::ECHO:{
-                SendCommand(Telnet::Commands::WILL, Telnet::Commands::ECHO );
-                echos = true;
+                if( FeatureSupported( Telnet::Feature::Echo) ){
+                    SendCommand(Telnet::Commands::WILL, Telnet::Commands::ECHO );
+                    echos = true;
+                }
+                else{
+                    SendCommand(Telnet::Commands::WONT, Telnet::Commands::ECHO );
+                }
             } break;
             case Telnet::Commands::TERMINAL_TYPE:{
                 SendCommand(Telnet::Commands::WILL, Telnet::Commands::TERMINAL_TYPE );
 
             } break;
             case Telnet::Commands::SUPPRESS_GO_AHEAD:{
-                SendCommand(Telnet::Commands::WILL, Telnet::Commands::SUPPRESS_GO_AHEAD );
+                if( FeatureSupported( Telnet::Feature::Echo) ){
+                    SendCommand(Telnet::Commands::WILL, Telnet::Commands::SUPPRESS_GO_AHEAD );
+                }
+                else{
+                    SendCommand(Telnet::Commands::WONT, Telnet::Commands::SUPPRESS_GO_AHEAD );
+                }
             } break;
             default:
                 //If the server doesn't support it, respond negatively.
@@ -246,11 +267,21 @@ namespace GlobalMUD{
                 SendCommand(Telnet::Commands::DONT, Telnet::Commands::ECHO );
             } break;
             case Telnet::Commands::TERMINAL_TYPE:{
-                SendCommand(Telnet::Commands::DO, Telnet::Commands::TERMINAL_TYPE );
-                SendSubnegotiation( Telnet::Commands::TERMINAL_TYPE, Telnet::Commands::SEND );
+                if( FeatureSupported( Telnet::Feature::Echo) ){
+                    SendCommand(Telnet::Commands::DO, Telnet::Commands::TERMINAL_TYPE );
+                    SendSubnegotiation( Telnet::Commands::TERMINAL_TYPE, Telnet::Commands::SEND );
+                }
+                else{
+                    SendCommand(Telnet::Commands::DONT, Telnet::Commands::TERMINAL_TYPE );
+                }
             } break;
             case Telnet::Commands::SUPPRESS_GO_AHEAD:{
-                SendCommand(Telnet::Commands::DO, Telnet::Commands::SUPPRESS_GO_AHEAD );
+                if( FeatureSupported( Telnet::Feature::Echo) ){
+                    SendCommand(Telnet::Commands::DO, Telnet::Commands::SUPPRESS_GO_AHEAD );
+                }
+                else{
+                    SendCommand(Telnet::Commands::DONT, Telnet::Commands::SUPPRESS_GO_AHEAD );
+                }
             } break;
             default:
                 //Don't agree to do things the server doesn't know how to do.
@@ -424,6 +455,17 @@ namespace GlobalMUD{
 
         //Request that the client perform Terminal-Type
         SendCommand( Telnet::Commands::DO, Telnet::Commands::TERMINAL_TYPE );
+
+        for( size_t i = 0; i < Parent.Features.size(); ++i ){
+            Features.push_back( Parent.Features[i] );
+            switch( Parent.Features[i] ){
+                case Telnet::Feature::Echo:{
+                    SendCommand( Telnet::Commands::DO, Telnet::Commands::ECHO );
+                    SendCommand( Telnet::Commands::DO, Telnet::Commands::SUPPRESS_GO_AHEAD );
+                }
+                default: break;
+            }
+        }
     }
 
     Telnet::TelnetSessionInternal::~TelnetSessionInternal( ){
@@ -544,6 +586,15 @@ namespace GlobalMUD{
 
     bool Telnet::TelnetSessionInternal::Connected(){
         return stream.Connected();
+    }
+
+    bool Telnet::TelnetSessionInternal::FeatureSupported( Telnet::Feature f ){
+        for( size_t i = 0; i < Features.size(); ++i ){
+            if( Features[i] == f ){
+                return true;
+            }
+        }
+        return false;
     }
 }
 

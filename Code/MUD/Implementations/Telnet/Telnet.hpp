@@ -290,6 +290,18 @@ namespace GlobalMUD{
 
         };
 
+        /////////////////////////////////////////////////
+        ///
+        /// Provides named constants for various
+        /// features that can be requested for a more
+        /// advanced telnet experience.
+        ///
+        /////////////////////////////////////////////////
+
+        enum class Feature{
+            Echo
+        };
+
         class TelnetSession;
         class TheScreen;
 
@@ -405,7 +417,7 @@ namespace GlobalMUD{
 			std::string bestTerminal;
 			std::string lastTerminal;
 			Mutex lock;
-
+            std::vector<Telnet::Feature> Features;
 
 
         public:
@@ -419,6 +431,8 @@ namespace GlobalMUD{
             Error SendCommand( Telnet::Commands cmd1 = Telnet::Commands::NONE, Telnet::Commands cmd2 = Telnet::Commands::NONE );
             Error SendSubnegotiation( Telnet::Commands cmd, char* data = nullptr, size_t len = 0 );
             Error SendSubnegotiation( Telnet::Commands cmd1, Telnet::Commands cmd2, char* data = nullptr, size_t len = 0 );
+
+            bool FeatureSupported( Telnet::Feature f );
 
             bool HasLine();
             bool HasChar();
@@ -533,6 +547,7 @@ namespace GlobalMUD{
     private:
         void ConnectionHandler( CommStream cs, std::function<void(TelnetSession)> callback );
         std::map<std::string, Terminal> SupportedTerms;
+        std::vector<Feature> Features;
         CommStream stream;
     public:
 
@@ -674,6 +689,10 @@ int main( int argc, char *argv[] ){
 
 ****************************************/
         Error ReadTerms( std::string fname );
+
+        Error Disable( Feature f );
+
+        Error Enable( Feature f );
 
         Error Disconnect();
 

@@ -32,6 +32,25 @@ namespace GlobalMUD{
         return stream.Disconnect(true);
     }
 
+    Error Telnet::Disable( Telnet::Feature f ){
+        for( size_t i = 0; i < Features.size(); ++i ){
+            if( Features[i] == f ){
+                Features.erase( Features.begin() + i );
+            }
+        }
+        return Error::None;
+    }
+
+    Error Telnet::Enable( Telnet::Feature f ){
+        for( size_t i = 0; i < Features.size(); ++i ){
+            if( Features[i] == f ){
+                return Error::AlreadyEnabled;
+            }
+        }
+        Features.push_back( f );
+        return Error::None;
+    }
+
     Error Telnet::ReadTerms( std::string fname ){
         FILE* f = fopen( fname.c_str(), "r" );
         if( f == nullptr )

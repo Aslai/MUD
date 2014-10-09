@@ -242,6 +242,7 @@ HTTPd::HTTPResponse LuaHandler( HTTPd::HTTPResponse r, HTTPd &h, std::string pat
 int main(){
     GlobalMUD::Telnet t2;
     t2.ReadTerms( "terminals.txt" );
+    t2.Enable( Telnet::Feature::Echo );
     t2.Listen( 45141, TNet2 );
     return 0;
 
