@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="MUD" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/MUD" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-Wnon-virtual-dtor" />
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wredundant-decls" />
+					<Add option="-Wcast-align" />
+					<Add option="-Wundef" />
+					<Add option="-Wfloat-equal" />
+					<Add option="-Winline" />
+					<Add option="-Wunreachable-code" />
+					<Add option="-Wmissing-include-dirs" />
+					<Add option="-Wswitch-default" />
+					<Add option="-Wmain" />
+					<Add option="-pedantic" />
+					<Add option="-std=c++11" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-pg" />
+					<Add option="-g" />
+					<Add option="-DRunUnitTests" />
+					<Add option="-DDISABLETHREADSNO" />
+				</Compiler>
+				<Linker>
+					<Add option="-pg -lgmon" />
+					<Add library="ws2_32" />
+					<Add library="wsock32" />
+					<Add library="..\..\bin\Debug\libmudcommon.dll" />
+					<Add library="..\..\bin\Debug\libmudhttpd.dll" />
+					<Add library="..\..\bin\Debug\libmudlua.dll" />
+					<Add library="..\..\bin\Debug\libmudtelnet.dll" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/MUD" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++11" />
+					<Add option="-DRunUnitTests" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="ws2_32" />
+					<Add library="wsock32" />
+				</Linker>
+			</Target>
+			<Target title="Debug Linux">
+				<Option output="bin/DebugLinux/MUD" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/DebugLinux/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-pedantic" />
+					<Add option="-std=c++11" />
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-DRunUnitTests" />
+				</Compiler>
+				<Linker>
+					<Add library="pthread" />
+				</Linker>
+			</Target>
+			<Target title="Release Linux">
+				<Option output="bin/ReleaseLinux/MUD" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/ReleaseLinux/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="pthread" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-ansi" />
+			<Add option="-Wno-unused-parameter -Wno-switch-enum" />
+			<Add directory="Implementations" />
+		</Compiler>
+		<Linker>
+			<Add library="lua" />
+		</Linker>
+		<Unit filename="Editor/Editor.hpp" />
+		<Unit filename="ExpressionParser/ExpressionParser.cpp" />
+		<Unit filename="ExpressionParser/ExpressionParser.hpp" />
+		<Unit filename="Game/Actors/Actor.hpp" />
+		<Unit filename="Game/Actors/InanimateActor.hpp" />
+		<Unit filename="Game/Actors/NonPlayerCharacter.hpp" />
+		<Unit filename="Game/Actors/PlayerCharacter.hpp" />
+		<Unit filename="Game/Areas/Realm.hpp" />
+		<Unit filename="Game/Areas/Room.hpp" />
+		<Unit filename="Game/Areas/Zone.hpp" />
+		<Unit filename="Game/Effects/Ability.hpp" />
+		<Unit filename="Game/Effects/Effect.hpp" />
+		<Unit filename="Game/Effects/Spell.hpp" />
+		<Unit filename="Game/Engine/MudEngine.hpp" />
+		<Unit filename="Game/Engine/PlayerInterface/Console.hpp" />
+		<Unit filename="Game/Engine/PlayerInterface/CustomClient.hpp" />
+		<Unit filename="Game/Engine/PlayerInterface/HTTP.hpp" />
+		<Unit filename="Game/Engine/PlayerInterface/PlayerInterface.hpp" />
+		<Unit filename="Game/Interactions/Behavior.hpp" />
+		<Unit filename="Game/Interactions/Dialogue.hpp" />
+		<Unit filename="Game/Interactions/Event.hpp" />
+		<Unit filename="Game/Interactions/Faction.hpp" />
+		<Unit filename="Game/Interactions/Quest.hpp" />
+		<Unit filename="Game/Interactions/Shop.hpp" />
+		<Unit filename="Game/Objects/Object.hpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+			<DoxyBlocks>
+				<comment_style block="5" line="2" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="Workspace">
+		<Project filename="Implementations/mud/MUD.cbp">
+			<Depends filename="Implementations/libmudtelnet/libmudtelnet.cbp" />
+			<Depends filename="Implementations/libmudlua/libmudlua.cbp" />
+			<Depends filename="Implementations/libmudhttpd/libmudhttpd.cbp" />
+			<Depends filename="Implementations/libmudcommon/libmudcommon.cbp" />
+		</Project>
+		<Project filename="Implementations/libmudtelnet/libmudtelnet.cbp">
+			<Depends filename="Implementations/libmudcommon/libmudcommon.cbp" />
+		</Project>
+		<Project filename="Implementations/libmudlua/libmudlua.cbp">
+			<Depends filename="Implementations/libmudcommon/libmudcommon.cbp" />
+		</Project>
+		<Project filename="Implementations/libmudhttpd/libmudhttpd.cbp">
+			<Depends filename="Implementations/libmudcommon/libmudcommon.cbp" />
+		</Project>
+		<Project filename="Implementations/libmudcommon/libmudcommon.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>
