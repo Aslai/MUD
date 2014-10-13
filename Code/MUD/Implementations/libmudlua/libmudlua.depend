@@ -1,1 +1,76 @@
 # depslib dependency file v1.0
+1413163030 source:/media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudlua/Lua/Lua.cpp
+	"libmudlua/Lua/Lua.hpp"
+	"lua/lua.h"
+	"lua/lualib.h"
+	"lua/lauxlib.h"
+	<string>
+	<cstdlib>
+	<cstring>
+	"libmudcommon/Error/Error.hpp"
+
+1413162931 /media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudlua/Lua/Lua.hpp
+	"libmudcommon/dllinfo.hpp"
+	"lua/lua.h"
+	"lua/lualib.h"
+	"lua/lauxlib.h"
+	<string>
+	<vector>
+	<map>
+
+1413162703 /media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudcommon/dllinfo.hpp
+
+1412831151 /media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudcommon/Error/Error.hpp
+	"libmudcommon/dllinfo.hpp"
+	<string>
+	<map>
+
+1413163035 source:/media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudlua/Lua/LuaFunction.cpp
+	"Lua/Lua.hpp"
+	"lua/lua.h"
+	"lua/lualib.h"
+	"lua/lauxlib.h"
+	<string>
+
+1413163042 source:/media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudlua/Lua/LuaScript.cpp
+	"Lua/Lua.hpp"
+	"lua/lua.h"
+	"lua/lualib.h"
+	"lua/lauxlib.h"
+	<string>
+
+1413163048 source:/media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudlua/Lua/LuaStack.cpp
+	"libmudlua/Lua/Lua.hpp"
+	"lua/lua.h"
+	"lua/lualib.h"
+	"lua/lauxlib.h"
+	<string>
+	"libmudcommon/Error/Error.hpp"
+
+1413163054 source:/media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudlua/Lua/LuaTable.cpp
+	"libmudlua/Lua/Lua.hpp"
+	"lua/lua.h"
+	"lua/lualib.h"
+	"lua/lauxlib.h"
+	<string>
+	"libmudcommon/Error/Error.hpp"
+
+1413163059 source:/media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudlua/Lua/LuaValue.cpp
+	"libmudlua/Lua/Lua.hpp"
+	"lua/lua.h"
+	"lua/lualib.h"
+	"lua/lauxlib.h"
+	<string>
+	<cstdlib>
+	<cstring>
+	"libmudcommon/Strings/Strings.hpp"
+	"libmudcommon/Error/Error.hpp"
+
+1412831151 /media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudcommon/Strings/Strings.hpp
+	"libmudcommon/dllinfo.hpp"
+	<string>
+	<string.h>
+	<stdio.h>
+	<type_traits>
+	<cxxabi.h>
+

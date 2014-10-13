@@ -28,13 +28,11 @@
 					<Add option="-std=c++11" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
-					<Add option="-pg" />
 					<Add option="-g" />
 					<Add option="-DRunUnitTests" />
 					<Add option="-DDISABLETHREADSNO" />
 				</Compiler>
 				<Linker>
-					<Add option="-pg -lgmon" />
 					<Add library="ws2_32" />
 					<Add library="wsock32" />
 				</Linker>
@@ -89,12 +87,10 @@
 			<Add option="-Wall" />
 			<Add option="-ansi" />
 			<Add option="-Wno-unused-parameter -Wno-switch-enum" />
+			<Add option="-DDO_DLL_EXPORTS" />
 			<Add directory="." />
 			<Add directory=".." />
 		</Compiler>
-		<Linker>
-			<Add library="lua" />
-		</Linker>
 		<Unit filename="CommStream/Cipher.cpp" />
 		<Unit filename="CommStream/Cipher.hpp" />
 		<Unit filename="CommStream/CommStream.cpp" />
@@ -115,6 +111,7 @@
 		<Unit filename="Thread/Mutex.hpp" />
 		<Unit filename="Thread/Thread.cpp" />
 		<Unit filename="Thread/Thread.hpp" />
+		<Unit filename="dllinfo.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

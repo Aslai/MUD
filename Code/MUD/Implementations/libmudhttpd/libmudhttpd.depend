@@ -1,1 +1,114 @@
 # depslib dependency file v1.0
+1412832151 source:/media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudhttpd/HTTPd/HTTPd.cpp
+	<map>
+	<string>
+	<cstring>
+	"libmudcommon/Error/Error.hpp"
+	"libmudcommon/Thread/Thread.hpp"
+	"HTTPd/HTTPd.hpp"
+	"libmudcommon/CommStream/CommStream.hpp"
+	"libmudcommon/Filesystem/Filesystem.hpp"
+	"libmudcommon/Filesystem/MIME.hpp"
+	"HTTPd/HTTPStatus.hpp"
+	"libmudcommon/Strings/Strings.hpp"
+	"libmudcommon/Memory/Stream.hpp"
+	<cctype>
+	<ctime>
+
+1412831151 /media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudcommon/Error/Error.hpp
+	"libmudcommon/dllinfo.hpp"
+	<string>
+	<map>
+
+1413162703 /media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudcommon/dllinfo.hpp
+
+1412830471 /media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudcommon/Thread/Thread.hpp
+	"libmudcommon/dllinfo.hpp"
+	<windows.h>
+	<pthread.h>
+	<vector>
+	<map>
+	"libmudcommon/Thread/Mutex.hpp"
+	<functional>
+
+1412831151 /media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudcommon/Thread/Mutex.hpp
+	"libmudcommon/dllinfo.hpp"
+	<windows.h>
+	<pthread.h>
+	"libmudcommon/Memory/RefCounter.hpp"
+
+1412830443 /media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudcommon/Memory/RefCounter.hpp
+	"libmudcommon/dllinfo.hpp"
+
+1412832151 /media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudhttpd/HTTPd/HTTPd.hpp
+	"libmudcommon/dllinfo.hpp"
+	<map>
+	<string>
+	"libmudcommon/Error/Error.hpp"
+	"libmudcommon/CommStream/CommStream.hpp"
+	"libmudcommon/Thread/Thread.hpp"
+	"libmudcommon/Memory/Stream.hpp"
+
+1412831675 /media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudcommon/CommStream/CommStream.hpp
+	"libmudcommon/dllinfo.hpp"
+	<string>
+	<vector>
+	<deque>
+	<memory>
+	"libmudcommon/Memory/RefCounter.hpp"
+	<utility>
+	<windows.h>
+	<winsock2.h>
+	<ws2tcpip.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<netdb.h>
+	<unistd.h>
+	<termios.h>
+	<pthread.h>
+	<errno.h>
+	<signal.h>
+	"libmudcommon/Error/Error.hpp"
+	"libmudcommon/Thread/Mutex.hpp"
+	"libmudcommon/CommStream/Cipher.hpp"
+	"libmudcommon/Thread/Thread.hpp"
+
+1412830443 /media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudcommon/CommStream/Cipher.hpp
+	"libmudcommon/dllinfo.hpp"
+	<string>
+	<random>
+	"libmudcommon/Error/Error.hpp"
+
+1412831151 /media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudcommon/Memory/Stream.hpp
+	"libmudcommon/dllinfo.hpp"
+	<string>
+	<vector>
+	<cstring>
+	<cstdlib>
+	"libmudcommon/Error/Error.hpp"
+
+1412831151 /media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudcommon/Filesystem/Filesystem.hpp
+	"libmudcommon/dllinfo.hpp"
+	<string>
+
+1412831151 /media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudcommon/Filesystem/MIME.hpp
+	"libmudcommon/dllinfo.hpp"
+	<string>
+
+1412832151 /media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudhttpd/HTTPd/HTTPStatus.hpp
+	"libmudcommon/dllinfo.hpp"
+	<string>
+
+1412831151 /media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudcommon/Strings/Strings.hpp
+	"libmudcommon/dllinfo.hpp"
+	<string>
+	<string.h>
+	<stdio.h>
+	<type_traits>
+	<cxxabi.h>
+
+1412832151 source:/media/kaslai/A2742CCF742CA7CD/Users/Kaslai/Documents/Projects/MUD/Code/MUD/Implementations/libmudhttpd/HTTPd/HTTPStatus.cpp
+	<string>
+	"HTTPd/HTTPStatus.hpp"
+

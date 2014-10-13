@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug Linux" />
+	<File name="Telnet/Telnet.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2676" topLine="108" />
+		</Cursor>
+	</File>
+	<File name="Telnet/TelnetSession.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2445" topLine="40" />
+		</Cursor>
+	</File>
+	<File name="Telnet/TelnetSessionInternal.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="345" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Telnet/TheScreen.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2440" topLine="86" />
+		</Cursor>
+	</File>
+	<File name="Telnet/TheCursor.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2714" topLine="51" />
+		</Cursor>
+	</File>
+	<File name="Telnet/Telnet.hpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="21923" topLine="338" />
+		</Cursor>
+	</File>
+</CodeBlocks_layout_file>

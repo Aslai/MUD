@@ -28,15 +28,11 @@
 					<Add option="-std=c++11" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
-					<Add option="-pg" />
 					<Add option="-g" />
 					<Add option="-DRunUnitTests" />
 					<Add option="-DDISABLETHREADSNO" />
 				</Compiler>
 				<Linker>
-					<Add option="-pg -lgmon" />
-					<Add library="ws2_32" />
-					<Add library="wsock32" />
 					<Add library="..\..\bin\Debug\libmudcommon.dll" />
 				</Linker>
 			</Target>
@@ -52,8 +48,6 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="ws2_32" />
-					<Add library="wsock32" />
 					<Add library="..\..\bin\Release\libmudcommon.dll" />
 				</Linker>
 			</Target>
@@ -91,12 +85,10 @@
 			<Add option="-Wall" />
 			<Add option="-ansi" />
 			<Add option="-Wno-unused-parameter -Wno-switch-enum" />
+			<Add option="-DDO_DLL_EXPORTS" />
 			<Add directory="." />
 			<Add directory=".." />
 		</Compiler>
-		<Linker>
-			<Add library="lua" />
-		</Linker>
 		<Unit filename="HTTPd/HTTPStatus.cpp" />
 		<Unit filename="HTTPd/HTTPStatus.hpp" />
 		<Unit filename="HTTPd/HTTPd.cpp" />

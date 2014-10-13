@@ -7,8 +7,8 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/MUD" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
+				<Option output="../../bin/Debug/MUD" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../../obj/Debug/mud" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -28,24 +28,20 @@
 					<Add option="-std=c++11" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
-					<Add option="-pg" />
 					<Add option="-g" />
 					<Add option="-DRunUnitTests" />
 					<Add option="-DDISABLETHREADSNO" />
 				</Compiler>
 				<Linker>
-					<Add option="-pg -lgmon" />
-					<Add library="ws2_32" />
-					<Add library="wsock32" />
-					<Add library="..\..\bin\Debug\libmudcommon.dll" />
 					<Add library="..\..\bin\Debug\libmudhttpd.dll" />
-					<Add library="..\..\bin\Debug\libmudlua.dll" />
 					<Add library="..\..\bin\Debug\libmudtelnet.dll" />
+					<Add library="..\..\bin\Debug\libmudcommon.dll" />
+					<Add library="..\..\bin\Debug\libmudlua.dll" />
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/MUD" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
+				<Option output="../../bin/Release/MUD" prefix_auto="1" extension_auto="1" />
+				<Option object_output="../../obj/Release/mud" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -55,8 +51,10 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="ws2_32" />
-					<Add library="wsock32" />
+					<Add library="..\..\bin\Release\libmudcommon.dll" />
+					<Add library="..\..\bin\Release\libmudhttpd.dll" />
+					<Add library="..\..\bin\Release\libmudlua.dll" />
+					<Add library="..\..\bin\Release\libmudtelnet.dll" />
 				</Linker>
 			</Target>
 			<Target title="Debug Linux">
@@ -93,11 +91,12 @@
 			<Add option="-Wall" />
 			<Add option="-ansi" />
 			<Add option="-Wno-unused-parameter -Wno-switch-enum" />
-			<Add directory="Implementations" />
+			<Add directory="." />
+			<Add directory=".." />
 		</Compiler>
-		<Linker>
-			<Add library="lua" />
-		</Linker>
+		<Unit filename="../Tests/Tester.hpp" />
+		<Unit filename="../Tests/main.cpp" />
+		<Unit filename="../Tests/tester.cpp" />
 		<Unit filename="Editor/Editor.hpp" />
 		<Unit filename="ExpressionParser/ExpressionParser.cpp" />
 		<Unit filename="ExpressionParser/ExpressionParser.hpp" />
